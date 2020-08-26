@@ -6,8 +6,8 @@
 /*   By: sverschu <sverschu@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 16:40:35 by sverschu      #+#    #+#                 */
-/*   Updated: 2020/08/26 16:40:38 by sverschu      ########   odam.nl         */
+/*   Updated: 2020/08/26 16:48:34 by sverschu      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "SensorCurrent.hpp"
