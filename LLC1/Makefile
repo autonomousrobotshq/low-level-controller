@@ -25,8 +25,8 @@ USER_LIB_PATH    :=  $(PROJECT_DIR)/../Libraries
 ### It must be set to the board you are currently using. (i.e uno, mega2560, etc.)
 BOARD_TAG         = mega
 BOARD_SUB         = mega2560
-VARIANT = mega
-MCU = atmega2560
+VARIANT           = mega
+MCU               = atmega2560
 
 ### MONITOR_BAUDRATE
 ### It must be set to Serial baudrate value you are using.
