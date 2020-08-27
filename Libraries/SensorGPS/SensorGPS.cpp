@@ -8,14 +8,14 @@ void SensorGPS::getLocation(float* flat, float* flon)
     *flon = this->flon;
 }
 
-void SensorGPS::getSpeed(float* speed)
+float	SensorGPS::getSpeed()
 {
-    *speed = this->kmph;
+    return(this->kmph);
 }
 
-void SensorGPS::getCourse(float* course)
+float SensorGPS::getCourse()
 {
-    *course = this->course;
+	return(this->course);
 }
 
 void SensorGPS::getTime(unsigned long* age, unsigned long* date, unsigned long* time)
@@ -25,9 +25,9 @@ void SensorGPS::getTime(unsigned long* age, unsigned long* date, unsigned long* 
     *time = this->time;
 }
 
-void SensorGPS::update()
+bool SensorGPS::update()
 {
-    if (ss->available()) {
+    if (ss && ss->available()) {
         int c = ss->read();
         if (gps.encode(c)) // encode returns true if serial has received proper data
         {
@@ -48,8 +48,13 @@ void SensorGPS::update()
             if (course == TinyGPS::GPS_INVALID_F_ANGLE) {
                 // handle invalid course info
             }
+			return (true);
         }
+		else
+			return (false);
     }
+	else
+		return (false);
 }
 
 SensorGPS::SensorGPS(const int rxPin, const int txPin)
@@ -58,7 +63,9 @@ SensorGPS::SensorGPS(const int rxPin, const int txPin)
         this->ss = new SoftwareSerial(rxPin, txPin);
         serialInitialized = true;
     }
-
+	else
+		this->ss = NULL;
+	
     this->update();
 }
 

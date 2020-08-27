@@ -13,14 +13,14 @@ class SensorGPS : public Sensor {
 public:
     void getLocation(float* flat, float* flon);
     void getTime(unsigned long* age, unsigned long* date, unsigned long* time);
-    void getSpeed(float* speed);
-    void getCourse(float* course);
-    void update();
+    float getSpeed();
+    float getCourse();
+    bool update();
     SensorGPS(const int rxPin, const int txPin);
     ~SensorGPS();
 
 private:
-    SoftwareSerial* ss;
+    SoftwareSerial *ss;
     TinyGPS gps;
     float flat, flon, kmph, course;
     unsigned long age, date, time, chars = 0;
