@@ -2,4 +2,5 @@
 
 int main(void)
 {
+		SensorGPS sg(3, 4);
 }

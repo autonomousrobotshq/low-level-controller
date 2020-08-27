@@ -5,21 +5,24 @@
 // https://github.com/neosarchizo/TinyGPS/blob/master/examples/test_with_gps_device/test_with_gps_device.ino
 
 #include <SoftwareSerial.h>
+#include <TinyGPS.h>
+
+#include <Sensor.hpp>
 
 class SensorGPS : public Sensor {
 public:
-    void getLocation(float* flat, float* flong);
+    void getLocation(float* flat, float* flon);
     void getTime(unsigned long* age, unsigned long* date, unsigned long* time);
     void getSpeed(float* speed);
     void getCourse(float* course);
     void update();
     SensorGPS(const int rxPin, const int txPin);
-    ~SensorGPS;
+    ~SensorGPS();
 
 private:
-    SoftwareSerial ss;
+    SoftwareSerial* ss;
     TinyGPS gps;
-    float flat, flon, kmph;
+    float flat, flon, kmph, course;
     unsigned long age, date, time, chars = 0;
     unsigned short sentences = 0, checksum = 0;
     int year;

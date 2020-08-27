@@ -1,10 +1,14 @@
 ### ARDUINO_LIBS
 ### These are the Arduino libraries you want to use
-ARDUINO_LIBS = Wire SoftwareSerial
+ARDUINO_LIBS = Wire SoftwareSerial SensorGPS Sensor TinyGPS-13.0.0
+
+### USER_LIB_PATH
+### Path to where the your project's libraries are stored.
+USER_LIB_PATH    :=  $(realpath ../Libraries)
 
 ### PROJECT_DIR
 ### This is the path to where you have created/cloned your project
-PROJECT_DIR       = ./
+PROJECT_DIR       = $(realpath .)
 
 ### ARDMK_DIR
 ### Path to the Arduino-Makefile directory.
@@ -16,10 +20,6 @@ ARDMK_DIR         = /usr/share/arduino
 #ARDUINO_DIR       = /Applications/Arduino.app/Contents/Java
 ### or on Linux: (remove the one you don't want)
 ARDUINO_DIR       = /usr/share/arduino
-
-### USER_LIB_PATH
-### Path to where the your project's libraries are stored.
-USER_LIB_PATH    :=  $(PROJECT_DIR)/../Libraries
 
 ### BOARD_TAG
 ### It must be set to the board you are currently using. (i.e uno, mega2560, etc.)
