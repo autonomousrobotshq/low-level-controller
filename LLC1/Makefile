@@ -1,4 +1,3 @@
-
 ### ARDUINO_LIBS
 ### These are the Arduino libraries you want to use
 ARDUINO_LIBS = Wire SoftwareSerial
