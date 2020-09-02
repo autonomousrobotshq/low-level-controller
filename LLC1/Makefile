@@ -8,6 +8,7 @@ ARDUINO_LIBS += SoftwareSerial
 ARDUINO_LIBS += TinyGPS-13.0.0
 ARDUINO_LIBS += Sensor
 ARDUINO_LIBS += SensorGPS
+ARDUINO_LIBS += SensorCurrent
 
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.
