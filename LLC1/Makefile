@@ -24,7 +24,7 @@ ifeq ($(UNAME_S),Linux)
     ARDMK_DIR         = /usr/share/arduino
 endif
 ifeq ($(UNAME_S),Darwin)
-    ARDMK_DIR         = /usr/local
+    ARDMK_DIR         = /usr/local/Cellar/arduino-mk/1.6.0
 endif
 
 ### ARDUINO_DIR
@@ -36,7 +36,7 @@ ifeq ($(UNAME_S),Linux)
     ARDUINO_DIR       = /usr/share/arduino
 endif
 ifeq ($(UNAME_S),Darwin)
-    ARDUINO_DIR       = /Applications/Arduino.app/Contents/Resources/Java
+    ARDUINO_DIR       = /Applications/Arduino.app/Contents/Java
 endif
 
 ### BOARD_TAG
