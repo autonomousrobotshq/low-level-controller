@@ -1,3 +1,6 @@
+### OS variables
+UNAME_S := $(shell uname -s)
+
 ### ARDUINO_LIBS
 ### These are the Arduino libraries you want to use
 ARDUINO_LIBS += Wire
@@ -16,14 +19,25 @@ PROJECT_DIR       = $(realpath .)
 
 ### ARDMK_DIR
 ### Path to the Arduino-Makefile directory.
-ARDMK_DIR         = /usr/share/arduino
+
+ifeq ($(UNAME_S),Linux)
+    ARDMK_DIR         = /usr/share/arduino
+endif
+ifeq ($(UNAME_S),Darwin)
+    ARDMK_DIR         = /usr/local/arduino
+endif
 
 ### ARDUINO_DIR
 ### Path to the Arduino application and resources directory.
 ### On OS X:
 #ARDUINO_DIR       = /Applications/Arduino.app/Contents/Java
 ### or on Linux: (remove the one you don't want)
-ARDUINO_DIR       = /usr/share/arduino
+ifeq ($(UNAME_S),Linux)
+    ARDUINO_DIR       = /usr/share/arduino
+endif
+ifeq ($(UNAME_S),Darwin)
+    ARDUINO_DIR       = /Applications/Arduino.app/Contents/Resources/Java
+endif
 
 ### BOARD_TAG
 ### It must be set to the board you are currently using. (i.e uno, mega2560, etc.)
@@ -41,14 +55,24 @@ MONITOR_BAUDRATE  = 115200
 ### On OS X with `homebrew`:
 #AVR_TOOLS_DIR     = /usr/local
 ### or on Linux: (remove the one you don't want)
-AVR_TOOLS_DIR     = /usr
+ifeq ($(UNAME_S),Linux)
+    AVR_TOOLS_DIR     = /usr
+endif
+ifeq ($(UNAME_S),Darwin)
+    AVR_TOOLS_DIR     = /usr/local
+endif
 
 ### AVRDUDE
 ### Path to avrdude directory.
 ### On OS X with `homebrew`:
 #AVRDUDE          = /usr/local/bin/avrdude
 ### or on Linux: (remove the one you don't want)
-AVRDUDE          = /usr/bin/avrdude
+ifeq ($(UNAME_S),Linux)
+    AVRDUDE          = /usr/bin/avrdude
+endif
+ifeq ($(UNAME_S),Darwin)
+    AVRDUDE          = /usr/local/bin/avrdude
+endif
 
 ### CFLAGS_STD
 ### Set the C standard to be used during compilation. Documentation (https://github.com/WeAreLeka/Arduino-Makefile/blob/std-flags/arduino-mk-vars.md#cflags_std)
