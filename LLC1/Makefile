@@ -1,6 +1,10 @@
 ### ARDUINO_LIBS
 ### These are the Arduino libraries you want to use
-ARDUINO_LIBS = Wire SoftwareSerial SensorGPS Sensor TinyGPS-13.0.0
+ARDUINO_LIBS += Wire
+ARDUINO_LIBS += SoftwareSerial
+ARDUINO_LIBS += TinyGPS-13.0.0
+ARDUINO_LIBS += Sensor
+ARDUINO_LIBS += SensorGPS
 
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.
