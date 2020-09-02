@@ -2,5 +2,6 @@
 #define LLC1_HPP
 
 #include <SensorGPS.hpp>
+#include <SensorCurrent.hpp>
 
 #endif
