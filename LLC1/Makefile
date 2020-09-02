@@ -24,7 +24,7 @@ ifeq ($(UNAME_S),Linux)
     ARDMK_DIR         = /usr/share/arduino
 endif
 ifeq ($(UNAME_S),Darwin)
-    ARDMK_DIR         = /usr/local/arduino
+    ARDMK_DIR         = /usr/local
 endif
 
 ### ARDUINO_DIR
