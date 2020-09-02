@@ -19,7 +19,6 @@ PROJECT_DIR       = $(realpath .)
 
 ### ARDMK_DIR
 ### Path to the Arduino-Makefile directory.
-
 ifeq ($(UNAME_S),Linux)
     ARDMK_DIR         = /usr/share/arduino
 endif
