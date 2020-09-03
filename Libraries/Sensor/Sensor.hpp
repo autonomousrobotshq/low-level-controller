@@ -2,8 +2,13 @@
 #define SENSOR_HPP
 
 class Sensor {
-public:
-private:
+	public:
+		int	getDuration();
+		Sensor(const unsigned long *_globMillis);
+		Sensor();
+		~Sensor();
+	private:
+		const unsigned long	*globMillis;
 };
 
 #endif
