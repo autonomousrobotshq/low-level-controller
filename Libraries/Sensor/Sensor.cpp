@@ -1,20 +1,22 @@
 #include "Sensor.hpp"
 
-int	Sensor::getDuration()
+unsigned long Sensor::getDuration()
 {
-	static unsigned long	lastMillis;
-	unsigned long			lastMillisTmp = lastMillis;
+    static unsigned long lastMillis;
+    unsigned long lastMillisTmp = lastMillis;
 
-	lastMillis = *this->globMillis;
+    lastMillis = *this->globMillis;
 
-	return(lastMillisTmp == 0 ? 0 : *this->globMillis - lastMillisTmp);
+    return (lastMillisTmp == 0 ? 0 : *this->globMillis - lastMillisTmp);
 }
 
-Sensor::Sensor(const unsigned long *_globMillis) : globMillis(_globMillis)
+Sensor::Sensor(const unsigned long* _globMillis)
+    : globMillis(_globMillis)
 {
 }
 
 Sensor::Sensor()
+    : globMillis(NULL)
 {
 }
 
