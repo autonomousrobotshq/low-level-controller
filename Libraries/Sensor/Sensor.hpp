@@ -4,12 +4,12 @@
 class Sensor {
 public:
     unsigned long getDuration();
-    Sensor(const unsigned long* _globMillis);
+    Sensor(const unsigned long* globMillis);
     Sensor();
     ~Sensor();
 
 private:
-    const unsigned long* globMillis;
+    const unsigned long*	_globMillis;
 };
 
 #endif

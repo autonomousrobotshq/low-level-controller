@@ -4,16 +4,20 @@
 
 class SensorHall : public Sensor {
 public:
-    int getRPM();
-    void update();
-    SensorHall(const unsigned int _pinA,
-        const unsigned int _pinB,
-        const unsigned int _interrupt,
-        const unsigned int _cpr,
-        const unsigned long* _globMillis);
+    int		getRPM();
+    void	update();
+    SensorHall(const unsigned int pinA,
+        const unsigned int pinB,
+        const unsigned int interrupt,
+        const unsigned int cpr,
+        const unsigned long* globMillis);
     ~SensorHall();
 
 private:
-    const unsigned int pinA, pinB, interrupt, cpr; // interrupt corresponds to pinA!
-    unsigned int pulseIndex, rpm;
+    const unsigned int	_pinA,
+		  _pinB,
+		  _interrupt, // interrupt corresponds to pinA!
+		  _cpr;
+    unsigned int		_pulseIndex,
+						_rpm;
 };

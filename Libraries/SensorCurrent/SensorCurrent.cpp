@@ -2,17 +2,17 @@
 
 float SensorCurrent::getCurrent()
 {
-    return (this->DCCurrent);
+    return (this->_DCCurrent);
 }
 
 /*read DC Current Value*/
-float SensorCurrent::readDCCurrent()
+float SensorCurrent::_readDCCurrent()
 {
-    int analogValueArray[31];
+    int		analogValueArray[31];
     for (int index = 0; index < 31; index++) {
-        analogValueArray[index] = analogRead(this->analogPin);
+        analogValueArray[index] = analogRead(this->_analogPin);
     }
-    int i, j, tempValue;
+    int		i, j, tempValue;
     for (j = 0; j < 31 - 1; j++) {
         for (i = 0; i < 31 - 1 - j; i++) {
             if (analogValueArray[i] > analogValueArray[i + 1]) {
@@ -22,13 +22,14 @@ float SensorCurrent::readDCCurrent()
             }
         }
     }
-    float medianValue = analogValueArray[(31 - 1) / 2];
-    float DCCurrentValue = (medianValue / 1024.0 * Vref - Vref / 2.0) / mVperAmp; //Sensitivity:100mV/A, 0A @ Vcc/2
+    float	medianValue = analogValueArray[(31 - 1) / 2];
+    float	DCCurrentValue = (medianValue / 1024.0 * this->_Vref - this->_Vref / 2.0)
+		/ _mVperAmp; //Sensitivity:100mV/A, 0A @ Vcc/2
     return DCCurrentValue;
 }
 
 /*read reference voltage*/
-long SensorCurrent::readVref()
+long SensorCurrent::_readVref()
 {
     long result;
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
@@ -58,15 +59,15 @@ long SensorCurrent::readVref()
 
 bool SensorCurrent::update()
 {
-    this->DCCurrent = readDCCurrent();
+    this->_DCCurrent = this->_readDCCurrent();
     // error handling inbouwen
     return (true);
 }
 
-SensorCurrent::SensorCurrent(const int _analogPin) // dit wordt constructor
+SensorCurrent::SensorCurrent(const int analogPin) // dit wordt constructor
 {
-    this->analogPin = _analogPin;
-    Vref = readVref(); //read the reference voltage(default:VCC)
+    this->_analogPin = analogPin;
+    this->_Vref = _readVref(); //read the reference voltage(default:VCC)
 }
 
 SensorCurrent::~SensorCurrent()
