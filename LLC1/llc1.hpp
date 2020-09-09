@@ -3,5 +3,6 @@
 
 #include <SensorGPS.hpp>
 #include <SensorCurrent.hpp>
+#include <SensorTemp.hpp>
 
 #endif
