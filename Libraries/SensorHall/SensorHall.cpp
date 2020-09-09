@@ -38,16 +38,16 @@ void interruptCallD()
     pulses[3]++;
 }
 
-SensorHall::SensorHall(const unsigned int pinA,
-    const unsigned int pinB,
-    const unsigned int interrupt,
-    const unsigned int cpr,
-    const unsigned long* globMillis)
-    : Sensor(globMillis)
-    , _pinA(pinA)
-    , _pinB(pinB)
-    , _interrupt(interrupt)
-    , _cpr(cpr)
+SensorHall::SensorHall(	const unsigned int pinA,
+    					const unsigned int pinB,
+    					const unsigned int interrupt,
+    					const unsigned int cpr,
+    					const unsigned long* globMillis)
+    					: Sensor(globMillis)
+    					, _pinA(pinA)
+    					, _pinB(pinB)
+    					, _interrupt(interrupt)
+    					, _cpr(cpr)
 {
     static unsigned int cc;
 
@@ -59,26 +59,18 @@ SensorHall::SensorHall(const unsigned int pinA,
         attachInterrupt(_interrupt, interruptCallA, CHANGE);
         this->_pulseIndex = 0;
         break;
-        ;
-        ;
     case 1:
         attachInterrupt(_interrupt, interruptCallB, CHANGE);
         this->_pulseIndex = 1;
         break;
-        ;
-        ;
     case 2:
         attachInterrupt(_interrupt, interruptCallB, CHANGE);
         this->_pulseIndex = 2;
         break;
-        ;
-        ;
     case 3:
         attachInterrupt(_interrupt, interruptCallB, CHANGE);
         this->_pulseIndex = 3;
         break;
-        ;
-        ;
     }
     cc++;
 }
