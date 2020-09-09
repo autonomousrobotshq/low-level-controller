@@ -10,13 +10,14 @@ static unsigned int pulses[HALL_INTERRUPT_COUNT];
 void SensorHall::update()
 {
     unsigned long millisDev = this->getDuration();
-    rpm = millisDev == 0 ? 0 : (pulses[pulseIndex] / cpr) / (millisDev / 60000);
-    pulses[pulseIndex] = 0;
+    this->_rpm =
+		millisDev == 0 ? 0 : (pulses[this->_pulseIndex] / this->_cpr) / (millisDev / 60000);
+    pulses[this->_pulseIndex] = 0;
 }
 
 int SensorHall::getRPM()
 {
-    return (this->rpm);
+    return (this->_rpm);
 }
 
 void interruptCallA()
@@ -38,42 +39,44 @@ void interruptCallD()
     pulses[3]++;
 }
 
-SensorHall::SensorHall(const unsigned int _pinA,
-    const unsigned int _pinB,
-    const unsigned int _interrupt,
-    const unsigned int _cpr,
-    const unsigned long* _globMillis)
-    : Sensor(_globMillis)
-    , pinA(_pinA)
-    , pinB(_pinB)
-    , interrupt(_interrupt)
-    , cpr(_cpr)
+SensorHall::SensorHall(const unsigned int pinA,
+    const unsigned int pinB,
+    const unsigned int interrupt,
+    const unsigned int cpr,
+    const unsigned long* globMillis)
+    : Sensor(globMillis)
+    , _pinA(pinA)
+    , _pinB(pinB)
+    , _interrupt(interrupt)
+    , _cpr(cpr)
 {
     static unsigned int cc;
 
-    pinMode(_pinB, INPUT);
+    pinMode(_pinB, INPUT);	// What is this function doing?
+	// Unclear why there are extra semi-colons here, or what attachInterrupt
+	// is here to do.
     switch (cc) {
     case 0:
         attachInterrupt(_interrupt, interruptCallA, CHANGE);
-        pulseIndex = 0;
+        this->_pulseIndex = 0;
         break;
         ;
         ;
     case 1:
         attachInterrupt(_interrupt, interruptCallB, CHANGE);
-        pulseIndex = 1;
+        this->_pulseIndex = 1;
         break;
         ;
         ;
     case 2:
         attachInterrupt(_interrupt, interruptCallB, CHANGE);
-        pulseIndex = 2;
+        this->_pulseIndex = 2;
         break;
         ;
         ;
     case 3:
         attachInterrupt(_interrupt, interruptCallB, CHANGE);
-        pulseIndex = 3;
+        this->_pulseIndex = 3;
         break;
         ;
         ;
