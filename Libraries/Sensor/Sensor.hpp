@@ -9,7 +9,7 @@ public:
     ~Sensor();
 
 private:
-    const unsigned long*	_globMillis;
+    const unsigned long* _globMillis;
 };
 
 #endif

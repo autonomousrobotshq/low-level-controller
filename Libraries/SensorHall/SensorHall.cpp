@@ -10,8 +10,7 @@ static unsigned int pulses[HALL_INTERRUPT_COUNT];
 void SensorHall::update()
 {
     unsigned long millisDev = this->getDuration();
-    this->_rpm =
-		millisDev == 0 ? 0 : (pulses[this->_pulseIndex] / this->_cpr) / (millisDev / 60000);
+    this->_rpm = millisDev == 0 ? 0 : (pulses[this->_pulseIndex] / this->_cpr) / (millisDev / 60000);
     pulses[this->_pulseIndex] = 0;
 }
 
@@ -52,9 +51,9 @@ SensorHall::SensorHall(const unsigned int pinA,
 {
     static unsigned int cc;
 
-    pinMode(_pinB, INPUT);	// What is this function doing?
-	// Unclear why there are extra semi-colons here, or what attachInterrupt
-	// is here to do.
+    pinMode(_pinB, INPUT); // What is this function doing?
+        // Unclear why there are extra semi-colons here, or what attachInterrupt
+        // is here to do.
     switch (cc) {
     case 0:
         attachInterrupt(_interrupt, interruptCallA, CHANGE);

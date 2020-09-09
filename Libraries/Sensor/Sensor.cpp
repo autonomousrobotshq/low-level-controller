@@ -2,8 +2,8 @@
 
 unsigned long Sensor::getDuration()
 {
-    static unsigned long		lastMillis;
-    unsigned long 				lastMillisTmp = lastMillis;
+    static unsigned long lastMillis;
+    unsigned long lastMillisTmp = lastMillis;
 
     lastMillis = *this->_globMillis;
 

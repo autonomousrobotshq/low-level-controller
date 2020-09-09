@@ -8,11 +8,11 @@ float SensorCurrent::getCurrent()
 /*read DC Current Value*/
 float SensorCurrent::_readDCCurrent()
 {
-    int		analogValueArray[31];
+    int analogValueArray[31];
     for (int index = 0; index < 31; index++) {
         analogValueArray[index] = analogRead(this->_analogPin);
     }
-    int		i, j, tempValue;
+    int i, j, tempValue;
     for (j = 0; j < 31 - 1; j++) {
         for (i = 0; i < 31 - 1 - j; i++) {
             if (analogValueArray[i] > analogValueArray[i + 1]) {
@@ -22,9 +22,9 @@ float SensorCurrent::_readDCCurrent()
             }
         }
     }
-    float	medianValue = analogValueArray[(31 - 1) / 2];
-    float	DCCurrentValue = (medianValue / 1024.0 * this->_Vref - this->_Vref / 2.0)
-		/ _mVperAmp; //Sensitivity:100mV/A, 0A @ Vcc/2
+    float medianValue = analogValueArray[(31 - 1) / 2];
+    float DCCurrentValue = (medianValue / 1024.0 * this->_Vref - this->_Vref / 2.0)
+        / _mVperAmp; //Sensitivity:100mV/A, 0A @ Vcc/2
     return DCCurrentValue;
 }
 
@@ -45,7 +45,8 @@ long SensorCurrent::_readVref()
 #if defined(__AVR__)
     delay(2); // Wait for Vref to settle
     ADCSRA |= _BV(ADSC); // Convert
-    while (bit_is_set(ADCSRA, ADSC));
+    while (bit_is_set(ADCSRA, ADSC))
+        ;
     result = ADCL;
     result |= ADCH << 8;
     result = 1126400L / result; //1100mV*1024 ADC steps http://openenergymonitor.org/emon/node/1186

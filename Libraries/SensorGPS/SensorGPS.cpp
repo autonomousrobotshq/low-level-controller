@@ -8,14 +8,14 @@ void SensorGPS::getLocation(float* flat, float* flon)
     *flon = this->_flon;
 }
 
-float	SensorGPS::getSpeed()
+float SensorGPS::getSpeed()
 {
-    return(this->_kmph);
+    return (this->_kmph);
 }
 
 float SensorGPS::getCourse()
 {
-	return(this->_course);
+    return (this->_course);
 }
 
 void SensorGPS::getTime(unsigned long* age, unsigned long* date, unsigned long* time)
@@ -34,7 +34,7 @@ bool SensorGPS::update()
             _gps.f_get_position(&_flat, &_flon, &_age);
             _gps.stats(&_chars, &_sentences, &_checksum);
             _gps.crack_datetime(&_year, &_month, &_day, &_hour,
-					&_minute, &_second, &_hundredths, &_age);
+                &_minute, &_second, &_hundredths, &_age);
             _kmph = _gps.f_speed_kmph();
             _course = _gps.f_course();
             if (_age == TinyGPS::GPS_INVALID_AGE) {
@@ -49,13 +49,11 @@ bool SensorGPS::update()
             if (_course == TinyGPS::GPS_INVALID_F_ANGLE) {
                 // handle invalid course info
             }
-			return (true);
-        }
-		else
-			return (false);
-    }
-	else
-		return (false);
+            return (true);
+        } else
+            return (false);
+    } else
+        return (false);
 }
 
 SensorGPS::SensorGPS(const int rxPin, const int txPin)
@@ -63,10 +61,9 @@ SensorGPS::SensorGPS(const int rxPin, const int txPin)
     if (!serialInitialized) {
         this->_ss = new SoftwareSerial(rxPin, txPin);
         serialInitialized = true;
-    }
-	else
-		this->_ss = NULL;
-	
+    } else
+        this->_ss = NULL;
+
     this->update();
 }
 
