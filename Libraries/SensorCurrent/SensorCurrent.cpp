@@ -61,13 +61,13 @@ long SensorCurrent::_readVref()
 bool SensorCurrent::update()
 {
     this->_DCCurrent = this->_readDCCurrent();
-    // error handling inbouwen
+    // check for out of range updates and restore old value if necessary
     return (true);
 }
 
-SensorCurrent::SensorCurrent(const int analogPin) // dit wordt constructor
+SensorCurrent::SensorCurrent(const int analogPin)
+    : _analogPin(analogPin)
 {
-    this->_analogPin = analogPin;
     this->_Vref = _readVref(); //read the reference voltage(default:VCC)
 }
 
