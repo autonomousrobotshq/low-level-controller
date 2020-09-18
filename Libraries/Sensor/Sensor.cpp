@@ -2,21 +2,24 @@
 
 unsigned long Sensor::getDuration()
 {
-    static unsigned long lastMillis;
-    unsigned long lastMillisTmp = lastMillis;
+    if (this->_globMillis) {
+        unsigned long lastMillisTmp = this->lastMillis;
 
-    lastMillis = *this->_globMillis;
+        this->lastMillis = *this->_globMillis;
 
-    return (lastMillisTmp == 0 ? 0 : *this->_globMillis - lastMillisTmp);
+        return (lastMillisTmp == 0 ? 0 : *this->_globMillis - lastMillisTmp);
+    } else
+        return (0);
 }
 
 Sensor::Sensor(const unsigned long* globMillis)
     : _globMillis(globMillis)
+    , lastMillis(0)
 {
 }
 
 Sensor::Sensor()
-    : _globMillis(0)
+    : _globMillis(NULL)
 {
 }
 

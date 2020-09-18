@@ -1,6 +1,8 @@
 #ifndef SENSOR_HPP
 #define SENSOR_HPP
 
+#include <stddef.h>
+
 class Sensor {
 public:
     unsigned long getDuration();
@@ -10,6 +12,7 @@ public:
 
 private:
     const unsigned long* _globMillis;
+    unsigned long lastMillis;
 };
 
 #endif
