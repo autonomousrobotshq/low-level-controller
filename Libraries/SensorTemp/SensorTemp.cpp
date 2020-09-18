@@ -13,12 +13,14 @@ bool SensorTemp::update()
     return (true);
 }
 
-SensorTemp::SensorTemp(const int pin) : _wire(pin)
+SensorTemp::SensorTemp(const int pin)
+    : _wire(pin)
 {
-	this->_celsius = 0;
+    this->_celsius = 0;
     this->_sensors.begin();
     this->update();
 }
 
 SensorTemp::~SensorTemp()
-{}
+{
+}
