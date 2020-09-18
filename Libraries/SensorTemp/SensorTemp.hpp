@@ -10,15 +10,14 @@
 
 class SensorTemp {
 public:
-    SensorTemp(const int);
+    float getTemp();
+    bool update();
+    SensorTemp(const int pin);
     ~SensorTemp();
 
 private:
-    OneWire Wire = 0;
-    DallasTemperature sensors = &Wire;
-    float Celsius = 0;
-    float getTemp();
-    float readTempC();
-    bool update();
+    OneWire _wire = 0;
+    DallasTemperature _sensors = &_wire;
+    float _celsius = 0;
 };
 #endif

@@ -2,31 +2,23 @@
 
 float SensorTemp::getTemp()
 {
-    return (this->Celsius);
-}
-
-float SensorTemp::readTempC()
-{
-    float _Celcius;
-    sensors.requestTemperatures();
-    _Celcius = sensors.getTempCByIndex(0);
-    return (_Celcius);
+    return (this->_celsius);
 }
 
 bool SensorTemp::update()
 {
-    this->Celsius = readTempC();
-    // error handling inbouwen
+    this->_sensors.requestTemperatures();
+    this->_celsius = _sensors.getTempCByIndex(0);
+    // flash out illegal values, reset the old if value was invalid
     return (true);
 }
 
-SensorTemp::SensorTemp(const int wire)
+SensorTemp::SensorTemp(const int pin) : _wire(pin)
 {
-    this->Wire = wire;
-    sensors.begin();
+	this->_celsius = 0;
+    this->_sensors.begin();
     this->update();
 }
 
 SensorTemp::~SensorTemp()
-{
-}
+{}
