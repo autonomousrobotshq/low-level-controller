@@ -21,9 +21,9 @@ float SensorCompass::getNavigationAngle() {
 	return (_compass.getNavigationAngle());
 }
 
-vector<int16_t> getMagnetometerReadings() {	
+vector<int16_t> SensorCompass::getMagnetometerReadings() {	
 	return (_compass.magnetometer);
 }
-vector<int16_t> getAccelerometerReadings() {
+vector<int16_t> SensorCompass::getAccelerometerReadings() {
 	return (_compass.accelerometer);
 }
