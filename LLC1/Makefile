@@ -10,8 +10,8 @@ ARDUINO_LIBS += Sensor
 ARDUINO_LIBS += TinyGPS-13.0.0
 ARDUINO_LIBS += SensorGPS
 
-ARDUINO_LIBS += MagneticSensorLsm303
-ARDUINO_LIBS += SensorCompass
+ARDUINO_LIBS += MagneticSensorLSM303-1.0
+#ARDUINO_LIBS += SensorCompass
 
 ARDUINO_LIBS += SensorCurrent
 
