@@ -14,6 +14,8 @@ ARDUINO_LIBS += SensorCurrent
 
 ARDUINO_LIBS += SensorHall
 
+ARDUINO_LIBS += SensorUltrasonic
+
 ARDUINO_LIBS += DallasTemperature-3.9.0
 ARDUINO_LIBS += OneWire-2.3.5
 ARDUINO_LIBS += SensorTemp
