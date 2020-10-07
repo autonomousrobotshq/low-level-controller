@@ -3,6 +3,10 @@
 
 #include "../deployment.h"
 
+#include <ros.h>
+#include <std_msgs/String.h>
+#include <std_msgs/UInt16.h>
+
 #include <SensorCurrent.hpp>
 #include <SensorGPS.hpp>
 #include <SensorHall.hpp>

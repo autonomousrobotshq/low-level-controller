@@ -7,6 +7,8 @@ ARDUINO_LIBS += Wire
 ARDUINO_LIBS += SoftwareSerial
 ARDUINO_LIBS += Sensor
 
+ARDUINO_LIBS += RosserialArduino-0.7.9
+
 ARDUINO_LIBS += TinyGPS-13.0.0
 ARDUINO_LIBS += SensorGPS
 
