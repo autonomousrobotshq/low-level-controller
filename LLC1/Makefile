@@ -56,10 +56,11 @@ endif
 
 ### BOARD_TAG
 ### It must be set to the board you are currently using. (i.e uno, mega2560, etc.)
-BOARD_TAG         = mega
-BOARD_SUB         = mega2560
-VARIANT           = mega
-MCU               = atmega2560
+BOARD_TAG               = mega
+BOARD_SUB               = mega2560
+VARIANT                 = mega
+MCU                     = atmega2560
+AVRDUDE_ARD_PROGRAMMER  = wiring
 
 ### MONITOR_BAUDRATE
 ### It must be set to Serial baudrate value you are using.
@@ -71,7 +72,7 @@ MONITOR_BAUDRATE  = 115200
 #AVR_TOOLS_DIR     = /usr/local
 ### or on Linux: (remove the one you don't want)
 ifeq ($(UNAME_S),Linux)
-    AVR_TOOLS_DIR     = /usr
+    #AVR_TOOLS_DIR     = /usr
 endif
 ifeq ($(UNAME_S),Darwin)
     AVR_TOOLS_DIR     = /usr/local
@@ -103,7 +104,7 @@ CXXFLAGS         += -pedantic -Wall -Wextra
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
-MONITOR_PORT      = /dev/tty.usbmodem*
+MONITOR_PORT      = * # /dev/ttyACM1
 
 ### CURRENT_DIR
 ### Do not touch - used for binaries path
