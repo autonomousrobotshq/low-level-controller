@@ -16,8 +16,8 @@ public:
     ~SensorTemp();
 
 private:
-    OneWire _wire = 0;
-    DallasTemperature _sensors = &_wire;
-    float _celsius = 0;
+    OneWire _wire;
+    DallasTemperature _sensors;
+    float _celsius;
 };
 #endif
