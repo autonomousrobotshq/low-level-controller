@@ -16,7 +16,7 @@ public:
     float getSpeed();
     float getCourse();
     bool update();
-    SensorGPS(const int rxPin, const int txPin);
+    SensorGPS(const unsigned int rxPin, const unsigned int txPin);
     ~SensorGPS();
 
 private:
@@ -39,6 +39,7 @@ private:
         _minute,
         _second,
         _hundredths;
+	const unsigned int _pinTx, _pinRx;
 };
 
 #endif

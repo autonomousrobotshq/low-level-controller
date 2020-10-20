@@ -5,7 +5,7 @@
 class SensorHall : public Sensor {
 public:
     int getRPM();
-    void update();
+    bool update();
     SensorHall(const unsigned int pinA,
         const unsigned int pinB,
         const unsigned int interrupt,
