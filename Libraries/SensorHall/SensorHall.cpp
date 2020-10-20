@@ -4,7 +4,7 @@
 
 // i am not proud of this
 
-// attach interrupt doesnt allow arguments, so hardcoded globs are required
+// attach interrupt doesnt allow arguments(like a 'this' argument), so hardcoded globs are required
 static unsigned int pulses[HALL_INTERRUPT_COUNT];
 
 void SensorHall::update()
@@ -51,9 +51,12 @@ SensorHall::SensorHall(	const unsigned int pinA,
 {
     static unsigned int cc;
 
-    pinMode(_pinB, INPUT); // What is this function doing?
-        // Unclear why there are extra semi-colons here, or what attachInterrupt
-        // is here to do.
+    pinMode(_pinB, INPUT);
+
+	// this is not pretty indeed, unfortunately 'attachInterrupt' is an archaic C function ; it works as follows:
+	// every time the SensorHall constructor is called the static int cc increases and a separate interupt function is 'attached' to the pin that reads pulses from the
+	// hall sensor. This is because as of now 'attachInterrupt' cannot differentiate between difference instances of a class and therefore a universal interrupt function
+	// is not possible.
     switch (cc) {
     case 0:
         attachInterrupt(_interrupt, interruptCallA, CHANGE);
