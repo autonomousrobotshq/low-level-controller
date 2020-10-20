@@ -17,6 +17,6 @@ class MotorController {
 		const unsigned _pinPWM;
 		const unsigned _pinA;
 		const unsigned _pinB;
-}
+};
 
 #endif

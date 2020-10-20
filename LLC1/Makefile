@@ -25,6 +25,8 @@ ARDUINO_LIBS += DallasTemperature-3.9.0
 ARDUINO_LIBS += OneWire-2.3.5
 ARDUINO_LIBS += SensorTemp
 
+ARDUINO_LIBS += MotorController
+
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.
 USER_LIB_PATH    :=  $(realpath ../Libraries)
