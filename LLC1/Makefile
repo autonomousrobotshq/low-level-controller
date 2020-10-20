@@ -28,6 +28,7 @@ ARDUINO_LIBS += OneWire-2.3.5
 ARDUINO_LIBS += SensorTemp
 
 ARDUINO_LIBS += MotorController
+ARDUINO_LIBS += CoolingController
 
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.
