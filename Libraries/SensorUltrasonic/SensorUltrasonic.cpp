@@ -3,14 +3,13 @@
 SensorUltrasonic::SensorUltrasonic(const int pin)
     : _analogPin(pin)
 {
-    this->update();
+	pinMode(pin, INPUT);
 }
 
 SensorUltrasonic::~SensorUltrasonic() { }
 
 bool SensorUltrasonic::update()
 {
-
     _sensity_t = analogRead(_analogPin);
 
     _dist_t = _sensity_t * SON_MAX_RANGE / ADC_RESOLUTION;
