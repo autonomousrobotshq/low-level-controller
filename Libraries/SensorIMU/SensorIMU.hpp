@@ -16,7 +16,6 @@ public:
 private:
 	MagneticSensorLsm303 _compass;
 	float _navigationAngle;
-	Vec3 _accelerometerData, _magnetometerData;
 };
 
 #endif

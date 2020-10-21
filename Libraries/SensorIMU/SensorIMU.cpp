@@ -9,12 +9,6 @@ SensorIMU::~SensorIMU() {}
 bool SensorIMU::update() {
 	_compass.read();
 	_navigationAngle = _compass.getNavigationAngle();
-	_accelerometerData.x = _compass.accelerometer.x;
-	_accelerometerData.y = _compass.accelerometer.y;
-	_accelerometerData.z = _compass.accelerometer.z;
-	_magnetometerData.x = _compass.magnetometer.x;
-	_magnetometerData.y = _compass.magnetometer.y;
-	_magnetometerData.z = _compass.magnetometer.z;
 	
 	/* No error handling as of yet.
 	** This might be implemented here,
@@ -29,9 +23,9 @@ float SensorIMU::getNavigationAngle() {
 }
 
 Vec3 SensorIMU::getAccelerometerData() {
-	return (this->_accelerometerData);
+	return (Vec3(_compass.accelerometer.x, _compass.accelerometer.y, _compass.accelerometer.x));
 }
 
 Vec3 SensorIMU::getMagnetometerData() {
-	return (this->_magnetometerData);
+	return (Vec3(_compass.magnetometer.x, _compass.magnetometer.y, _compass.magnetometer.x));
 }
