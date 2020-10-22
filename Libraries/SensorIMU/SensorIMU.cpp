@@ -23,9 +23,9 @@ float SensorIMU::getNavigationAngle() {
 }
 
 Vec3 SensorIMU::getAccelerometerData() {
-	return (Vec3(_compass.accelerometer.x, _compass.accelerometer.y, _compass.accelerometer.x));
+	return (Vec3(_compass.accelerometer.x, _compass.accelerometer.y, _compass.accelerometer.z));
 }
 
 Vec3 SensorIMU::getMagnetometerData() {
-	return (Vec3(_compass.magnetometer.x, _compass.magnetometer.y, _compass.magnetometer.x));
+	return (Vec3(_compass.magnetometer.x, _compass.magnetometer.y, _compass.magnetometer.z));
 }
