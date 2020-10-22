@@ -4,6 +4,8 @@
 ** SAMPLE CODE (for now) : do not upload without verifying libraries and ports!
 */
 
+// this is the global time variable which every class instance may use to
+// perform time based logic.
 static unsigned long globMillis;
 
 // example of how to use ros publish/subscribe
