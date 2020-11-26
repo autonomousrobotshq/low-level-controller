@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "MotorController.hpp"
-
+#include <math.h>
 // HOW TO UNFLOAT THIS ?
 
 void	MotorController::forward(const unsigned int throttle)
@@ -39,5 +39,5 @@ MotorController::MotorController(	const unsigned pinPWM,
 
 MotorController::~MotorController()
 {
-
+	
 }

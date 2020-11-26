@@ -12,5 +12,6 @@
 #include <SensorHall.hpp>
 #include <SensorCurrent.hpp>
 #include <SensorTemp.hpp>
-
+#include <MotorController.hpp>
+#include <SensorIMU.hpp>
 #endif

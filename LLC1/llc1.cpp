@@ -1,5 +1,6 @@
 #include "llc1.hpp"
-
+#include "driveLogic.hpp"
+#include "robotEntity.hpp"
 /*
 ** SAMPLE CODE (for now) : do not upload without verifying libraries and ports!
 */
@@ -14,9 +15,13 @@ ros::NodeHandle node_handle;
 std_msgs::String pub_msg; 
 std_msgs::UInt16 sub_msg;
 
+// here we should create the robot robotEntity with pin lay-out and everything
+
 void subscriberCallback(const std_msgs::UInt16& sub_msg) {
-  if (sub_msg.data == 1) {
+  if (sub_msg.data == 1) 
+  {
 	//react to event
+	
   } else {
 	//do something else
   }
@@ -36,15 +41,20 @@ int main(void)
 	{
 		if (HIGH == HIGH) {
     		pub_msg.data = "HIGH";
-  		} else {
+  		} else { 
     		pub_msg.data = "LOW";
   		}
  		publisher.publish( &pub_msg );
   		node_handle.spinOnce();
 	}
 
-    SensorGPS sg(3, 4);
-	SensorHall(15, 16, 0, 16, &globMillis);
-    SensorCurrent(5);
-    SensorTemp(8);
+	robotEntity *robot = new robotEntity();
+	// everything down here is what is being received from the ros nodes
+	int				targetDirection = 90; // degree's from camera view of target position
+	float 			targetDistance = 1000.0; // distance towards the new target position in cm
+	// coordinates	coordinates;
+	// coordinates.y = 10.0; // coordinates which are being received from ros
+	// coordinates.x = 5.0; // coordinates which are being received from ros
+	driveLogic drive(coordinates, targetDirection, targetDistance, robot);
+	drive.Drive();
 }
