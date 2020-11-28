@@ -7,9 +7,4 @@
 #include <std_msgs/String.h>
 #include <std_msgs/UInt16.h>
 
-#include <Sensors/Current.hpp>
-#include <Sensors/GPS.hpp>
-#include <Sensors/Hall.hpp>
-#include <Sensors/Temp.hpp>
-
 #endif

@@ -1,20 +1,23 @@
 #include "llc1.hpp"
 
+#include "pins.h"
+#include "Sandbox/Sandbox.hpp"
+
 /*
 ** SAMPLE CODE
 */
 
-use namespace sandbox;
+using namespace sandbox;
 
-Sandbox sandbox;
+Sandbox g_sandbox;
 
 int main(void)
 {
 
-	sandbox.Setup();
+	g_sandbox.Setup();
 	while (true)
 	{
 		// all your code here
-		sandbox.SpinOnce();
+		g_sandbox.SpinOnce();
 	}
 }
