@@ -13,7 +13,7 @@ SensorTemp::~SensorTemp()
 {
 }
 
-float SensorTemp::getTemp()
+int SensorTemp::getTemp()
 {
     return (this->_celsius);
 }
@@ -21,7 +21,7 @@ float SensorTemp::getTemp()
 bool SensorTemp::update()
 {
     this->_sensors.requestTemperatures();
-    this->_celsius = _sensors.getTempCByIndex(0);
+    this->_celsius = (int)_sensors.getTempCByIndex(0);
     // flash out illegal values, reset the old if value was invalid
     return (true);
 }
