@@ -6,8 +6,6 @@ UNAME_S := $(shell uname -s)
 ARDUINO_LIBS += Wire
 ARDUINO_LIBS += SoftwareSerial
 
-ARDUINO_LIBS += Generic/Vec3
-
 ARDUINO_LIBS += External/OneWire-2.3.5
 ARDUINO_LIBS += External/DallasTemperature-3.9.0
 ARDUINO_LIBS += External/MagneticSensorLSM303-1.0
@@ -88,11 +86,11 @@ CFLAGS_STD        = -std=gnu11
 
 ### CXXFLAGS_STD
 ### Set the C++ standard to be used during compilation. Documentation (https://github.com/WeAreLeka/Arduino-Makefile/blob/std-flags/arduino-mk-vars.md#cxxflags_std)
-CXXFLAGS_STD      = -std=gnu++11
+CXXFLAGS_STD      = -std=gnu++14
 
 ### CXXFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
-CXXFLAGS         += -pedantic -Wall -Wextra
+CXXFLAGS         += -pedantic -Wall -Wextra -O3
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
