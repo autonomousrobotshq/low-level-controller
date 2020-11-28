@@ -1,4 +1,4 @@
-#include "CoolingController.hpp"
+#include "Actuators/Relay.hpp"
 #include <Arduino.h>
 
 CoolingController::CoolingController(const unsigned int pinCooling)

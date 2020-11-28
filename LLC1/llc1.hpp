@@ -7,10 +7,10 @@
 #include <std_msgs/String.h>
 #include <std_msgs/UInt16.h>
 
-#include <SensorCurrent.hpp>
-#include <SensorGPS.hpp>
-#include <SensorHall.hpp>
-#include <SensorCurrent.hpp>
-#include <SensorTemp.hpp>
+#include <Sensors/Current.hpp>
+#include <Sensors/GPS.hpp>
+#include <Sensors/Hall.hpp>
+#include <Sensors/Current.hpp>
+#include <Sensors/Temp.hpp>
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef SENSORGPS_HPP
-#define SENSORGPS_HPP
+#ifndef SENSOR_GPS_HPP
+#define SENSOR_GPS_HPP
 
 // TinyGPS documentation:
 // https://github.com/neosarchizo/TinyGPS/blob/master/examples/test_with_gps_device/test_with_gps_device.ino

@@ -1,4 +1,4 @@
-#include "SensorGPS.hpp"
+#include "Sensors/GPS.hpp"
 
 static bool serialInitialized;
 

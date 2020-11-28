@@ -1,5 +1,5 @@
-#ifndef SENSORULTRASONIC_HPP
-#define SENSORULTRASONIC_HPP
+#ifndef SENSOR_ULTRASONIC_HPP
+#define SENSOR_ULTRASONIC_HPP
 
 #include <Arduino.h>
 

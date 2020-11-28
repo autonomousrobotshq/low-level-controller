@@ -1,4 +1,4 @@
-#include "SensorIMU.hpp"
+#include "Sensors/IMU.hpp"
 
 SensorIMU::SensorIMU() {
 	_compass.init();

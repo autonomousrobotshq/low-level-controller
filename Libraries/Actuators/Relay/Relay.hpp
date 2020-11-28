@@ -1,5 +1,5 @@
-#ifndef COOLINGCONTROLLER_HPP
-#define COOLINGCONTROLLER_HPP
+#ifndef ACTUATOR_RELAY_HPP
+#define ACTUATOR_RELAY_HPP
 
 class CoolingController {
 public:

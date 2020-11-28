@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "SensorHall.hpp"
+#include "Sensors/Hall.hpp"
 
 // i am not proud of this
 

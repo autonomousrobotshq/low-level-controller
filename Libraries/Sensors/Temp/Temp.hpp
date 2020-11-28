@@ -1,5 +1,5 @@
-#ifndef SENSORTEMP_HPP
-#define SENSORTEMP_HPP
+#ifndef SENSOR_TEMP_HPP
+#define SENSOR_TEMP_HPP
 
 #include <DallasTemperature.h>
 #include <OneWire.h>

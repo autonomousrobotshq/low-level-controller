@@ -1,6 +1,9 @@
-#include "Sensor.hpp"
+#ifndef SENSOR_HALL_HPP
+# define SENSOR_HALL_HPP
 
-#define HALL_INTERRUPT_COUNT 4
+# include "Sensor.hpp"
+
+# define HALL_INTERRUPT_COUNT 4
 
 class SensorHall : public Sensor {
 public:
@@ -21,3 +24,5 @@ private:
     unsigned int _pulseIndex,
         _rpm;
 };
+
+#endif

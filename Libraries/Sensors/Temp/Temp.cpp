@@ -1,4 +1,4 @@
-#include "SensorTemp.hpp"
+#include "Sensors/Temp.hpp"
 
 SensorTemp::SensorTemp(const int pin)
     : _wire(pin), _celsius(0), _sensors(&_wire)

@@ -1,5 +1,5 @@
-#ifndef SENSORIMU_HPP
-#define SENSORIMU_HPP
+#ifndef SENSOR_IMU_HPP
+#define SENSOR_IMU_HPP
 
 #include <Vec3.hpp>
 #include <MagneticSensorLsm303.h>

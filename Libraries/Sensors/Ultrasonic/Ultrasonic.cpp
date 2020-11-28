@@ -1,4 +1,4 @@
-#include "SensorUltrasonic.hpp"
+#include "Sensors/Ultrasonic.hpp"
 
 SensorUltrasonic::SensorUltrasonic(const int pin)
     : _analogPin(pin)
