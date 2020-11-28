@@ -1,11 +1,11 @@
 #ifndef ACTUATOR_RELAY_HPP
 #define ACTUATOR_RELAY_HPP
 
-class CoolingController {
+class ActuatorRelay {
 public:
-    CoolingController(const byte pinCooling);
-    ~CoolingController();
-    void setState(bool state);
+    ActuatorRelay(const byte pinCooling);
+    ~ActuatorRelay();
+    void setState(const bool state);
     bool getState();
 
 private:

@@ -1,24 +1,24 @@
 #include "Actuators/Relay.hpp"
 #include <Arduino.h>
 
-CoolingController::CoolingController(const byte pinCooling)
+ActuatorRelay::ActuatorRelay(const byte pinCooling)
     : _pinCooling(pinCooling)
 {
     pinMode(pinCooling, OUTPUT);
     digitalWrite(pinCooling, LOW);
 }
 
-CoolingController::~CoolingController()
+ActuatorRelay::~ActuatorRelay()
 {
 }
 
-void CoolingController::setState(bool state)
+void ActuatorRelay::setState(const bool state)
 {
     _state = state;
     digitalWrite(_pinCooling, state);
 }
 
-bool CoolingController::getState()
+bool ActuatorRelay::getState()
 {
     return (_state);
 }
