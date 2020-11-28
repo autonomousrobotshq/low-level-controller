@@ -1,7 +1,9 @@
 #include "Sensors/Temp.hpp"
 
-SensorTemp::SensorTemp(const int pin)
-    : _wire(pin), _celsius(0), _sensors(&_wire)
+SensorTemp::SensorTemp(const byte pin)
+    : _wire(pin)
+    , _celsius(0)
+    , _sensors(&_wire)
 {
     this->_sensors.begin();
     this->update();
@@ -11,12 +13,12 @@ SensorTemp::~SensorTemp()
 {
 }
 
-float	SensorTemp::getTemp()
+float SensorTemp::getTemp()
 {
     return (this->_celsius);
 }
 
-bool	SensorTemp::update()
+bool SensorTemp::update()
 {
     this->_sensors.requestTemperatures();
     this->_celsius = _sensors.getTempCByIndex(0);

@@ -3,14 +3,14 @@
 
 class CoolingController {
 public:
-    CoolingController(const unsigned int pinCooling);
+    CoolingController(const byte pinCooling);
     ~CoolingController();
     void setState(bool state);
     bool getState();
 
 private:
     bool _state;
-    const unsigned int _pinCooling;
+    const byte _pinCooling;
 };
 
 #endif

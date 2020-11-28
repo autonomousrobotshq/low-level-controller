@@ -1,9 +1,9 @@
 #include "Sensors/Ultrasonic.hpp"
 
-SensorUltrasonic::SensorUltrasonic(const int pin)
+SensorUltrasonic::SensorUltrasonic(const byte pin)
     : _analogPin(pin)
 {
-	pinMode(pin, INPUT);
+    pinMode(pin, INPUT);
 }
 
 SensorUltrasonic::~SensorUltrasonic() { }

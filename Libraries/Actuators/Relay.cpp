@@ -1,7 +1,7 @@
 #include "Actuators/Relay.hpp"
 #include <Arduino.h>
 
-CoolingController::CoolingController(const unsigned int pinCooling)
+CoolingController::CoolingController(const byte pinCooling)
     : _pinCooling(pinCooling)
 {
     pinMode(pinCooling, OUTPUT);
