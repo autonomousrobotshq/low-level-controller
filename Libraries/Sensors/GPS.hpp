@@ -39,7 +39,7 @@ private:
         _minute,
         _second,
         _hundredths;
-    const unsigned int _pinTx, _pinRx;
+    const byte _pinTx, _pinRx;
 };
 
 #endif

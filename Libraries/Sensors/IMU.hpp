@@ -2,7 +2,7 @@
 #define SENSOR_IMU_HPP
 
 #include <MagneticSensorLsm303.h>
-#include <Vec3.hpp>
+#include "Generic/Vec3.hpp"
 
 class SensorIMU {
 public:

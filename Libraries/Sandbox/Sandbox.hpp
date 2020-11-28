@@ -1,9 +1,12 @@
-
-
 #ifndef SANDBOX_HPP
 # define SANDBOX_HPP
 
+#include "Generic/Vec3.hpp"
+#include "Generic/Datatypes.hpp"
+
 #include "Controllers/Motor.hpp"
+#include "Controllers/Proximity.hpp"
+
 #include "Sensors/IMU.hpp"
 #include "Sensors/GPS.hpp"
 #include "Sensors/Temp.hpp"
@@ -19,15 +22,13 @@ class Sandbox
 		Sandbox();
 		~Sandbox();
 	private:
-		unsigned int		_glob_millis;
+		unsigned long		_glob_millis;
 		ControllerMotor 	_controller_motor;
+		ControllerProximity	_controller_proximity;
 		SensorIMU			_sensor_imu;
 		SensorGPS			_sensor_gps;
-		SensorUltrasonic	_sensor_ultrasonic;
 		SensorTemp			_sensor_temp;
 };
-
-static Sandbox *sb;
 
 // public functions
 void	Driver(e_corner corner, e_drive_action action);
@@ -36,7 +37,7 @@ int		IMUGetNavigationAngle();
 Vec3	IMUGetMagnetoData();
 Vec3	IMUGetAcceleroData();
 
-int		USGetDistance(e_corner corner;
+int		USGetDistance(e_corner corner);
 
 void	GPSGetLocation(float *flat, float *flon);
 void	GPSGetTime(unsigned long *age, unsigned long *date, unsigned long *time); // overkill?

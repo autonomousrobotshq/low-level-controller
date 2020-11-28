@@ -1,12 +1,12 @@
 #ifndef CONTROLLER_MOTOR_HPP
 # define CONTROLLER_MOTOR_HPP
 
-#include "Controller/Controller.hpp"
+#include "Controllers/Controller.hpp"
+#include "Actuators/Motor.hpp"
+#include "Sensors/Current.hpp"
+#include "Sensors/Hall.hpp"
 
-namespace motorcontroller {
-
-enum {FRONT_LEFT, FRONT_RIGHT, BACK_LEFT, BACK_RIGHT, ALL} e_corner;
-enum {FORWARD, BACKWARD, HALT} e_drive_action;
+enum e_drive_action {FORWARD, BACKWARD, HALT};
 
 class ControllerMotor : public Controller
 {
@@ -15,10 +15,9 @@ class ControllerMotor : public Controller
 		ControllerMotor();
 		~ControllerMotor();
 	private:
-		ActuatorMotor	_actuator_motor;
+		ActuatorMotor	_actuator_motor[4];
 		SensorCurrent	_sensor_current;
 		SensorHall		_sensor_hall;
 };
 
-} // namespace motorcontroller
 #endif
