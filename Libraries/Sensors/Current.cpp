@@ -1,4 +1,4 @@
-#include "SensorCurrent.hpp"
+#include "Sensors/Current.hpp"
 
 float SensorCurrent::getCurrent()
 {
@@ -65,7 +65,7 @@ bool SensorCurrent::update()
     return (true);
 }
 
-SensorCurrent::SensorCurrent(const int analogPin)
+SensorCurrent::SensorCurrent(const byte analogPin)
     : _analogPin(analogPin)
 {
     this->_Vref = _readVref(); //read the reference voltage(default:VCC)

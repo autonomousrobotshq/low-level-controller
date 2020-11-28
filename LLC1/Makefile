@@ -5,30 +5,17 @@ UNAME_S := $(shell uname -s)
 ### These are the Arduino libraries you want to use
 ARDUINO_LIBS += Wire
 ARDUINO_LIBS += SoftwareSerial
-ARDUINO_LIBS += Vector-1.2.0
-ARDUINO_LIBS += Vec3
-ARDUINO_LIBS += Sensor
 
-ARDUINO_LIBS += RosserialArduino-0.7.9
+ARDUINO_LIBS += Generic/Vec3
 
-ARDUINO_LIBS += TinyGPS-13.0.0
-ARDUINO_LIBS += SensorGPS
+ARDUINO_LIBS += External/OneWire-2.3.5
+ARDUINO_LIBS += External/DallasTemperature-3.9.0
+ARDUINO_LIBS += External/MagneticSensorLSM303-1.0
+ARDUINO_LIBS += External/Vector-1.2.0
+ARDUINO_LIBS += External/RosserialArduino-0.7.9
+ARDUINO_LIBS += External/TinyGPS-13.0.0
 
-ARDUINO_LIBS += MagneticSensorLSM303-1.0
-ARDUINO_LIBS += SensorIMU
-
-ARDUINO_LIBS += SensorCurrent
-
-ARDUINO_LIBS += SensorHall
-
-ARDUINO_LIBS += SensorUltrasonic
-
-ARDUINO_LIBS += DallasTemperature-3.9.0
-ARDUINO_LIBS += OneWire-2.3.5
-ARDUINO_LIBS += SensorTemp
-
-ARDUINO_LIBS += MotorController
-ARDUINO_LIBS += CoolingController
+ARDUINO_LIBS += . # relative offsets are used for internal libraries
 
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.

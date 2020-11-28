@@ -1,5 +1,5 @@
-#ifndef SENSORULTRASONIC_HPP
-#define SENSORULTRASONIC_HPP
+#ifndef SENSOR_ULTRASONIC_HPP
+#define SENSOR_ULTRASONIC_HPP
 
 #include <Arduino.h>
 
@@ -16,7 +16,7 @@
 
 class SensorUltrasonic {
 public:
-    SensorUltrasonic(const int pin);
+    SensorUltrasonic(const byte pin);
     ~SensorUltrasonic();
 
     bool update();
@@ -28,7 +28,7 @@ public:
     float getDistance();
 
 private:
-    int _analogPin;
+    const byte _analogPin;
     float _dist_t;
     float _sensity_t;
 };

@@ -1,5 +1,5 @@
-#ifndef SENSORGPS_HPP
-#define SENSORGPS_HPP
+#ifndef SENSOR_GPS_HPP
+#define SENSOR_GPS_HPP
 
 // TinyGPS documentation:
 // https://github.com/neosarchizo/TinyGPS/blob/master/examples/test_with_gps_device/test_with_gps_device.ino
@@ -7,7 +7,7 @@
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
 
-#include <Sensor.hpp>
+#include <Sensors/Sensor.hpp>
 
 class SensorGPS : public Sensor {
 public:
@@ -16,7 +16,7 @@ public:
     float getSpeed();
     float getCourse();
     bool update();
-    SensorGPS(const unsigned int rxPin, const unsigned int txPin);
+    SensorGPS(const byte rxPin, const byte txPin);
     ~SensorGPS();
 
 private:
@@ -39,7 +39,7 @@ private:
         _minute,
         _second,
         _hundredths;
-	const unsigned int _pinTx, _pinRx;
+    const unsigned int _pinTx, _pinRx;
 };
 
 #endif
