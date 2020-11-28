@@ -1,5 +1,5 @@
-#ifndef VEC3_hpp
-# define VEC3_HPP
+#ifndef GENERIC_VEC3_HPP
+# define GENERIC_VEC3_HPP
 
 #include <stdint.h>
 
