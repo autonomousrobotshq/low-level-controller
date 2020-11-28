@@ -1,7 +1,9 @@
 #ifndef ACTUATOR_MOTOR_HPP
 #define ACTUATOR_MOTOR_HPP
 
-class ActuatorMotor {
+#include "Actuators/Actuator.hpp"
+
+class ActuatorMotor : public Actuator {
 public:
     void forward(const byte pulse_width);
     void reverse(const byte pulse_width);
