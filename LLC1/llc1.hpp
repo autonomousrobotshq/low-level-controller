@@ -10,7 +10,6 @@
 #include <Sensors/Current.hpp>
 #include <Sensors/GPS.hpp>
 #include <Sensors/Hall.hpp>
-#include <Sensors/Current.hpp>
 #include <Sensors/Temp.hpp>
 
 #endif

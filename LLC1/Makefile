@@ -15,16 +15,7 @@ ARDUINO_LIBS += External/Vector-1.2.0
 ARDUINO_LIBS += External/RosserialArduino-0.7.9
 ARDUINO_LIBS += External/TinyGPS-13.0.0
 
-ARDUINO_LIBS += Sensor/Sensor
-ARDUINO_LIBS += Sensor/SensorGPS
-ARDUINO_LIBS += Sensor/SensorIMU
-ARDUINO_LIBS += Sensor/SensorCurrent
-ARDUINO_LIBS += Sensor/SensorHall
-ARDUINO_LIBS += Sensor/SensorUltrasonic
-ARDUINO_LIBS += Sensor/SensorTemp
-
-ARDUINO_LIBS += Actuators/Motor
-ARDUINO_LIBS += Actuators/CoolingController
+ARDUINO_LIBS += . # relative offsets are used for internal libraries
 
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.

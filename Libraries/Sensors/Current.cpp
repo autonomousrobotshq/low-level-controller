@@ -1,4 +1,4 @@
-#include "SensorCurrent.hpp"
+#include "Sensors/Current.hpp"
 
 float SensorCurrent::getCurrent()
 {

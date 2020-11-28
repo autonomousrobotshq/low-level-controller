@@ -7,7 +7,7 @@
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
 
-#include <Sensor.hpp>
+#include <Sensors/Sensor.hpp>
 
 class SensorGPS : public Sensor {
 public:

@@ -1,5 +1,5 @@
-#ifndef SENSORCURRENT_HPP
-#define SENSORCURRENT_HPP
+#ifndef SENSOR_CURRENT_HPP
+#define SENSOR_CURRENT_HPP
 
 #include <Arduino.h>
 
