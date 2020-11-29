@@ -84,4 +84,9 @@ int		TEMPGetTemp()
 
 }
 
+unsigned int RAMGetFree()
+{
+
+}
+
 } //namespace sandbox

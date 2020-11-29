@@ -46,5 +46,7 @@ int		GPSGetCourse();
 
 int		TEMPGetTemp();
 
+unsigned int RAMGetFree();
+
 } // namespace sandbox
 #endif
