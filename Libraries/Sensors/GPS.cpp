@@ -56,8 +56,8 @@ bool SensorGPS::update()
         return (false);
 }
 
-SensorGPS::SensorGPS(const byte pinRx,
-    const byte pinTx)
+SensorGPS::SensorGPS(const uint8_t pinRx,
+    const uint8_t pinTx)
     : _pinRx(pinRx)
     , _pinTx(pinTx)
 {

@@ -15,7 +15,7 @@ private:
     int _celsius;
 
 public:
-    SensorTemp(const byte pin);
+    SensorTemp(const uint8_t pin);
     ~SensorTemp();
 
     int getTemp();

@@ -38,16 +38,16 @@ void interruptCallD()
     pulses[3]++;
 }
 
-SensorHall::SensorHall(const unsigned int pinA,
-    const unsigned int pinB,
-    const unsigned int pinInterrupt,
+SensorHall::SensorHall(const uint8_t pinA,
+    const uint8_t pinB,
+    const uint8_t pinInterrupt,
     const unsigned long* globMillis)
     : Sensor(globMillis)
     , _pinA(pinA)
     , _pinB(pinB)
     , _pinInterrupt(pinInterrupt)
 {
-    static unsigned int cc;
+    static uint8_t cc;
 
     pinMode(_pinB, INPUT);
 

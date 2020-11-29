@@ -1,7 +1,5 @@
 #include "Sandbox/Sandbox.hpp"
 
-namespace sandbox {
-
 static Sandbox *sb;
 
 Sandbox::Sandbox() :
@@ -88,5 +86,3 @@ unsigned int RAMGetFree()
 {
 
 }
-
-} //namespace sandbox

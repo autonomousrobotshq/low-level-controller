@@ -1,6 +1,6 @@
 #include "Sensors/Temp.hpp"
 
-SensorTemp::SensorTemp(const byte pin)
+SensorTemp::SensorTemp(const uint8_t pin)
     : _wire(pin)
     , _celsius(0)
     , _sensors(&_wire)

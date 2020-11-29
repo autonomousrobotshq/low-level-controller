@@ -7,11 +7,11 @@ class SensorCurrent {
 public:
     float getCurrent();
     bool update();
-    SensorCurrent(const byte analogPin);
+    SensorCurrent(const uint8_t analogPin);
     ~SensorCurrent();
 
 private:
-    const byte _analogPin;
+    const uint8_t _analogPin;
     long _readVref();
     float _readDCCurrent();
     float _Vref = 0;

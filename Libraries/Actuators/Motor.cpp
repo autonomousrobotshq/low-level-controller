@@ -1,14 +1,14 @@
 #include "Actuators/Motor.hpp"
 #include <Arduino.h>
 
-void ActuatorMotor::forward(const byte pulseWidth)
+void ActuatorMotor::forward(const uint8_t pulseWidth)
 {
     digitalWrite(this->_pinA, LOW);
     digitalWrite(this->_pinB, HIGH);
     analogWrite(this->_pinPWM, pulseWidth);
 }
 
-void ActuatorMotor::reverse(const byte pulseWidth)
+void ActuatorMotor::reverse(const uint8_t pulseWidth)
 {
     digitalWrite(this->_pinA, HIGH);
     digitalWrite(this->_pinB, LOW);
@@ -21,9 +21,9 @@ void ActuatorMotor::halt()
     digitalWrite(this->_pinB, LOW);
 }
 
-ActuatorMotor::ActuatorMotor(const byte pinPWM,
-    const byte pinA,
-    const byte pinB)
+ActuatorMotor::ActuatorMotor(const uint8_t pinPWM,
+    const uint8_t pinA,
+    const uint8_t pinB)
     : _pinPWM(pinPWM)
     , _pinA(pinA)
     , _pinB(pinB)

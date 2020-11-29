@@ -14,8 +14,6 @@
 #include "Sensors/Temp.hpp"
 #include "Sensors/Ultrasonic.hpp"
 
-namespace sandbox {
-
 class Sandbox
 {
 	public:
@@ -27,7 +25,7 @@ class Sandbox
 		unsigned long		_glob_millis;
 		ControllerMotor 	_controller_motor;
 		ControllerProximity	_controller_proximity;
-		InterfaceRos		_interface_ros;
+		InterfaceROS		_interface_ros;
 		SensorIMU			_sensor_imu;
 		SensorGPS			_sensor_gps;
 		SensorTemp			_sensor_temp;
@@ -51,5 +49,4 @@ int		TEMPGetTemp();
 
 unsigned int RAMGetFree();
 
-} // namespace sandbox
 #endif

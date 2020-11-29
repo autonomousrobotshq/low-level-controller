@@ -65,7 +65,7 @@ bool SensorCurrent::update()
     return (true);
 }
 
-SensorCurrent::SensorCurrent(const byte analogPin)
+SensorCurrent::SensorCurrent(const uint8_t analogPin)
     : _analogPin(analogPin)
 {
     this->_Vref = _readVref(); //read the reference voltage(default:VCC)

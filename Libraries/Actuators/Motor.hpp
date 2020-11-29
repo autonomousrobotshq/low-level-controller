@@ -5,18 +5,18 @@
 
 class ActuatorMotor : public Actuator {
 public:
-    void forward(const byte pulse_width);
-    void reverse(const byte pulse_width);
+    void forward(const uint8_t pulse_width);
+    void reverse(const uint8_t pulse_width);
     void halt();
-    ActuatorMotor(const byte pinPWM,
-        const byte pinA,
-        const byte pinB);
+    ActuatorMotor(const uint8_t pinPWM,
+        const uint8_t pinA,
+        const uint8_t pinB);
     ~ActuatorMotor();
 
 private:
-    const byte _pinPWM;
-    const byte _pinA;
-    const byte _pinB;
+    const uint8_t _pinPWM;
+    const uint8_t _pinA;
+    const uint8_t _pinB;
 };
 
 #endif

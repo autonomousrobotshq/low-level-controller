@@ -16,7 +16,7 @@
 
 class SensorUltrasonic {
 public:
-    SensorUltrasonic(const byte pin);
+    SensorUltrasonic(const uint8_t pin);
     ~SensorUltrasonic();
 
     bool update();
@@ -28,7 +28,7 @@ public:
     float getDistance();
 
 private:
-    const byte _analogPin;
+    const uint8_t _analogPin;
     float _dist_t;
     float _sensity_t;
 };

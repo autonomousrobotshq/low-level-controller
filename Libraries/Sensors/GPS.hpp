@@ -16,7 +16,7 @@ public:
     float getSpeed();
     float getCourse();
     bool update();
-    SensorGPS(const byte rxPin, const byte txPin);
+    SensorGPS(const uint8_t rxPin, const uint8_t txPin);
     ~SensorGPS();
 
 private:
@@ -33,13 +33,13 @@ private:
     unsigned short _sentences = 0,
                    _checksum = 0;
     int _year;
-    byte _month,
+    uint8_t _month,
         _day,
         _hour,
         _minute,
         _second,
         _hundredths;
-    const byte _pinTx, _pinRx;
+    const uint8_t _pinTx, _pinRx;
 };
 
 #endif
