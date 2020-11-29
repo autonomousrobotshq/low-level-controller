@@ -7,6 +7,8 @@
 #include "Controllers/Motor.hpp"
 #include "Controllers/Proximity.hpp"
 
+#include "Interfaces/ROS.hpp"
+
 #include "Sensors/IMU.hpp"
 #include "Sensors/GPS.hpp"
 #include "Sensors/Temp.hpp"
@@ -25,6 +27,7 @@ class Sandbox
 		unsigned long		_glob_millis;
 		ControllerMotor 	_controller_motor;
 		ControllerProximity	_controller_proximity;
+		InterfaceRos		_interface_ros;
 		SensorIMU			_sensor_imu;
 		SensorGPS			_sensor_gps;
 		SensorTemp			_sensor_temp;
