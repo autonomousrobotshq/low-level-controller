@@ -48,7 +48,7 @@ bool Sandbox::Driver(e_corner corner, e_drive_action action, unsigned char throt
     // STUB
 	// setting values on each motor with checking
     if (throttle > 100)
-		// error: "throttle incorrect value"
+		;// error: "throttle incorrect value"
 	_controller_motor.Driver(corner, action, throttle);
     return (false);
 }
