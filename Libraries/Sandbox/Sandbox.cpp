@@ -35,7 +35,7 @@ void Sandbox::SpinOnce()
     // all action happens here
     if (true) // If crit msg
         this->_interface_ros.~InterfaceROS(); // Send crit msg
-    this->_controller_motor.Driver(); // Update values
+    //this->_controller_motor.Driver(); // Update values
     if (false) // Send msg
         this->_interface_ros.~InterfaceROS();
 }
@@ -44,16 +44,8 @@ bool Sandbox::Driver(e_corner corner, e_drive_action action, unsigned char throt
 {
     // STUB
 	// setting values on each motor with checking
-    _controller_motor.Driver(corner, action);
-    return (false);
-}
-
-bool Sandbox::Driver(e_corner corner, e_drive_action action, unsigned char throttle)
-{
-    // STUB
-	// setting values on each motor with checking
     if (throttle > 100)
-		;// error: "throttle incorrect value"
+		// error: "throttle incorrect value"
 	_controller_motor.Driver(corner, action, throttle);
     return (false);
 }
