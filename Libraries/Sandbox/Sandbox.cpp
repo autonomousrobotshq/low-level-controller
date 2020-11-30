@@ -40,7 +40,7 @@ void Sandbox::SpinOnce()
         this->_interface_ros.~InterfaceROS();
 }
 
-bool Sandbox::Driver(e_corner corner, e_drive_action action, unsigned char throttle)
+bool Sandbox::Driver(e_corner corner, e_drive_action action, uint8_t throttle)
 {
     // STUB
 	// setting values on each motor with checking
