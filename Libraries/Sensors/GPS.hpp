@@ -21,7 +21,7 @@ public:
     ~SensorGPS();
 
 private:
-    HardwareSerial &_ss;
+    HardwareSerial& _ss;
     TinyGPS _gps;
     float _flat,
         _flon,

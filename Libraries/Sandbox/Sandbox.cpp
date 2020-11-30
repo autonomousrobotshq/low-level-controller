@@ -26,33 +26,31 @@ Sandbox::~Sandbox()
 
 void Sandbox::Setup()
 {
-
 }
 
 void Sandbox::SpinOnce()
 {
-	// todo update all modules with timing (+ priority queued)
-	// anything that could bring about delays must be timeregulated and executed
-	// in this function
+    // todo update all modules with timing (+ priority queued)
+    // anything that could bring about delays must be timeregulated and executed
+    // in this function
 }
 
 bool Sandbox::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
 {
 #if VERBOSITY & DEBUG
     if (throttle >= MOTOR_THROTTLE_LOW && throttle <= MOTOR_THROTTLE_HIGH)
-		return (_controller_motor.Driver(corner, action, throttle));
-	else
-	{
-		// DEBUG: FALSE DRIVER CALL
-    	return (false);
-	}
+        return (_controller_motor.Driver(corner, action, throttle));
+    else {
+        // DEBUG: FALSE DRIVER CALL
+        return (false);
+    }
 #endif
-	return (_controller_motor.Driver(corner, action, throttle));
+    return (_controller_motor.Driver(corner, action, throttle));
 }
 
 bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
 {
-	return (_controller_motor.Driver(corner, action));
+    return (_controller_motor.Driver(corner, action));
 }
 
 int Sandbox::IMUGetNavigationAngle()
@@ -106,7 +104,7 @@ int Sandbox::RAMGetFree()
 }
 
 bool Driver(const e_corner corner, const e_drive_action action) { return (g_sb->Driver(corner, action)); }
-bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle ) { return (g_sb->Driver(corner, action, throttle)); }
+bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(corner, action, throttle)); }
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
 Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
 Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }

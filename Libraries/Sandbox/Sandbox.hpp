@@ -23,7 +23,7 @@ public:
     Sandbox();
     ~Sandbox();
     bool Driver(const e_corner corner, const e_drive_action action);
-	bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
+    bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
 
     int IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();

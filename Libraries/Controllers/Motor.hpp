@@ -8,7 +8,7 @@
 #include "Sensors/Hall.hpp"
 
 enum e_drive_action {
-	FORWARD = 0,
+    FORWARD = 0,
     BACKWARD = 1,
     HALT = 2
 };
@@ -16,7 +16,7 @@ enum e_drive_action {
 class ControllerMotor : public Controller {
 public:
     bool Driver(const e_corner corner, const e_drive_action action);
-	bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
+    bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
     ControllerMotor();
     ~ControllerMotor();
 

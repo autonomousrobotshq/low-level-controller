@@ -13,9 +13,8 @@
 #include "Common/Deployment.hpp"
 
 /* RANGES */
-#define MOTOR_THROTTLE_HIGH		100
-#define MOTOR_THROTTLE_LOW		0
-
+#define MOTOR_THROTTLE_HIGH 100
+#define MOTOR_THROTTLE_LOW 0
 
 /* FACTS */
 #define NUM_MOTORS 4

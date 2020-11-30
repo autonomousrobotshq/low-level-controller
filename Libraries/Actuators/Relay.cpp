@@ -15,7 +15,7 @@ ActuatorRelay::~ActuatorRelay()
 void ActuatorRelay::SetState(const bool state)
 {
     _state = state;
-    digitalWrite(_pin, 1^state);
+    digitalWrite(_pin, 1 ^ state);
 }
 
 bool ActuatorRelay::GetState()
