@@ -1,6 +1,4 @@
-#include "deployment.h"
-#include "pins.h"
-
+#include "Common/Deployment.hpp"
 #include "Sandbox/Sandbox.hpp"
 
 /*

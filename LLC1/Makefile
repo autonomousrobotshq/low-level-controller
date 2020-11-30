@@ -14,6 +14,13 @@ ARDUINO_LIBS += External/RosserialArduino-0.7.9
 ARDUINO_LIBS += External/TinyGPS-13.0.0
 
 ARDUINO_LIBS += . # relative offsets are used for internal libraries
+ARDUINO_LIBS += Sandbox
+ARDUINO_LIBS += Sensors
+ARDUINO_LIBS += Actuators
+ARDUINO_LIBS += Controllers
+ARDUINO_LIBS += Interfaces
+ARDUINO_LIBS += Common
+
 
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.
@@ -90,7 +97,9 @@ CXXFLAGS_STD      = -std=gnu++14
 
 ### CXXFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
-CXXFLAGS         += -pedantic -Wall -Wextra -O3
+CXXFLAGS         += -Wall -Wextra -Werror -Os -g
+CXXFLAGS		+= -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-truncation -Wno-restrict -Wno-sized-deallocation -Wno-switch -Wno-implicit-fallthrough # just to get the bloody external libraries to work..
+
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.

@@ -1,6 +1,8 @@
 #ifndef ACTUATOR_MOTOR_HPP
 #define ACTUATOR_MOTOR_HPP
 
+#include <stdint.h>
+
 #include "Actuators/Actuator.hpp"
 
 class ActuatorMotor : public Actuator {

@@ -1,8 +1,8 @@
 #ifndef SANDBOX_HPP
 # define SANDBOX_HPP
 
-#include "Generic/Vec3.hpp"
-#include "Generic/Datatypes.hpp"
+#include "Common/Vec3.hpp"
+#include "Common/Datatypes.hpp"
 
 #include "Controllers/Motor.hpp"
 #include "Controllers/Proximity.hpp"

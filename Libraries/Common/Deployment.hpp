@@ -4,8 +4,8 @@
 *	--
 */
 
-#ifndef DEPLOYMENT_H
-# define DEPLOYMENT_H
+#ifndef COMMON_DEPLOYMENT_HPP
+# define COMMON_DEPLOYMENT_HPP
 
 enum e_runtime { LAUNCH, UNSAFE, NOINIT };
 /*

@@ -1,6 +1,8 @@
 #ifndef ACTUATOR_RELAY_HPP
 #define ACTUATOR_RELAY_HPP
 
+#include "stdint.h"
+
 #include "Actuators/Actuator.hpp"
 
 class ActuatorRelay : public Actuator {

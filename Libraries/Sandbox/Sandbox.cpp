@@ -1,20 +1,20 @@
 #include "Sandbox/Sandbox.hpp"
 
-static Sandbox *sb;
+//static Sandbox *sb;
 
 Sandbox::Sandbox() :
 		_sensor_imu(IMU_SDA, IMU_SCL),
 		_sensor_gps(GPS_TX, GPS_RX),
 		_sensor_temp(0)
 {
-	if (sb)
-	{
-		// crit: "Second initialisation of Sandbox!"
-	}
-	else
-	{
-		sb = this;
-	}
+//	if (sb)
+//	{
+//		// crit: "Second initialisation of Sandbox!"
+//	}
+//	else
+//	{
+//		sb = this;
+//	}
 }
 
 Sandbox::~Sandbox()
