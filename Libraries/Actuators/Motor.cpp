@@ -1,14 +1,14 @@
 #include "Actuators/Motor.hpp"
 #include <Arduino.h>
 
-void ActuatorMotor::forward(const uint8_t pulseWidth)
+void ActuatorMotor::forward(const uint8_t &pulseWidth)
 {
     digitalWrite(this->_pinA, LOW);
     digitalWrite(this->_pinB, HIGH);
     analogWrite(this->_pinPWM, pulseWidth);
 }
 
-void ActuatorMotor::reverse(const uint8_t pulseWidth)
+void ActuatorMotor::reverse(const uint8_t &pulseWidth)
 {
     digitalWrite(this->_pinA, HIGH);
     digitalWrite(this->_pinB, LOW);
