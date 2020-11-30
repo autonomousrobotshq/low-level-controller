@@ -26,18 +26,30 @@ Sandbox::~Sandbox()
 
 void Sandbox::Setup()
 {
+
 }
 
 void Sandbox::SpinOnce()
 {
+	// todo update every class with timing (queue)
     // all action happens here
 }
 
 bool Sandbox::Driver(e_corner corner, e_drive_action action)
 {
     // STUB
-    (void)corner;
-    (void)action;
+	// setting values on each motor with checking
+    _controller_motor.Driver(corner, action);
+    return (false);
+}
+
+bool Sandbox::Driver(e_corner corner, e_drive_action action, unsigned char throttle)
+{
+    // STUB
+	// setting values on each motor with checking
+    if (throttle > 100)
+		// error: "throttle incorrect value"
+	_controller_motor.Driver(corner, action, throttle);
     return (false);
 }
 
