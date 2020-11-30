@@ -32,7 +32,7 @@ const t_pins_motor pins_motors[NUM_MOTORS] = {
 const t_pins_imu pins_imu = { 20, 21 };
 
 // TX, RX
-const t_pins_gps pins_gps = { 16, 17 };
+const t_pins_gps pins_gps = { 9600, Serial2 };
 
 // PIN, INTERRUPT INDEX
 const t_pins_hall pins_hall[NUM_MOTORS] = {

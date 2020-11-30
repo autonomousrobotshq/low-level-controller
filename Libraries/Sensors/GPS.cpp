@@ -1,6 +1,6 @@
 #include "Sensors/GPS.hpp"
 
-static bool serialInitialized;
+#include "Arduino.h"
 
 void SensorGPS::GetLocation(float* flat, float* flon)
 {
@@ -27,8 +27,8 @@ void SensorGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* 
 
 bool SensorGPS::Update()
 {
-    if (_ss && _ss->available()) {
-        int c = _ss->read();
+    if (_ss.available()) {
+        int c = _ss.read();
         if (_gps.encode(c)) // encode returns true if serial has received proper data
         {
             _gps.f_get_position(&_flat, &_flon, &_age);
@@ -52,23 +52,16 @@ bool SensorGPS::Update()
             return (true);
         } else
             return (false);
-    } else
+    }
         return (false);
 }
 
 SensorGPS::SensorGPS(const t_pins_gps& pins_gps)
-    : _pin_rx(pins_gps.pin_rx)
-    , _pin_tx(pins_gps.pin_tx)
+		: _ss((HardwareSerial &)pins_gps.serial)
 {
-    if (!serialInitialized) {
-        this->_ss = new SoftwareSerial(_pin_rx, _pin_tx);
-        serialInitialized = true;
-    } else {
-        this->_ss = NULL;
-    }
+	_ss.begin(pins_gps.baudrate);
 }
 
 SensorGPS::~SensorGPS()
 {
-    //delete this->_ss; // deleting object of polymorphic class type 'SoftwareSerial' which has non-virtual destructor might cause undefined behavior [-Werror=delete-non-virtual-dtor]
 }

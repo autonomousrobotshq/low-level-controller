@@ -6,6 +6,7 @@
 #define COMMON_DATATYPES_HPP
 
 #include <stdint.h>
+#include <HardwareSerial.h>
 
 enum e_corner {
     FRONT_LEFT = 0,
@@ -34,8 +35,8 @@ typedef struct s_pins_imu {
 } t_pins_imu;
 
 typedef struct s_pins_gps {
-    const uint8_t pin_tx;
-    const uint8_t pin_rx;
+	const uint16_t baudrate;
+	const HardwareSerial &serial;
 } t_pins_gps;
 
 typedef struct s_pins_hall {
