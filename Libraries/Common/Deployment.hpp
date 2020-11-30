@@ -23,7 +23,7 @@ enum e_runtime { LAUNCH,
 enum e_verbosity { CRITICAL = 0,
     VERBOSE = 1,
     TARGETED = 2,
-    DEBUG = 4
+    DEBUG = 4,
 	SERIAL_DEBUG = 8 };
 /*
 * VERBOSITY defined as:
