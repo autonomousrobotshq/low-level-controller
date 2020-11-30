@@ -17,7 +17,7 @@ public:
     float GetSpeed();
     float GetCourse();
     bool Update();
-    SensorGPS(const t_pins_gps& pins_gps);
+    SensorGPS(const t_pins_gps pins_gps);
     ~SensorGPS();
 
 private:

@@ -1,6 +1,6 @@
 #include "Sensors/IMU.hpp"
 
-SensorIMU::SensorIMU(const t_pins_imu& pins_imu)
+SensorIMU::SensorIMU(const t_pins_imu pins_imu)
     : _pin_sda(pins_imu.pin_sda)
     , _pin_scl(pins_imu.pin_scl)
 {

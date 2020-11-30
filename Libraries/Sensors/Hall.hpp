@@ -11,7 +11,7 @@ class SensorHall : public Sensor {
 public:
     int getRPM();
     bool update();
-    SensorHall(const t_pins_hall& pins_hall);
+    SensorHall(const t_pins_hall pins_hall);
     ~SensorHall();
 
 private:
