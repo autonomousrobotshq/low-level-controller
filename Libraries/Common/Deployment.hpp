@@ -7,6 +7,8 @@
 #ifndef COMMON_DEPLOYMENT_HPP
 # define COMMON_DEPLOYMENT_HPP
 
+#define LLC LLC1
+
 enum e_runtime { LAUNCH, UNSAFE, NOINIT };
 /*
 * RUNTIME defined as # will assert the following modes of operation:

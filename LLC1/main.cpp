@@ -5,6 +5,8 @@
 ** SAMPLE CODE
 */
 
+using namespace sb;
+
 Sandbox sandbox;
 
 int main(void)

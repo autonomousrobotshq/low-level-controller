@@ -1,6 +1,7 @@
 #include "Sensors/IMU.hpp"
 
-SensorIMU::SensorIMU()
+SensorIMU::SensorIMU(const t_pins_imu &pins_imu) : _pin_sda(pins_imu.pin_sda),
+		_pins_scl(pins_imu.pin_scl)
 {
     _compass.init();
     _compass.enable();

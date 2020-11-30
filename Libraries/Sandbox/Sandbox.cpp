@@ -1,20 +1,26 @@
+#include "MemoryFree.h"
+
+#include "Common/Deployment.hpp"
+#include "Common/Platform.hpp"
 #include "Sandbox/Sandbox.hpp"
 
-//static Sandbox *sb;
+namespace sb {
+
+static Sandbox *g_sb;
 
 Sandbox::Sandbox() :
-		_sensor_imu(IMU_SDA, IMU_SCL),
-		_sensor_gps(GPS_TX, GPS_RX),
-		_sensor_temp(0)
+		_sensor_imu(LLC::pins_imu),
+		_sensor_gps(LLC::pins_gps),
+		_sensor_temp(LLC::pins_temp[0])
 {
-//	if (sb)
-//	{
-//		// crit: "Second initialisation of Sandbox!"
-//	}
-//	else
-//	{
-//		sb = this;
-//	}
+	if (g_sb)
+	{
+		// crit: "Second initialisation of Sandbox!"
+	}
+	else
+	{
+		g_sb = this;
+	}
 }
 
 Sandbox::~Sandbox()
@@ -77,12 +83,14 @@ int		GPSGetCourse()
 
 }
 
-int		TEMPGetTemp()
+int8_t		TEMPGetTemp()
 {
-
+	//return (g_sb->_sensor_temp.GetTemp());
 }
 
-unsigned int RAMGetFree()
+int RAMGetFree()
 {
-
+	return (freeMemory());	
 }
+
+} // namespace sb

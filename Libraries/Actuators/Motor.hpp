@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+#include "Common/Datatypes.hpp"
 #include "Actuators/Actuator.hpp"
 
 class ActuatorMotor : public Actuator {
@@ -10,9 +11,7 @@ public:
     void forward(const uint8_t pulse_width);
     void reverse(const uint8_t pulse_width);
     void halt();
-    ActuatorMotor(const uint8_t pinPWM,
-        const uint8_t pinA,
-        const uint8_t pinB);
+    ActuatorMotor(const t_pins_motor pins_motor);
     ~ActuatorMotor();
 
 private:

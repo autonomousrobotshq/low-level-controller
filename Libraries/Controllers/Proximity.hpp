@@ -1,6 +1,8 @@
 #ifndef CONTROLLER_PROXIMITY_HPP
 # define CONTROLLER_PROXIMITY_HPP
 
+#include "Common/Platform.hpp"
+#include "Controllers/Controller.hpp"
 #include "Sensors/Ultrasonic.hpp"
 
 class ControllerProximity : public Controller {
@@ -8,7 +10,7 @@ class ControllerProximity : public Controller {
 		ControllerProximity();
 		~ControllerProximity();
 	private:
-		SensorUltrasonic _ultrasonic_sensors[4];
+		SensorUltrasonic *_ultrasonic_sensors[NUM_ULTRASONIC];
 };
 
 #endif

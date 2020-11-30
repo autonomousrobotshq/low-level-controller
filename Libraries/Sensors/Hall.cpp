@@ -1,15 +1,16 @@
 #include <Arduino.h>
 
+#include "Common/Platform.hpp"
 #include "Sensors/Hall.hpp"
 
 // attach interrupt doesnt allow arguments(like a 'this' argument), so hardcoded globs are required
-static unsigned int pulses[HALL_INTERRUPT_COUNT];
+static unsigned int pulses[NUM_MOTORS];
 
 bool SensorHall::update()
 {
     unsigned long millisDev = this->getDuration();
-    this->_rpm = millisDev == 0 ? 0 : (pulses[this->_pulseIndex] / HALL_CPR) / (millisDev / 60000);
-    pulses[this->_pulseIndex] = 0;
+    this->_rpm = millisDev == 0 ? 0 : (pulses[this->_interrupt_index] / HALL_CPR) / (millisDev / 60000);
+    pulses[this->_interrupt_index] = 0;
     // error handling here
     return (true);
 }
@@ -19,61 +20,50 @@ int SensorHall::getRPM()
     return (this->_rpm);
 }
 
-void interruptCallA()
-{
-    pulses[0]++;
-}
+static void interruptCall0() { pulses[0]++ }
+static void interruptCall1() { pulses[1]++ }
+static void interruptCall2() { pulses[2]++ }
+static void interruptCall3() { pulses[3]++ }
+static void interruptCall4() { pulses[4]++ }
+static void interruptCall5() { pulses[5]++ }
+static void interruptCall6() { pulses[6]++ }
+static void interruptCall7() { pulses[7]++ }
 
-void interruptCallB()
-{
-    pulses[1]++;
-}
+SensorHall::SensorHall(const t_pins_hall &pins_hall) :
+    					_interrupt_index(pins_hall.interrupt_index)
+						, _interrupt_pin(pins_hall.interrupt_pin)
 
-void interruptCallC()
 {
-    pulses[2]++;
-}
-void interruptCallD()
-{
-    pulses[3]++;
-}
+    pinMode(_interrupt_pin, INPUT);
 
-SensorHall::SensorHall(const uint8_t pinA,
-    const uint8_t pinB,
-    const uint8_t pinInterrupt,
-    const unsigned long* globMillis)
-    : Sensor(globMillis)
-    , _pinA(pinA)
-    , _pinB(pinB)
-    , _pinInterrupt(pinInterrupt)
-{
-    static uint8_t cc;
-
-    pinMode(_pinB, INPUT);
-
-    // this is not pretty indeed, unfortunately 'attachInterrupt' is an archaic C function ; it works as follows:
-    // every time the SensorHall constructor is called the static int cc increases and a separate interupt function is 'attached' to the pin that reads pulses from the
-    // hall sensor. This is because as of now 'attachInterrupt' cannot differentiate between difference instances of a class and therefore a universal interrupt function
-    // is not possible.
-    switch (cc) {
+	if (_interrupt_index >= NUM_MOTORS)
+		return ;
+    switch (_interrupt_index) {
     case 0:
-        attachInterrupt(_pinInterrupt, interruptCallA, CHANGE);
-        this->_pulseIndex = 0;
+        attachInterrupt(_interrupt_index, InterruptCall0, CHANGE);
         break;
     case 1:
-        attachInterrupt(_pinInterrupt, interruptCallB, CHANGE);
-        this->_pulseIndex = 1;
+        attachInterrupt(_interrupt_index, InterruptCall1, CHANGE);
         break;
     case 2:
-        attachInterrupt(_pinInterrupt, interruptCallB, CHANGE);
-        this->_pulseIndex = 2;
+        attachInterrupt(_interrupt_index, InterruptCall2, CHANGE);
         break;
     case 3:
-        attachInterrupt(_pinInterrupt, interruptCallB, CHANGE);
-        this->_pulseIndex = 3;
+        attachInterrupt(_interrupt_index, InterruptCall3, CHANGE);
+        break;
+    case 4:
+        attachInterrupt(_interrupt_index, InterruptCall4, CHANGE);
+        break;
+    case 5:
+        attachInterrupt(_interrupt_index, InterruptCall5, CHANGE);
+        break;
+    case 6:
+        attachInterrupt(_interrupt_index, InterruptCall6, CHANGE);
+        break;
+    case 7:
+        attachInterrupt(_interrupt_index, InterruptCall7, CHANGE);
         break;
     }
-    cc++;
 }
 
 SensorHall::~SensorHall()

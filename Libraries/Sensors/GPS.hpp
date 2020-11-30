@@ -7,6 +7,7 @@
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
 
+#include "Common/Datatypes.hpp"
 #include <Sensors/Sensor.hpp>
 
 class SensorGPS : public Sensor {
@@ -16,7 +17,7 @@ public:
     float getSpeed();
     float getCourse();
     bool update();
-    SensorGPS(const uint8_t rxPin, const uint8_t txPin);
+    SensorGPS(const t_pins_gps &pins_gps);
     ~SensorGPS();
 
 private:

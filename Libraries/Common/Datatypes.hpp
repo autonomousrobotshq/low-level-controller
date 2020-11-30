@@ -41,4 +41,10 @@ typedef struct												s_pins_gps
 	const uint8_t											pin_rx;
 }															t_pins_gps;
 
+typedef struct												s_pins_hall
+{
+	const uint8_t											pin_interrupt;
+	const uint8_t											index_interrupt;
+}															t_pins_hall;
+
 #endif

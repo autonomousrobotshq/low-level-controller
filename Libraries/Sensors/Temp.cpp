@@ -13,7 +13,7 @@ SensorTemp::~SensorTemp()
 {
 }
 
-int SensorTemp::getTemp()
+int8_t SensorTemp::GetTemp()
 {
     return (this->_celsius);
 }

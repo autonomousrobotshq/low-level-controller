@@ -14,6 +14,8 @@
 #include "Sensors/Temp.hpp"
 #include "Sensors/Ultrasonic.hpp"
 
+namespace sb {
+
 class Sandbox
 {
 	public:
@@ -45,8 +47,9 @@ void	GPSGetTime(unsigned long *age, unsigned long *date, unsigned long *time); /
 int		GPSGetSpeed();
 int		GPSGetCourse();
 
-int		TEMPGetTemp();
+int8_t	TEMPGetTemp();
 
-unsigned int RAMGetFree();
+int		RAMGetFree();
 
+} // namespace sb
 #endif

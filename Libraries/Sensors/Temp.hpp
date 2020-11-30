@@ -12,13 +12,13 @@ class SensorTemp {
 private:
     OneWire _wire;
     DallasTemperature _sensors;
-    int _celsius;
+    int8_t _celsius;
 
 public:
     SensorTemp(const uint8_t pin);
     ~SensorTemp();
 
-    int getTemp();
+    int8_t GetTemp();
     bool update();
 };
 

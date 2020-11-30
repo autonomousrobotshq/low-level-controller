@@ -21,12 +21,10 @@ void ActuatorMotor::halt()
     digitalWrite(this->_pinB, LOW);
 }
 
-ActuatorMotor::ActuatorMotor(const uint8_t pinPWM,
-    const uint8_t pinA,
-    const uint8_t pinB)
-    : _pinPWM(pinPWM)
-    , _pinA(pinA)
-    , _pinB(pinB)
+ActuatorMotor::ActuatorMotor(const t_pins_motor pins_motor)
+    : _pinPWM(pins_motor.pin_pwm)
+    , _pinA(pins_motor.pin_a)
+    , _pinB(pins_motor.pin_b)
 {
     pinMode(_pinPWM, OUTPUT);
     pinMode(_pinA, OUTPUT);

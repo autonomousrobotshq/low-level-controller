@@ -1,41 +1,41 @@
 /*
-*	Pinlayout is defined here.
+*	Pinlayout and all platform related constants are defined here.
 *	-- layout for Atmega2560/Mega
 */
 
-#ifndef COMMON_PINS_HPP
-# define COMMON_PINS_HPP
+#ifndef COMMON_PLATFORM_HPP
+# define COMMON_PLATFORM_HPP
 
 # include <stdint.h>
 # include <pins_arduino.h>
+
+# include "Common/Deployment.hpp"
 # include "Common/Datatypes.hpp"
 
 # define NUM_MOTORS											4
 # define NUM_ULTRASONIC										4
 # define NUM_RELAYS											4
+# define NUM_TEMP											1
 
+// Don't use 'LLC1 or LLC2 etc. -> LLC is declared in Deployment.hpp
 namespace LLC1												{
 
 const t_pins_motor pins_motors[NUM_MOTORS] =				{
-																(4,23,25),
-																(5, 27, 29),
-																(6, 31, 33),
-																(7, 35, 37)
+																{4, 23, 25},
+																{5, 27, 29},
+																{6, 31, 33},
+																{7, 35, 37}
 															};
 
-const t_pins_imu pins_imu = 								{
-																(20, 21)
-															};
+const t_pins_imu pins_imu = 								{ 20, 21 };
 
-const t_pins_gps pins_gps = 								{
-																(16, 17)
-															};
+const t_pins_gps pins_gps = 								{ 16, 17 };
 
-const uint8_t pins_hall[NUM_MOTORS] = 						{
-																18,
-																19,
-																2,
-																3
+const t_pins_hall  pins_hall[NUM_MOTORS] = 					{
+																{ 18, 0 }, // INTERRUPT INDEX NOT RESEARCHED YET
+																{ 19, 0 },
+																{ 2, 0 },
+																{ 3, 0 }
 															};
 
 const uint8_t pins_current[NUM_MOTORS] = 					{
@@ -57,6 +57,10 @@ const uint8_t pins_relay[NUM_RELAYS] = 						{
 																46,
 																44,
 																42
+															};
+
+const uint8_t pins_temp[NUM_TEMP]							{
+																0 // THESE PINS NEEDS TO BE RESEARCHED
 															};
 } // namespace LLC1
 
