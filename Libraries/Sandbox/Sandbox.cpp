@@ -33,9 +33,14 @@ void Sandbox::SpinOnce()
 {
 	// todo update every class with timing (queue)
     // all action happens here
+    if (true) // If crit msg
+        this->_interface_ros.~InterfaceROS(); // Send crit msg
+    this->_controller_motor.Driver(); // Update values
+    if (false) // Send msg
+        this->_interface_ros.~InterfaceROS();
 }
 
-bool Sandbox::Driver(e_corner corner, e_drive_action action)
+bool Sandbox::Driver(e_corner corner, e_drive_action action, unsigned char throttle)
 {
     // STUB
 	// setting values on each motor with checking
