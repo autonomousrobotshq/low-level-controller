@@ -15,8 +15,8 @@ enum e_drive_action {
 
 class ControllerMotor : public Controller {
 public:
-    bool Driver(e_corner corner, e_drive_action action);
-	bool Driver(e_corner corner, e_drive_action action, unsigned char throttle);
+    bool Driver(e_corner &corner, e_drive_action &action);
+	bool Driver(e_corner &corner, e_drive_action &action, uint8_t &throttle);
     ControllerMotor();
     ~ControllerMotor();
 

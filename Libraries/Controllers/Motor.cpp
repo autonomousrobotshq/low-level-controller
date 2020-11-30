@@ -19,7 +19,7 @@ ControllerMotor::~ControllerMotor()
     }
 }
 
-bool ControllerMotor::Driver(e_corner corner, e_drive_action action)
+bool ControllerMotor::Driver(e_corner &corner, e_drive_action &action)
 {
     // motor logic here
 	// if (_sensors_current[corner]->getCurrent()) // is overcurrent
@@ -37,7 +37,7 @@ bool ControllerMotor::Driver(e_corner corner, e_drive_action action)
     return (false);
 }
 
-bool ControllerMotor::Driver(e_corner corner, e_drive_action action, unsigned char throttle)
+bool ControllerMotor::Driver(e_corner &corner, e_drive_action &action, uint8_t &throttle)
 {
     // motor logic here
     if (_sensors_current[corner]->getCurrent()) // is overcurrent
