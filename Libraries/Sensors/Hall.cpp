@@ -20,18 +20,18 @@ int SensorHall::getRPM()
     return (this->_rpm);
 }
 
-static void interruptCall0() { pulses[0]++ }
-static void interruptCall1() { pulses[1]++ }
-static void interruptCall2() { pulses[2]++ }
-static void interruptCall3() { pulses[3]++ }
-static void interruptCall4() { pulses[4]++ }
-static void interruptCall5() { pulses[5]++ }
-static void interruptCall6() { pulses[6]++ }
-static void interruptCall7() { pulses[7]++ }
+static void InterruptCall0() { pulses[0]++; }
+static void InterruptCall1() { pulses[1]++; }
+static void InterruptCall2() { pulses[2]++; }
+static void InterruptCall3() { pulses[3]++; }
+static void InterruptCall4() { pulses[4]++; }
+static void InterruptCall5() { pulses[5]++; }
+static void InterruptCall6() { pulses[6]++; }
+static void InterruptCall7() { pulses[7]++; }
 
 SensorHall::SensorHall(const t_pins_hall &pins_hall) :
-    					_interrupt_index(pins_hall.interrupt_index)
-						, _interrupt_pin(pins_hall.interrupt_pin)
+    					_interrupt_index(pins_hall.index_interrupt)
+						, _interrupt_pin(pins_hall.pin_interrupt)
 
 {
     pinMode(_interrupt_pin, INPUT);

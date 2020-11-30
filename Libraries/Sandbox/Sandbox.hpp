@@ -23,6 +23,22 @@ class Sandbox
 		void	SpinOnce();
 		Sandbox();
 		~Sandbox();
+		bool	Driver(e_corner corner, e_drive_action action);
+		
+		int		IMUGetNavigationAngle();
+		Vec3	IMUGetMagnetoData();
+		Vec3	IMUGetAcceleroData();
+		
+		int		USGetDistance(e_corner corner);
+		
+		void	GPSGetLocation(float *flat, float *flon);
+		void	GPSGetTime(unsigned long *age, unsigned long *date, unsigned long *time); // overkill?
+		int		GPSGetSpeed();
+		int		GPSGetCourse();
+		
+		int8_t	TEMPGetTemp();
+		
+		int		RAMGetFree();
 	private:
 		unsigned long		_glob_millis;
 		ControllerMotor 	_controller_motor;
@@ -34,7 +50,7 @@ class Sandbox
 };
 
 // public functions
-void	Driver(e_corner corner, e_drive_action action);
+bool	Driver(e_corner corner, e_drive_action action);
 
 int		IMUGetNavigationAngle();
 Vec3	IMUGetMagnetoData();

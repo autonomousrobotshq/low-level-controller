@@ -2,30 +2,30 @@
 
 static bool serialInitialized;
 
-void SensorGPS::getLocation(float* flat, float* flon)
+void SensorGPS::GetLocation(float* flat, float* flon)
 {
     *flat = this->_flat;
     *flon = this->_flon;
 }
 
-float SensorGPS::getSpeed()
+float SensorGPS::GetSpeed()
 {
     return (this->_kmph);
 }
 
-float SensorGPS::getCourse()
+float SensorGPS::GetCourse()
 {
     return (this->_course);
 }
 
-void SensorGPS::getTime(unsigned long* age, unsigned long* date, unsigned long* time)
+void SensorGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* time)
 {
     *age = this->_age;
     *date = this->_date;
     *time = this->_time;
 }
 
-bool SensorGPS::update()
+bool SensorGPS::Update()
 {
     if (_ss && _ss->available()) {
         int c = _ss->read();
@@ -57,19 +57,21 @@ bool SensorGPS::update()
 }
 
 SensorGPS::SensorGPS(const t_pins_gps &pins_gps)
-    : _pinRx(pins_gps.pin_rx)
-    , _pinTx(pins_gps.pin_tx)
+    : _pin_rx(pins_gps.pin_rx)
+    , _pin_tx(pins_gps.pin_tx)
 {
-    if (!serialInitialized) {
-        this->_ss = new SoftwareSerial(pinRx, pinTx);
+    if (!serialInitialized)
+	{
+        this->_ss = new SoftwareSerial(_pin_rx, _pin_tx);
         serialInitialized = true;
-    } else
+    }
+	else
+	{
         this->_ss = NULL;
-
-    this->update();
+	}
 }
 
 SensorGPS::~SensorGPS()
 {
-    delete this->_ss;
+    //delete this->_ss; // deleting object of polymorphic class type 'SoftwareSerial' which has non-virtual destructor might cause undefined behavior [-Werror=delete-non-virtual-dtor]
 }

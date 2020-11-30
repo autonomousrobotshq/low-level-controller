@@ -2,11 +2,9 @@
 
 SensorTemp::SensorTemp(const uint8_t pin)
     : _wire(pin)
-    , _celsius(0)
     , _sensors(&_wire)
 {
     this->_sensors.begin();
-    this->update();
 }
 
 SensorTemp::~SensorTemp()

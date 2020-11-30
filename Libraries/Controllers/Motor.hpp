@@ -16,9 +16,9 @@ class ControllerMotor : public Controller
 		ControllerMotor();
 		~ControllerMotor();
 	private:
-		ActuatorMotor	*_actuators_motor[4];
-		SensorCurrent	*_sensors_current[4];
-		SensorHall		*_sensors_hall[4];
+		ActuatorMotor	*_actuators_motor[NUM_MOTORS];
+		SensorCurrent	*_sensors_current[NUM_MOTORS];
+		SensorHall		*_sensors_hall[NUM_MOTORS];
 };
 
 #endif

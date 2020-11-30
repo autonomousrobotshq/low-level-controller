@@ -10,7 +10,7 @@
 
 class SensorTemp {
 private:
-    OneWire _wire;
+	OneWire _wire;
     DallasTemperature _sensors;
     int8_t _celsius;
 

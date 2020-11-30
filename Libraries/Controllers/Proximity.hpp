@@ -2,6 +2,7 @@
 # define CONTROLLER_PROXIMITY_HPP
 
 #include "Common/Platform.hpp"
+#include "Common/Datatypes.hpp"
 #include "Controllers/Controller.hpp"
 #include "Sensors/Ultrasonic.hpp"
 
@@ -9,6 +10,7 @@ class ControllerProximity : public Controller {
 	public:
 		ControllerProximity();
 		~ControllerProximity();
+		int		GetDistance(e_corner corner);
 	private:
 		SensorUltrasonic *_ultrasonic_sensors[NUM_ULTRASONIC];
 };

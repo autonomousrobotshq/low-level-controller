@@ -19,16 +19,16 @@ public:
     SensorUltrasonic(const uint8_t pin);
     ~SensorUltrasonic();
 
-    bool update();
+    bool Update();
 
     /*!
 	**	@brief Gets calculated distance from sensor.
 	**	@return Floating point calculated distance in centimeters.
 	*/
-    float getDistance();
+    float GetDistance();
 
 private:
-    const uint8_t _analogPin;
+    const uint8_t _analog_pin;
     float _dist_t;
     float _sensity_t;
 };

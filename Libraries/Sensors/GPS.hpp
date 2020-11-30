@@ -12,16 +12,15 @@
 
 class SensorGPS : public Sensor {
 public:
-    void getLocation(float* flat, float* flon);
-    void getTime(unsigned long* age, unsigned long* date, unsigned long* time);
-    float getSpeed();
-    float getCourse();
-    bool update();
+    void GetLocation(float* flat, float* flon);
+    void GetTime(unsigned long* age, unsigned long* date, unsigned long* time);
+    float GetSpeed();
+    float GetCourse();
+    bool Update();
     SensorGPS(const t_pins_gps &pins_gps);
     ~SensorGPS();
-
 private:
-    SoftwareSerial* _ss;
+    SoftwareSerial *_ss;
     TinyGPS _gps;
     float _flat,
         _flon,
@@ -40,7 +39,7 @@ private:
         _minute,
         _second,
         _hundredths;
-    const uint8_t _pinTx, _pinRx;
+    const uint8_t _pin_rx, _pin_tx;
 };
 
 #endif
