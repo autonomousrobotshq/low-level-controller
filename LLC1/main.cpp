@@ -9,13 +9,13 @@ using namespace sb;
 
 Sandbox sandbox;
 
-int main(void)
+void setup() //runs on startup
 {
-
 	sandbox.Setup();
-	while (true)
-	{
-		// all your code here
-		sandbox.SpinOnce();
-	}
+}
+
+void loop() // loops indefinitely
+{
+	// all your code here
+	sandbox.SpinOnce();
 }
