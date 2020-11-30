@@ -7,7 +7,7 @@ ARDUINO_LIBS += Wire
 ARDUINO_LIBS += SoftwareSerial
 
 ARDUINO_LIBS += External/OneWire-2.3.5
-ARDUINO_LIBS += External/DallasTemperature-3.9.0
+# ARDUINO_LIBS += External/DallasTemperature-3.9.0
 ARDUINO_LIBS += External/MagneticSensorLSM303-1.0
 ARDUINO_LIBS += External/Vector-1.2.0
 ARDUINO_LIBS += External/RosserialArduino-0.7.9
@@ -98,7 +98,7 @@ CXXFLAGS_STD      = -std=gnu++11
 
 ### CXXFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
-CXXFLAGS         += -Wall -Wextra -Werror -Os -g
+CXXFLAGS         += -Wall -Wextra -Os -g
 CXXFLAGS		+= -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-truncation -Wno-restrict -Wno-sized-deallocation -Wno-switch -Wno-implicit-fallthrough # just to get the bloody external libraries to work..
 
 
