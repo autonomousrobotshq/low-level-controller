@@ -29,15 +29,15 @@ static void InterruptCall5() { pulses[5]++; }
 static void InterruptCall6() { pulses[6]++; }
 static void InterruptCall7() { pulses[7]++; }
 
-SensorHall::SensorHall(const t_pins_hall &pins_hall) :
-    					_interrupt_index(pins_hall.index_interrupt)
-						, _interrupt_pin(pins_hall.pin_interrupt)
+SensorHall::SensorHall(const t_pins_hall& pins_hall)
+    : _interrupt_index(pins_hall.index_interrupt)
+    , _interrupt_pin(pins_hall.pin_interrupt)
 
 {
     pinMode(_interrupt_pin, INPUT);
 
-	if (_interrupt_index >= NUM_MOTORS)
-		return ;
+    if (_interrupt_index >= NUM_MOTORS)
+        return;
     switch (_interrupt_index) {
     case 0:
         attachInterrupt(_interrupt_index, InterruptCall0, CHANGE);

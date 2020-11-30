@@ -4,64 +4,68 @@
 */
 
 #ifndef COMMON_PLATFORM_HPP
-# define COMMON_PLATFORM_HPP
+#define COMMON_PLATFORM_HPP
 
-# include <stdint.h>
-# include <pins_arduino.h>
+#include <pins_arduino.h>
+#include <stdint.h>
 
-# include "Common/Deployment.hpp"
-# include "Common/Datatypes.hpp"
+#include "Common/Datatypes.hpp"
+#include "Common/Deployment.hpp"
 
-# define NUM_MOTORS											4
-# define NUM_ULTRASONIC										4
-# define NUM_RELAYS											4
-# define NUM_TEMP											1
+#define NUM_MOTORS 4
+#define NUM_ULTRASONIC 4
+#define NUM_RELAYS 4
+#define NUM_TEMP 1
 
 // Don't use 'LLC1 or LLC2 etc. -> LLC is declared in Deployment.hpp
-namespace LLC1												{
+namespace LLC1 {
 
-const t_pins_motor pins_motors[NUM_MOTORS] =				{
-																{4, 23, 25},
-																{5, 27, 29},
-																{6, 31, 33},
-																{7, 35, 37}
-															};
+// PWM, A, B
+const t_pins_motor pins_motors[NUM_MOTORS] = {
+    { 4, 23, 25 },
+    { 5, 27, 29 },
+    { 6, 31, 33 },
+    { 7, 35, 37 }
+};
 
-const t_pins_imu pins_imu = 								{ 20, 21 };
+// SDA, SCL
+const t_pins_imu pins_imu = { 20, 21 };
 
-const t_pins_gps pins_gps = 								{ 16, 17 };
+// TX, RX
+const t_pins_gps pins_gps = { 16, 17 };
 
-const t_pins_hall  pins_hall[NUM_MOTORS] = 					{
-																{ 18, 0 }, // INTERRUPT INDEX NOT RESEARCHED YET
-																{ 19, 0 },
-																{ 2, 0 },
-																{ 3, 0 }
-															};
+// PIN, INTERRUPT INDEX
+const t_pins_hall pins_hall[NUM_MOTORS] = {
+    { 18, 0 }, // INTERRUPT INDEX NOT RESEARCHED YET
+    { 19, 0 },
+    { 2, 0 },
+    { 3, 0 }
+};
 
-const uint8_t pins_current[NUM_MOTORS] = 					{
-																A0,
-																A1,
-																A2,
-																A3
-															};
+const uint8_t pins_current[NUM_MOTORS] = {
+    A0,
+    A1,
+    A2,
+    A3
+};
 
-const uint8_t pins_ultrasonic[NUM_ULTRASONIC] = 			{
-																A4,
-																A5,
-																A6,
-																A7
-															};
+const uint8_t pins_ultrasonic[NUM_ULTRASONIC] = {
+    A4,
+    A5,
+    A6,
+    A7
+};
 
-const uint8_t pins_relay[NUM_RELAYS] = 						{
-																48,
-																46,
-																44,
-																42
-															};
+const uint8_t pins_relay[NUM_RELAYS] = {
+    48,
+    46,
+    44,
+    42
+};
 
-const uint8_t pins_temp[NUM_TEMP]							{
-																0 // THESE PINS NEEDS TO BE RESEARCHED
-															};
+const uint8_t pins_temp[NUM_TEMP] {
+    0 // THESE PINS NEEDS TO BE RESEARCHED
+};
 } // namespace LLC1
 
 //#define RELAY_POWER				48	// DIGITAL

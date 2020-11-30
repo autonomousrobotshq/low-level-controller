@@ -2,10 +2,8 @@
 
 InterfaceROS::InterfaceROS()
 {
-
 }
 
 InterfaceROS::~InterfaceROS()
 {
-
 }

@@ -56,19 +56,16 @@ bool SensorGPS::Update()
         return (false);
 }
 
-SensorGPS::SensorGPS(const t_pins_gps &pins_gps)
+SensorGPS::SensorGPS(const t_pins_gps& pins_gps)
     : _pin_rx(pins_gps.pin_rx)
     , _pin_tx(pins_gps.pin_tx)
 {
-    if (!serialInitialized)
-	{
+    if (!serialInitialized) {
         this->_ss = new SoftwareSerial(_pin_rx, _pin_tx);
         serialInitialized = true;
-    }
-	else
-	{
+    } else {
         this->_ss = NULL;
-	}
+    }
 }
 
 SensorGPS::~SensorGPS()

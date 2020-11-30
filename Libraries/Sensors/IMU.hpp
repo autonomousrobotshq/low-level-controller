@@ -8,7 +8,7 @@
 
 class SensorIMU {
 public:
-    SensorIMU(const t_pins_imu &pins_imu);
+    SensorIMU(const t_pins_imu& pins_imu);
     ~SensorIMU();
     bool update();
     float getNavigationAngle();
@@ -16,7 +16,7 @@ public:
     Vec3 getAccelerometerData();
 
 private:
-	const uint8_t _pin_sda, _pin_scl;
+    const uint8_t _pin_sda, _pin_scl;
     MagneticSensorLsm303 _compass;
     float _navigationAngle;
 };

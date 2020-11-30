@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#include "Common/Datatypes.hpp"
 #include "Actuators/Actuator.hpp"
+#include "Common/Datatypes.hpp"
 
 class ActuatorMotor : public Actuator {
 public:
