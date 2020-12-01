@@ -39,22 +39,23 @@ bool ControllerMotor::Driver(e_corner &corner, e_drive_action &action)
 
 bool ControllerMotor::Driver(e_corner &corner, e_drive_action &action, uint8_t &throttle)
 {
+	uint8_t pulse_width = (throttle / 100) * 255;
     // motor logic here
     if (_sensors_current[corner]->getCurrent()) // is overcurrent
 		return false; // error: overcurrent
 	if (corner == ALL) {
 		switch (action) {
 			case FORWARD:
-				_actuators_motor[FRONT_LEFT]->forward(throttle);
-				_actuators_motor[FRONT_RIGHT]->forward(throttle);
-				_actuators_motor[BACK_LEFT]->forward(throttle);
-				_actuators_motor[BACK_RIGHT]->forward(throttle);
+				_actuators_motor[FRONT_LEFT]->forward(pulse_width);
+				_actuators_motor[FRONT_RIGHT]->forward(pulse_width);
+				_actuators_motor[BACK_LEFT]->forward(pulse_width);
+				_actuators_motor[BACK_RIGHT]->forward(pulse_width);
 				break ;
 			case BACKWARD:
-				_actuators_motor[FRONT_LEFT]->reverse(throttle);
-				_actuators_motor[FRONT_RIGHT]->reverse(throttle);
-				_actuators_motor[BACK_LEFT]->reverse(throttle);
-				_actuators_motor[BACK_RIGHT]->reverse(throttle);
+				_actuators_motor[FRONT_LEFT]->reverse(pulse_width);
+				_actuators_motor[FRONT_RIGHT]->reverse(pulse_width);
+				_actuators_motor[BACK_LEFT]->reverse(pulse_width);
+				_actuators_motor[BACK_RIGHT]->reverse(pulse_width);
 				break ;
 			case HALT:
 				_actuators_motor[FRONT_LEFT]->halt();
@@ -69,10 +70,10 @@ bool ControllerMotor::Driver(e_corner &corner, e_drive_action &action, uint8_t &
 	else {
 		switch (action) {
 			case FORWARD:
-				_actuators_motor[corner]->forward(throttle);
+				_actuators_motor[corner]->forward(pulse_width);
 				break ;
 			case BACKWARD:
-				_actuators_motor[corner]->reverse(throttle);
+				_actuators_motor[corner]->reverse(pulse_width);
 				break ;
 			case HALT:
 				_actuators_motor[corner]->halt();

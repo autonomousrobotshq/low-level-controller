@@ -2,17 +2,19 @@
 #define SENSOR_HPP
 
 #include <stddef.h>
+#include "arduino.h"
 
 class Sensor {
 public:
     unsigned long getDuration();
-    Sensor(const unsigned long* globMillis);
+    bool isWaiting();
+    void setWaitTime(const unsigned long waitMillis);
+    Sensor(const unsigned long globMillis);
     Sensor();
     ~Sensor();
-
 private:
     const unsigned long* _globMillis;
-    unsigned long lastMillis;
+    unsigned long _lastMillis;
+    unsigned long _endMillis;
 };
-
 #endif
