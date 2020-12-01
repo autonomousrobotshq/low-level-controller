@@ -1,24 +1,49 @@
-#include "Common/Deployment.hpp"
-#include "Sandbox/Sandbox.hpp"
-#include "Interfaces/ROS.hpp"
-/*
-** SAMPLE CODE
-*/
+// #include "Common/Deployment.hpp"
+// #include "Sandbox/Sandbox.hpp"
+// #include "Interfaces/ROS.hpp"
+// /*
+// ** SAMPLE CODE
+// */
 
-using namespace sb;
+// using namespace sb;
 
-Sandbox sandbox;
-ROS ros_test;
+// Sandbox sandbox;
+// ROS ros_test;
 
 
-int main(void)
+
+#include <ros.h>
+#include <std_msgs/String.h>
+  
+ros::NodeHandle nh;
+
+std_msgs::String str_msg;
+ros::Publisher chatter("chatter", &str_msg);
+
+char hello[13] = "hello world!";
+
+void setup()
 {
-
-	sandbox.Setup();
-	while (true)
-	{
-		// all your code here
-		sandbox.SpinOnce();
-		ros_test.SpinOnce();
-	}
+	nh.initNode();
+	nh.advertise(chatter);
 }
+
+void loop(void)
+{
+	str_msg.data = hello;
+	chatter.publish( &str_msg );
+	nh.spinOnce();
+	delay(1000);
+}
+
+// int main(void)
+// {
+
+// 	sandbox.Setup();
+// 	while (true)
+// 	{
+// 		// all your code here
+// 		sandbox.SpinOnce();
+// 		ros_test.SpinOnce();
+// 	}
+// }
