@@ -31,25 +31,6 @@ void Sandbox::Setup()
 
 void Sandbox::SpinOnce()
 {
-<<<<<<< HEAD
-	// todo update every class with timing (queue)
-    // all action happens here
-    if (true) // If crit msg
-        this->_interface_ros.~InterfaceROS(); // Send crit msg
-    //this->_controller_motor.Driver(); // Update values
-    if (false) // Send msg
-        this->_interface_ros.~InterfaceROS();
-}
-
-bool Sandbox::Driver(e_corner corner, e_drive_action action, uint8_t throttle)
-{
-    // STUB
-	// setting values on each motor with checking
-    if (throttle > 100)
-		// error: "throttle incorrect value"
-	_controller_motor.Driver(corner, action, throttle);
-    return (false);
-=======
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
@@ -71,7 +52,6 @@ bool Sandbox::Driver(const e_corner corner, const e_drive_action action, const u
 bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
 {
     return (_controller_motor.Driver(corner, action));
->>>>>>> 5c31d08fce932d8e7198b1f97dc90c1448dddf38
 }
 
 int Sandbox::IMUGetNavigationAngle()

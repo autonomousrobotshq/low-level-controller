@@ -6,6 +6,7 @@
 #include "Controllers/Controller.hpp"
 #include "Sensors/Current.hpp"
 #include "Sensors/Hall.hpp"
+#include "Sensors/Sensor.hpp"
 
 enum e_drive_action {
     FORWARD = 0,
