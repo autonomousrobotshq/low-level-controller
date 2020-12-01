@@ -1,5 +1,5 @@
 #include "Common/Deployment.hpp"
-#include "Sandbox/Sandbox.hpp"
+#include "../Libraries/Sandbox/Sandbox.hpp"
 #include "../Libraries/Sensors/IMU.hpp"
 #include "../Libraries/Common/Platform.hpp"
 

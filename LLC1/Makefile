@@ -62,7 +62,7 @@ AVRDUDE_ARD_PROGRAMMER  = wiring
 
 ### MONITOR_BAUDRATE
 ### It must be set to Serial baudrate value you are using.
-MONITOR_BAUDRATE  = 115200
+MONITOR_BAUDRATE  = 9600
 
 ### AVR_TOOLS_DIR
 ### Path to the AVR tools directory such as avr-gcc, avr-g++, etc.
@@ -98,13 +98,13 @@ CXXFLAGS_STD      = -std=gnu++11
 
 ### CXXFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
-CXXFLAGS         += -Wall -Wextra -Werror -Os -g
+CXXFLAGS         += -Wall -Wextra -Os -g
 CXXFLAGS		+= -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-truncation -Wno-restrict -Wno-sized-deallocation -Wno-switch -Wno-implicit-fallthrough # just to get the bloody external libraries to work..
 
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
-MONITOR_PORT      = * # /dev/ttyACM1
+MONITOR_PORT      = /dev/tty.usbmodem144101 # /dev/ttyACM1
 
 ### CURRENT_DIR
 ### Do not touch - used for binaries path
