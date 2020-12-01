@@ -32,8 +32,10 @@ void loop(void)
 {
 	str_msg.data = hello;
 	chatter.publish( &str_msg );
+	nh.logerror("123");
 	nh.spinOnce();
-	delay(1000);
+	nh.logerror("Errors 345");
+	delay(5000);
 }
 
 // int main(void)
