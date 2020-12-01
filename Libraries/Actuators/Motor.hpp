@@ -8,16 +8,16 @@
 
 class ActuatorMotor : public Actuator {
 public:
-    void forward(const uint8_t &pulse_width);
-    void reverse(const uint8_t &pulse_width);
+    void forward(const uint8_t pulse_width);
+    void reverse(const uint8_t pulse_width);
     void halt(); // not using parameter
     ActuatorMotor(const t_pins_motor pins_motor);
     ~ActuatorMotor();
 
 private:
-    const uint8_t _pinPWM;
-    const uint8_t _pinA;
-    const uint8_t _pinB;
+    const uint8_t _pin_pwm;
+    const uint8_t _pin_a;
+    const uint8_t _pin_b;
 };
 
 #endif

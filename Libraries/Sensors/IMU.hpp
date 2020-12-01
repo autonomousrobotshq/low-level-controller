@@ -8,7 +8,7 @@
 
 class SensorIMU {
 public:
-    SensorIMU(const t_pins_imu& pins_imu);
+    SensorIMU(const t_pins_imu pins_imu);
     ~SensorIMU();
     bool update();
     float getNavigationAngle();

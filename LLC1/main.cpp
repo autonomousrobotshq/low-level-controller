@@ -13,6 +13,7 @@ using namespace sb;
 Sandbox sandbox;
 SensorIMU imu(LLC1::pins_imu);
 
+<<<<<<< HEAD
 void setup() {
 	Serial.begin(9600);
 }
@@ -28,4 +29,15 @@ void loop() {
 	Serial.println(ret.z);
 	imu.update();
 	Serial.println(imu.getNavigationAngle());
+=======
+void setup() //runs on startup
+{
+	sandbox.Setup();
+}
+
+void loop() // loops indefinitely
+{
+	// all your code here
+	sandbox.SpinOnce();
+>>>>>>> 5c31d08fce932d8e7198b1f97dc90c1448dddf38
 }

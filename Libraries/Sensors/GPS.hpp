@@ -17,11 +17,11 @@ public:
     float GetSpeed();
     float GetCourse();
     bool Update();
-    SensorGPS(const t_pins_gps& pins_gps);
+    SensorGPS(const t_pins_gps pins_gps);
     ~SensorGPS();
 
 private:
-    SoftwareSerial* _ss;
+    HardwareSerial& _ss;
     TinyGPS _gps;
     float _flat,
         _flon,
@@ -40,7 +40,6 @@ private:
         _minute,
         _second,
         _hundredths;
-    const uint8_t _pin_rx, _pin_tx;
 };
 
 #endif

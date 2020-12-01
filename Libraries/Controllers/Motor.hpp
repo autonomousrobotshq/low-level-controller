@@ -8,15 +8,15 @@
 #include "Sensors/Hall.hpp"
 
 enum e_drive_action {
-	FORWARD = 0,
+    FORWARD = 0,
     BACKWARD = 1,
     HALT = 2
 };
 
 class ControllerMotor : public Controller {
 public:
-    bool Driver(e_corner &corner, e_drive_action &action);
-	bool Driver(e_corner &corner, e_drive_action &action, uint8_t &throttle);
+    bool Driver(const e_corner corner, const e_drive_action action);
+    bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
     ControllerMotor();
     ~ControllerMotor();
 

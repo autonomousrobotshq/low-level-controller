@@ -12,10 +12,17 @@
 #include "Common/Datatypes.hpp"
 #include "Common/Deployment.hpp"
 
+/* RANGES */
+#define MOTOR_THROTTLE_HIGH 100
+#define MOTOR_THROTTLE_LOW 0
+
+/* FACTS */
 #define NUM_MOTORS 4
 #define NUM_ULTRASONIC 4
 #define NUM_RELAYS 4
 #define NUM_TEMP 1
+
+/* PORTS */
 
 // Don't use 'LLC1 or LLC2 etc. -> LLC is declared in Deployment.hpp
 namespace LLC1 {
@@ -31,8 +38,8 @@ const t_pins_motor pins_motors[NUM_MOTORS] = {
 // SDA, SCL
 const t_pins_imu pins_imu = { 20, 21 };
 
-// TX, RX
-const t_pins_gps pins_gps = { 16, 17 };
+// BAUDRATE, HARDWARESERIAL
+const t_pins_gps pins_gps = { 9600, Serial2 };
 
 // PIN, INTERRUPT INDEX
 const t_pins_hall pins_hall[NUM_MOTORS] = {
@@ -68,6 +75,7 @@ const uint8_t pins_temp[NUM_TEMP] {
 };
 } // namespace LLC1
 
+// THE OLD WAY
 //#define RELAY_POWER				48	// DIGITAL
 //#define RELAY_FAN				46	// DIGITAL
 //#define RELAY_V12				44	// DIGITAL
