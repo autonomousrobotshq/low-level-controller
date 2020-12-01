@@ -10,8 +10,6 @@
 // Sandbox sandbox;
 // ROS ros_test;
 
-
-
 #include <ros.h>
 #include <std_msgs/String.h>
   
@@ -30,14 +28,8 @@ void setup()
 
 void loop(void)
 {
-	while (!nh.connected())
-	{
-		nh.spinOnce();
-	}
-
 	str_msg.data = hello;
 	chatter.publish( &str_msg );
-	nh.logerror("Testing error");
 	nh.spinOnce();
 	delay(5000);
 }
