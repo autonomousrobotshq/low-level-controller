@@ -30,11 +30,15 @@ void setup()
 
 void loop(void)
 {
+	while (!nh.connected())
+	{
+		nh.spinOnce();
+	}
+
 	str_msg.data = hello;
 	chatter.publish( &str_msg );
-	nh.logerror("123");
+	nh.logerror("Testing error");
 	nh.spinOnce();
-	nh.logerror("Errors 345");
 	delay(5000);
 }
 
