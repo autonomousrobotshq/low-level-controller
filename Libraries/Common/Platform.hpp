@@ -19,7 +19,7 @@
 /* FACTS */
 #define NUM_MOTORS 4
 #define NUM_ULTRASONIC 4
-#define NUM_RELAYS 4
+#define NUM_RELAYS 6
 #define NUM_TEMP 1
 
 /* PORTS */
