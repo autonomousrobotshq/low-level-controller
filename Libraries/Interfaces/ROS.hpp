@@ -9,7 +9,8 @@
 enum ROS_TOPIC
 {
     GPS,
-    IMU
+    IMU,
+    TEST
 };
 
 class ROS : public Interface {
@@ -25,6 +26,7 @@ private:
     ros::NodeHandle _nh;
     ros::Publisher *_pub_GPS;
     ros::Publisher *_pub_IMU;
+    ros::Publisher *_pub_test;
 };
 
 #endif

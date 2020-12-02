@@ -95,7 +95,7 @@ CXXFLAGS_STD      = -std=gnu++11
 
 ### CXXFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
-CXXFLAGS         += -Wall -Wextra -Werror -g
+CXXFLAGS         += -Wall -Wextra # -Werror -g
 CXXFLAGS		+= -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-truncation -Wno-restrict -Wno-sized-deallocation -Wno-switch -Wno-implicit-fallthrough # just to get the bloody external libraries to work..
 
 ### MONITOR_PORT
