@@ -24,7 +24,7 @@ public:
     ~Sandbox();
     bool Driver(const e_corner corner, const e_drive_action action);
     bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
-
+	int8_t GetRPM(const e_corner corner);
     int IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();
     Vec3 IMUGetAcceleroData();
@@ -35,10 +35,10 @@ public:
     void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time); // overkill?
     int GPSGetSpeed();
     int GPSGetCourse();
-
     int8_t TEMPGetTemp();
 
     int RAMGetFree();
+	int8_t	HALLGetRPM();
 
 private:
     unsigned long _glob_millis;
@@ -54,6 +54,8 @@ private:
 bool Driver(const e_corner corner, const e_drive_action action);
 bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
 
+int8_t GetRPM(const e_corner corner);
+
 int IMUGetNavigationAngle();
 Vec3 IMUGetMagnetoData();
 Vec3 IMUGetAcceleroData();
@@ -67,7 +69,6 @@ int GPSGetCourse();
 
 int8_t TEMPGetTemp();
 
-int RAMGetFree();
-
+int 	RAMGetFree();
 } // namespace sb
 #endif

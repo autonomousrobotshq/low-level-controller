@@ -17,7 +17,8 @@ class ControllerMotor : public Controller {
 public:
     bool Driver(const e_corner corner, const e_drive_action action);
     bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
-    ControllerMotor();
+    int8_t getRPM(const e_corner);
+	ControllerMotor();
     ~ControllerMotor();
 
 private:

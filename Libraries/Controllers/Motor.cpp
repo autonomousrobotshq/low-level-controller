@@ -82,3 +82,8 @@ bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action,
     }
     return (false);
 }
+
+int8_t ControllerMotor::getRPM(const e_corner corner)
+{
+	return(_sensors_hall[corner]->getRPM());
+}

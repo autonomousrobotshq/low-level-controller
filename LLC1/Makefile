@@ -21,6 +21,8 @@ ARDUINO_LIBS += Actuators
 ARDUINO_LIBS += Controllers
 ARDUINO_LIBS += Interfaces
 ARDUINO_LIBS += Common
+ARDUINO_LIBS += SteerLogic
+
 
 
 ### USER_LIB_PATH

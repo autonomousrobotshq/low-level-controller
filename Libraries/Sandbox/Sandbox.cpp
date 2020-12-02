@@ -53,6 +53,10 @@ bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
     return (_controller_motor.Driver(corner, action));
 }
 
+int8_t Sandbox::GetRPM(const e_corner corner)
+{
+	return (_controller_motor.getRPM(corner));
+}
 int Sandbox::IMUGetNavigationAngle()
 {
     return (this->_sensor_imu.getNavigationAngle());
@@ -103,8 +107,10 @@ int Sandbox::RAMGetFree()
     return (freeMemory());
 }
 
+
 bool Driver(const e_corner corner, const e_drive_action action) { return (g_sb->Driver(corner, action)); }
 bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(corner, action, throttle)); }
+uint8_t GetRPM(); // created by thimo
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
 Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
 Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }
