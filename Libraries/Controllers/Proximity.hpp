@@ -10,7 +10,7 @@ class ControllerProximity : public Controller {
 public:
     ControllerProximity();
     ~ControllerProximity();
-    int GetDistance(e_corner corner);
+    int GetDistance(const e_corner corner);
 
 private:
     SensorUltrasonic* _ultrasonic_sensors[NUM_ULTRASONIC];

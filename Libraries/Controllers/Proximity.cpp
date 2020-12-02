@@ -12,7 +12,7 @@ ControllerProximity::~ControllerProximity()
         delete _ultrasonic_sensors[i];
 }
 
-int ControllerProximity::GetDistance(e_corner corner)
+int ControllerProximity::GetDistance(const e_corner corner)
 {
     return (_ultrasonic_sensors[corner]->GetDistance());
 }

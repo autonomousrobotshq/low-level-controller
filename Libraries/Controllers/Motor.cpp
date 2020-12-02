@@ -19,10 +19,66 @@ ControllerMotor::~ControllerMotor()
     }
 }
 
-bool ControllerMotor::Driver(e_corner corner, e_drive_action action)
+bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action)
 {
     // motor logic here
+    // if (_sensors_current[corner]->getCurrent()) // is overcurrent
+    // 	return false; // error: overcurrent
+    // if (corner == ALL) {
+    // 	_actuators_motor[FRONT_LEFT]->drive_commands[action]();
+    // 	_actuators_motor[FRONT_RIGHT]->drive_commands[action];
+    // 	_actuators_motor[BACK_LEFT]->drive_commands[action];
+    // 	_actuators_motor[BACK_RIGHT]->drive_commands[action];
+    // }
+    // else
+    // 	_actuators_motor[corner]->drive_commands[action];
     (void)corner;
     (void)action;
+    return (false);
+}
+
+bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
+{
+    // motor logic here
+    if (_sensors_current[corner]->getCurrent()) // is overcurrent
+        return false; // error: overcurrent
+    if (corner == ALL) {
+        switch (action) {
+        case FORWARD:
+            _actuators_motor[FRONT_LEFT]->forward(throttle);
+            _actuators_motor[FRONT_RIGHT]->forward(throttle);
+            _actuators_motor[BACK_LEFT]->forward(throttle);
+            _actuators_motor[BACK_RIGHT]->forward(throttle);
+            break;
+        case BACKWARD:
+            _actuators_motor[FRONT_LEFT]->reverse(throttle);
+            _actuators_motor[FRONT_RIGHT]->reverse(throttle);
+            _actuators_motor[BACK_LEFT]->reverse(throttle);
+            _actuators_motor[BACK_RIGHT]->reverse(throttle);
+            break;
+        case HALT:
+            _actuators_motor[FRONT_LEFT]->halt();
+            _actuators_motor[FRONT_RIGHT]->halt();
+            _actuators_motor[BACK_LEFT]->halt();
+            _actuators_motor[BACK_RIGHT]->halt();
+            break;
+        default:
+            break;
+        }
+    } else {
+        switch (action) {
+        case FORWARD:
+            _actuators_motor[corner]->forward(throttle);
+            break;
+        case BACKWARD:
+            _actuators_motor[corner]->reverse(throttle);
+            break;
+        case HALT:
+            _actuators_motor[corner]->halt();
+            break;
+        default:
+            break;
+        }
+    }
     return (false);
 }

@@ -7,14 +7,14 @@
 
 class ActuatorRelay : public Actuator {
 public:
-    ActuatorRelay(const uint8_t pinCooling);
+    ActuatorRelay(const uint8_t pin);
     ~ActuatorRelay();
-    void setState(const bool state);
-    bool getState();
+    void SetState(const bool state);
+    bool GetState();
 
 private:
     bool _state;
-    const uint8_t _pinCooling;
+    const uint8_t _pin;
 };
 
 #endif

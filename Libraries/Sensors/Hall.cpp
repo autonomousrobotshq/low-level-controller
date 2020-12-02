@@ -29,7 +29,7 @@ static void InterruptCall5() { pulses[5]++; }
 static void InterruptCall6() { pulses[6]++; }
 static void InterruptCall7() { pulses[7]++; }
 
-SensorHall::SensorHall(const t_pins_hall& pins_hall)
+SensorHall::SensorHall(const t_pins_hall pins_hall)
     : _interrupt_index(pins_hall.index_interrupt)
     , _interrupt_pin(pins_hall.pin_interrupt)
 

@@ -23,13 +23,15 @@ enum e_runtime { LAUNCH,
 enum e_verbosity { CRITICAL = 0,
     VERBOSE = 1,
     TARGETED = 2,
-    DEBUG = 4 };
+    DEBUG = 4,
+    SERIAL_DEBUG = 8 };
 /*
 * VERBOSITY defined as:
-*	CRITICAL		:	Log only output marked critical.	:	crit_f()
-*	VERBOSE			:	Log permanent info statements		:	info_f()
-*	TARGETED		:	Log targeted debugging statements	:	tmp_f()
-*	DEBUG			:	Log permanent debugging statements:	debug_f()
+*	CRITICAL		:	Log only output marked critical.
+*	VERBOSE			:	Log permanent info statements
+*	TARGETED		:	Log targeted debugging statements
+*	DEBUG			:	Log permanent debugging statements
+*	SERIAL_DEBUG	:	Log permanent debugging statements to serial console and disable ros output
 *
 *	Always set to CRITICAL when deploying autonomous.
 */

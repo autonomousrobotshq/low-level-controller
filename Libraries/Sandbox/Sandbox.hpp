@@ -22,7 +22,8 @@ public:
     void SpinOnce();
     Sandbox();
     ~Sandbox();
-    bool Driver(e_corner corner, e_drive_action action);
+    bool Driver(const e_corner corner, const e_drive_action action);
+    bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
 
     int IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();
@@ -50,7 +51,8 @@ private:
 };
 
 // public functions
-bool Driver(e_corner corner, e_drive_action action);
+bool Driver(const e_corner corner, const e_drive_action action);
+bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
 
 int IMUGetNavigationAngle();
 Vec3 IMUGetMagnetoData();

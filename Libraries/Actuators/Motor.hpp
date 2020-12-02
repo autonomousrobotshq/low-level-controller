@@ -15,9 +15,9 @@ public:
     ~ActuatorMotor();
 
 private:
-    const uint8_t _pinPWM;
-    const uint8_t _pinA;
-    const uint8_t _pinB;
+    const uint8_t _pin_pwm;
+    const uint8_t _pin_a;
+    const uint8_t _pin_b;
 };
 
 #endif

@@ -1,24 +1,24 @@
 #include "Actuators/Relay.hpp"
 #include <Arduino.h>
 
-ActuatorRelay::ActuatorRelay(const uint8_t pinCooling)
-    : _pinCooling(pinCooling)
+ActuatorRelay::ActuatorRelay(const uint8_t pin)
+    : _pin(pin)
 {
-    pinMode(pinCooling, OUTPUT);
-    digitalWrite(pinCooling, LOW);
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, HIGH); // pull up
 }
 
 ActuatorRelay::~ActuatorRelay()
 {
 }
 
-void ActuatorRelay::setState(const bool state)
+void ActuatorRelay::SetState(const bool state)
 {
     _state = state;
-    digitalWrite(_pinCooling, state);
+    digitalWrite(_pin, 1 ^ state);
 }
 
-bool ActuatorRelay::getState()
+bool ActuatorRelay::GetState()
 {
     return (_state);
 }

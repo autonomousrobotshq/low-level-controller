@@ -5,6 +5,7 @@
 #ifndef COMMON_DATATYPES_HPP
 #define COMMON_DATATYPES_HPP
 
+#include <HardwareSerial.h>
 #include <stdint.h>
 
 enum e_corner {
@@ -17,9 +18,9 @@ enum e_corner {
 
 enum e_relays {
     REL_POWER = 0,
-    REL_FAN = 1,
     REL_V12 = 2,
-    REL_MOTORS = 3
+    REL_MOTORS = 3,
+    REL_FAN = 4
 };
 
 typedef struct s_pins_motor {
@@ -34,8 +35,8 @@ typedef struct s_pins_imu {
 } t_pins_imu;
 
 typedef struct s_pins_gps {
-    const uint8_t pin_tx;
-    const uint8_t pin_rx;
+    const uint16_t baudrate;
+    const HardwareSerial& serial;
 } t_pins_gps;
 
 typedef struct s_pins_hall {

@@ -1,34 +1,34 @@
 #include "Actuators/Motor.hpp"
 #include <Arduino.h>
 
-void ActuatorMotor::forward(const uint8_t pulseWidth)
+void ActuatorMotor::forward(const uint8_t pulse_width)
 {
-    digitalWrite(this->_pinA, LOW);
-    digitalWrite(this->_pinB, HIGH);
-    analogWrite(this->_pinPWM, pulseWidth);
+    digitalWrite(this->_pin_a, LOW);
+    digitalWrite(this->_pin_b, HIGH);
+    analogWrite(this->_pin_pwm, pulse_width);
 }
 
-void ActuatorMotor::reverse(const uint8_t pulseWidth)
+void ActuatorMotor::reverse(const uint8_t pulse_width)
 {
-    digitalWrite(this->_pinA, HIGH);
-    digitalWrite(this->_pinB, LOW);
-    analogWrite(this->_pinPWM, pulseWidth);
+    digitalWrite(this->_pin_a, HIGH);
+    digitalWrite(this->_pin_b, LOW);
+    analogWrite(this->_pin_pwm, pulse_width);
 }
 
 void ActuatorMotor::halt()
 {
-    digitalWrite(this->_pinA, LOW);
-    digitalWrite(this->_pinB, LOW);
+    digitalWrite(this->_pin_a, LOW);
+    digitalWrite(this->_pin_b, LOW);
 }
 
 ActuatorMotor::ActuatorMotor(const t_pins_motor pins_motor)
-    : _pinPWM(pins_motor.pin_pwm)
-    , _pinA(pins_motor.pin_a)
-    , _pinB(pins_motor.pin_b)
+    : _pin_pwm(pins_motor.pin_pwm)
+    , _pin_a(pins_motor.pin_a)
+    , _pin_b(pins_motor.pin_b)
 {
-    pinMode(_pinPWM, OUTPUT);
-    pinMode(_pinA, OUTPUT);
-    pinMode(_pinB, OUTPUT);
+    pinMode(_pin_pwm, OUTPUT);
+    pinMode(_pin_a, OUTPUT);
+    pinMode(_pin_b, OUTPUT);
 }
 
 ActuatorMotor::~ActuatorMotor()
