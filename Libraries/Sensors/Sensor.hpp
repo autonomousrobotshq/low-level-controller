@@ -8,13 +8,13 @@ class Sensor {
 public:
     unsigned long getDuration();
     bool isWaiting();
-    void setWaitTime(const unsigned long waitMillis);
-    Sensor(const unsigned long globMillis);
+    void setWaitTime(const unsigned long wait_millis);
+    Sensor(const unsigned long glob_millis);
     Sensor();
     ~Sensor();
 private:
-    const unsigned long* _globMillis;
-    unsigned long _lastMillis;
-    unsigned long _endMillis;
+    const unsigned long _glob_millis;
+    unsigned long _last_millis;
+    unsigned long _end_millis;
 };
 #endif

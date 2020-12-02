@@ -3,6 +3,7 @@
 
 ControllerMotor::ControllerMotor()
 {
+	_current_throttle = 0;
     for (int i = 0; i < NUM_MOTORS; i++) {
         _actuators_motor[i] = new ActuatorMotor(LLC::pins_motors[i]);
         _sensors_current[i] = new SensorCurrent(LLC::pins_current[i]);
@@ -12,7 +13,7 @@ ControllerMotor::ControllerMotor()
 
 ControllerMotor::~ControllerMotor()
 {
-    for (int i = 0; i < NUM_MOTORS; i++) {
+	for (int i = 0; i < NUM_MOTORS; i++) {
         delete _actuators_motor[i];
         delete _sensors_current[i];
         delete _sensors_hall[i];
@@ -37,72 +38,64 @@ bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action)
     return (false);
 }
 
-bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
+bool ControllerMotor::IsReady() {
+	return _current_throttle == _desired_throttle;
+}
+
+void ControllerMotor::SetValues(const e_corner corner, const e_drive_action action, const uint8_t throttle) {
+	_corner = corner;
+	_action = action;
+	_desired_throttle = throttle;
+}
+
+bool ControllerMotor::Update()
 {
 	Sensor	t;
-	uint8_t start_throttle = 0;
 
-	t.setWaitTime(50);
     // motor logic here
-    if (_sensors_current[corner]->getCurrent()) // is overcurrent
+    if (_sensors_current[_corner]->getCurrent()) // is overcurrent
         return false; // error: overcurrent
-    if (corner == ALL) {
-        switch (action) {
-        case FORWARD:
-			while (start_throttle <= throttle) {
-				if (t.isWaiting() == false) {
-					_actuators_motor[FRONT_LEFT]->forward(start_throttle);
-					_actuators_motor[FRONT_RIGHT]->forward(start_throttle);
-					_actuators_motor[BACK_LEFT]->forward(start_throttle);
-					_actuators_motor[BACK_RIGHT]->forward(start_throttle);
-					start_throttle += 1;
-					t.setWaitTime(50);
-				}
-			}
-            break;
-        case BACKWARD:
-            while (start_throttle <= throttle) {
-				if (t.isWaiting() == false) {
-					_actuators_motor[FRONT_LEFT]->reverse(start_throttle);
-					_actuators_motor[FRONT_RIGHT]->reverse(start_throttle);
-					_actuators_motor[BACK_LEFT]->reverse(start_throttle);
-					_actuators_motor[BACK_RIGHT]->reverse(start_throttle);
-					start_throttle += 1;
-					t.setWaitTime(50);
-				}
-			}
-            break;
-        case HALT:
-            _actuators_motor[FRONT_LEFT]->halt();
-            _actuators_motor[FRONT_RIGHT]->halt();
-            _actuators_motor[BACK_LEFT]->halt();
-            _actuators_motor[BACK_RIGHT]->halt();
-            break;
-        default:
-            break;
+    if (_corner == ALL) {
+        switch (_action) {
+			case FORWARD:
+				if (_current_throttle < _desired_throttle)
+					_current_throttle += 1;
+				_actuators_motor[FRONT_LEFT]->forward(_current_throttle);
+				_actuators_motor[FRONT_RIGHT]->forward(_current_throttle);
+				_actuators_motor[BACK_LEFT]->forward(_current_throttle);
+				_actuators_motor[BACK_RIGHT]->forward(_current_throttle);
+				break;
+			case BACKWARD:
+				if (_current_throttle > _desired_throttle)
+					_current_throttle -= 1;
+				_actuators_motor[FRONT_LEFT]->reverse(_current_throttle);
+				_actuators_motor[FRONT_RIGHT]->reverse(_current_throttle);
+				_actuators_motor[BACK_LEFT]->reverse(_current_throttle);
+				_actuators_motor[BACK_RIGHT]->reverse(_current_throttle);
+				break;
+			case HALT:
+				_actuators_motor[FRONT_LEFT]->halt();
+				_actuators_motor[FRONT_RIGHT]->halt();
+				_actuators_motor[BACK_LEFT]->halt();
+				_actuators_motor[BACK_RIGHT]->halt();
+				break;
+			default:
+				break;
         }
     } else {
-        switch (action) {
+        switch (_action) {
         case FORWARD:
-			while (start_throttle <= throttle) {
-				if (t.isWaiting() == false) {
-            		_actuators_motor[corner]->forward(throttle);
-					start_throttle += 1;
-					t.setWaitTime(50);
-				}
-			}
+			if (_current_throttle < _desired_throttle)
+				_current_throttle += 1;
+			_actuators_motor[_corner]->forward(_current_throttle);
             break;
         case BACKWARD:
-            while (start_throttle <= throttle) {
-				if (t.isWaiting() == false) {
-            		_actuators_motor[corner]->reverse(throttle);
-					start_throttle += 1;
-					t.setWaitTime(50);
-				}
-			}
+			if (_current_throttle > _desired_throttle)
+				_current_throttle -= 1;
+			_actuators_motor[_corner]->reverse(_current_throttle);
             break;
         case HALT:
-            _actuators_motor[corner]->halt();
+            _actuators_motor[_corner]->halt();
             break;
         default:
             break;

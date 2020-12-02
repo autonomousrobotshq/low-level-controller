@@ -22,15 +22,15 @@ void Sensor::setWaitTime(const unsigned long wait_millis)
 }
 
 Sensor::Sensor(const unsigned long glob_millis)
-    : _glob_millis(globMillis)
+    : _glob_millis(glob_millis)
     , _last_millis(0)
-    , _endMillis(0)
+    , _end_millis(0)
 {
 }
 
 Sensor::Sensor()
-    : _glob_millis(NULL)
-    , _endMillis(0)
+    : _glob_millis(0)
+    , _end_millis(0)
 {
 }
 
