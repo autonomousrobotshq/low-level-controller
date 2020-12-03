@@ -1,22 +1,22 @@
-#include "SteerLogic.hpp"
+#include <math.h>
 #include "Common/Deployment.hpp"
 #include "Sandbox/Sandbox.hpp"
-#include "math.h"
+#include "Logic/Steering.hpp"
 
 using namespace sb;
 
-SteerLogic::SteerLogic(Sandbox &Sandbox) :
-	_sandbox(Sandbox)
+LogicSteering::LogicSteering(Sandbox &sandbox) :
+	_sandbox(sandbox)
 {
 	
 }
 
-SteerLogic::~SteerLogic()
+LogicSteering::~LogicSteering()
 {
 
 }
 
-void SteerLogic::_turn(int angle)
+void LogicSteering::_turn(int angle)
 {
 	int power = 10; // need to do this differently
 	if (angle < 0)
@@ -38,7 +38,7 @@ void SteerLogic::_turn(int angle)
 	_turnAngle(	angle, targetCount,power); // or we can use this one;
 }
 
-void	SteerLogic::_pivot(int angle, int rpmcount, int targetCount, int power)
+void	LogicSteering::_pivot(int angle, int rpmcount, int targetCount, int power)
 {
 	
 	if(angle < 0)
@@ -89,7 +89,7 @@ void	SteerLogic::_pivot(int angle, int rpmcount, int targetCount, int power)
 	}
 }
 
-void	SteerLogic::_turnAngle(int angle, int targetCount, int power)
+void	LogicSteering::_turnAngle(int angle, int targetCount, int power)
 {
 	if (angle > 0)
 	{
@@ -121,7 +121,7 @@ void	SteerLogic::_turnAngle(int angle, int targetCount, int power)
 	_sandbox.Driver(BACK_LEFT, HALT, power);
 }
 
-void	SteerLogic::_driveDistance(int distance)
+void	LogicSteering::_driveDistance(int distance)
 {
 	int leftpower = 50;
 	int rightpower = 50;
@@ -169,7 +169,7 @@ void	SteerLogic::_driveDistance(int distance)
 	_sandbox.Driver(BACK_LEFT, HALT, leftpower);	
 }
 
-void	SteerLogic::driveLogic(int distance, int angle)
+void	LogicSteering::driveLogic(int distance, int angle)
 {
 	if(angle != 0)
 		_turn(angle);

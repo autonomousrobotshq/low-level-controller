@@ -1,14 +1,14 @@
-#ifndef STEERLOGIC_HPP
-# define STEERLOGIC_HPP
+#ifndef LOGIC_STEERING_HPP
+# define LOGIC_STEERING_HPP
 # include "Sandbox/Sandbox.hpp"
 
 using namespace sb;
 
-class SteerLogic
+class LogicSteering
 {
 public:
-	SteerLogic(Sandbox &sandbox);
-	~SteerLogic();
+	LogicSteering(Sandbox &sandbox);
+	~LogicSteering();
 	void driveLogic(int distance, int angle);
 	
 private:

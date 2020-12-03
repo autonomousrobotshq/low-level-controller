@@ -15,13 +15,14 @@ ARDUINO_LIBS += External/TinyGPS-13.0.0
 ARDUINO_LIBS += External/MemoryFree-a2d60bd
 
 ARDUINO_LIBS += . # relative offsets are used for internal libraries
-ARDUINO_LIBS += Sandbox
+
+ARDUINO_LIBS += Common
 ARDUINO_LIBS += Sensors
 ARDUINO_LIBS += Actuators
 ARDUINO_LIBS += Controllers
 ARDUINO_LIBS += Interfaces
-ARDUINO_LIBS += Common
-ARDUINO_LIBS += SteerLogic
+ARDUINO_LIBS += Sandbox
+ARDUINO_LIBS += Logic
 
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.

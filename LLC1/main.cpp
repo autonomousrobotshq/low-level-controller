@@ -1,8 +1,5 @@
 #include "Common/Deployment.hpp"
-#include "../Libraries/Sandbox/Sandbox.hpp"
-#include "../Libraries/Sensors/IMU.hpp"
-#include "../Libraries/Common/Platform.hpp"
-#include "../Libraries/SteerLogic/SteerLogic.hpp"
+#include "Sandbox/Sandbox.hpp"
 
 /*
 ** SAMPLE CODE
