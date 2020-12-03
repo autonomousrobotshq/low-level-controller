@@ -42,6 +42,8 @@ public:
 
     void check_anomalies();
 
+    float get_current(e_corner corner);
+
 private:
     unsigned long _glob_millis;
     ControllerMotor _controller_motor;
@@ -71,6 +73,8 @@ int GPSGetCourse();
 int8_t TEMPGetTemp();
 
 int RAMGetFree();
+
+float get_current(e_corner corner);
 
 } // namespace sb
 #endif

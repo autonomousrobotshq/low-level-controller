@@ -37,29 +37,28 @@ bool Anomaly::current(float current_fl, float current_fr, float current_bl, floa
     {
         this->_error_current = current_fl;
         this->_corner_current_error = FRONT_LEFT;
-        return true;
+        return (true);
     }
     else if (current_fr < UNDER_CURRENT or current_fr > OVER_CURRENT)
     {
         this->_error_current = current_fr;
         this->_corner_current_error = FRONT_RIGHT;
-        return true;
+        return (true);
     }
     else if (current_bl < UNDER_CURRENT or current_bl > OVER_CURRENT)
     {
         this->_error_current = current_bl;
         this->_corner_current_error = BACK_LEFT;
-        return true;
+        return (true);
     }
     else if (current_br < UNDER_CURRENT or current_br > OVER_CURRENT)
     {
         this->_error_current = current_br;
         this->_corner_current_error = BACK_RIGHT;
-        return true;
+        return (true);
     }
     return false;
 }
-
 
 float Anomaly::get_error_current_value() const { return this->_error_current; }
 

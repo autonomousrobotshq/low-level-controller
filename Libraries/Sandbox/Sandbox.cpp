@@ -65,10 +65,12 @@ void Sandbox::check_anomalies()
     {
         // DEBUG: MESSAGE
     }
-    if (this->_anomaly.current((float)0.1, (float)0.1, (float)0.1, (float)0.1))
+    if (this->_anomaly.current(this->get_current(FRONT_LEFT), this->get_current(FRONT_RIGHT), this->get_current(BACK_LEFT), this->get_current(BACK_RIGHT)))
     {
         e_corner corner = this->_anomaly.get_error_current_corner();
         float current = this->_anomaly.get_error_current_value();
+        (void)corner;
+        (void)current;
         // SWITCH OFF
         // DEBUG: MESSAGE
     }
@@ -142,6 +144,11 @@ int Sandbox::RAMGetFree()
     return (freeMemory());
 }
 
+float Sandbox::get_current(e_corner corner)
+{
+    return (this->_controller_motor.get_current(corner));
+}
+
 bool Driver(const e_corner corner, const e_drive_action action) {
 	return (g_sb->Driver(corner, action));
 }
@@ -197,6 +204,10 @@ int8_t TEMPGetTemp() {
 int RAMGetFree() {
 	return (g_sb->RAMGetFree());
 
+}
+
+float get_current(e_corner corner) {
+    return (g_sb->get_current(corner));
 }
 
 } // namespace sb

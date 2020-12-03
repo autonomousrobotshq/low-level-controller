@@ -21,6 +21,7 @@ public:
 	void SetValues(const e_corner corner, const e_drive_action action, const uint8_t throttle);
 	bool IsReady();
 	bool Update();
+    float get_current(e_corner corner);
     ControllerMotor();
     ~ControllerMotor();
 

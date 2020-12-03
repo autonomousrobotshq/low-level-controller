@@ -103,3 +103,5 @@ bool ControllerMotor::Update()
     }
     return (false);
 }
+
+float ControllerMotor::get_current(e_corner corner) { return this->_sensors_current[corner]->getCurrent(); }
