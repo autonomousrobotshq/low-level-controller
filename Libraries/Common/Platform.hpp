@@ -64,10 +64,12 @@ const uint8_t pins_ultrasonic[NUM_ULTRASONIC] = {
 };
 
 const uint8_t pins_relay[NUM_RELAYS] = {
-    48,
-    46,
-    44,
-    42
+    39,
+    40,
+    41,
+    42,
+	43,
+	44
 };
 
 const uint8_t pins_temp[NUM_TEMP] {

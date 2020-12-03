@@ -23,8 +23,8 @@ public:
     Sandbox();
     ~Sandbox();
     bool Driver(const e_corner corner, const e_drive_action action);
-    bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
-	int8_t GetRPM(const e_corner corner);
+    void Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
+
     int IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();
     Vec3 IMUGetAcceleroData();
@@ -38,7 +38,7 @@ public:
     int8_t TEMPGetTemp();
 
     int RAMGetFree();
-	int8_t	HALLGetRPM();
+	int8_t	GetRPM(const e_corner corner);
 
 private:
     unsigned long _glob_millis;

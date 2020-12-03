@@ -6,6 +6,7 @@
 #include "Controllers/Controller.hpp"
 #include "Sensors/Current.hpp"
 #include "Sensors/Hall.hpp"
+#include "Sensors/Sensor.hpp"
 
 enum e_drive_action {
     FORWARD = 0,
@@ -18,13 +19,21 @@ public:
     bool Driver(const e_corner corner, const e_drive_action action);
     bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
     int8_t getRPM(const e_corner);
-	ControllerMotor();
+    bool Driver();
+	void SetValues(const e_corner corner, const e_drive_action action, const uint8_t throttle);
+	bool IsReady();
+	bool Update();
+    ControllerMotor();
     ~ControllerMotor();
 
 private:
-    ActuatorMotor* _actuators_motor[NUM_MOTORS];
-    SensorCurrent* _sensors_current[NUM_MOTORS];
-    SensorHall* _sensors_hall[NUM_MOTORS];
+    ActuatorMotor*	_actuators_motor[NUM_MOTORS];
+    SensorCurrent*	_sensors_current[NUM_MOTORS];
+    SensorHall*		_sensors_hall[NUM_MOTORS];
+	e_corner		_corner;
+	e_drive_action	_action;
+	uint8_t			_desired_throttle;
+	uint8_t			_current_throttle;
 };
 
 #endif
