@@ -5,8 +5,8 @@
 #include <OneWire.h>
 
 #define ONE_WIRE_BUS 8
-OneWire test(ONE_WIRE_BUS);
-DallasTemperature sensors(&test);
+// OneWire test(ONE_WIRE_BUS);
+// DallasTemperature sensors(&test);
 
 class SensorTemp {
 private:
