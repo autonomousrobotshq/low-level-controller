@@ -105,61 +105,17 @@ int Sandbox::RAMGetFree()
     return (freeMemory());
 }
 
-bool Driver(const e_corner corner, const e_drive_action action) {
-	return (g_sb->Driver(corner, action));
-}
-
-// bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) {
-// 	return (g_sb->Driver(corner, action, throttle));
-
-// }
-
-int IMUGetNavigationAngle() {
-	return (g_sb->IMUGetNavigationAngle());
-
-}
-
-Vec3 IMUGetMagnetoData() {
-	return (g_sb->IMUGetMagnetoData());
+// bool Driver(const e_corner corner, const e_drive_action action) { return (g_sb->Driver(corner, action)); }
+// bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(corner, action, throttle)); }
+int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
+Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
+Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }
+int USGetDistance(e_corner corner) { return (g_sb->USGetDistance(corner)); }
+void GPSGetLocation(float* flat, float* flon) { g_sb->GPSGetLocation(flat, flon); }
+void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time) { g_sb->GPSGetTime(age, date, time); }
+int GPSGetSpeed() { return (g_sb->GPSGetSpeed()); }
+int GPSGetCourse() { return (g_sb->GPSGetCourse()); }
+int8_t TEMPGetTemp() { return (g_sb->TEMPGetTemp()); }
+int RAMGetFree() { return (g_sb->RAMGetFree()); }
 
 }
-
-Vec3 IMUGetAcceleroData() {
-	return (g_sb->IMUGetAcceleroData());
-
-}
-
-int USGetDistance(e_corner corner) {
-	return (g_sb->USGetDistance(corner));
-
-}
-
-void GPSGetLocation(float* flat, float* flon) {
-	g_sb->GPSGetLocation(flat, flon);
-}
-
-void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time) {
-	g_sb->GPSGetTime(age, date, time);
-}
-
-int GPSGetSpeed() {
-	return (g_sb->GPSGetSpeed());
-
-}
-
-int GPSGetCourse() {
-	return (g_sb->GPSGetCourse());
-
-}
-
-int8_t TEMPGetTemp() {
-	return (g_sb->TEMPGetTemp());
-
-}
-
-int RAMGetFree() {
-	return (g_sb->RAMGetFree());
-
-}
-
-} // namespace sb
