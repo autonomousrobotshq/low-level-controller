@@ -20,7 +20,7 @@ enum e_relays {
     REL_POWER = 0,
     REL_V12 = 2,
     REL_MOTORS = 3,
-    REL_FAN = 4,
+    REL_FAN = 4
 };
 
 typedef struct s_pins_motor {

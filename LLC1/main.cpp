@@ -11,7 +11,6 @@
 using namespace sb;
 
 Sandbox sandbox;
-SensorIMU imu(LLC1::pins_imu);
 
 void setup() //runs on startup
 {
