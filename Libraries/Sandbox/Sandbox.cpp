@@ -33,6 +33,33 @@ void Sandbox::SpinOnce()
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
+
+    // control anomalies
+    this->check_anomalies();
+}
+
+void Sandbox::check_anomalies()
+{
+    if (this->_anomaly.Battery(100)) // Function needs to be made
+    {
+    }
+    if (this->_anomaly.UltraSonic(USGetDistance(FRONT_LEFT),USGetDistance(FRONT_RIGHT)))
+    {
+        Driver(ALL, HALT);
+    }
+    if (this->_anomaly.Overheating(TEMPGetTemp()))
+    {
+        // Turn off everything except fans
+    }
+    else if (this->_anomaly.Heat_Warning(TEMPGetTemp()))
+    {
+        // Slow down everything
+    }
+    // DEBUG
+    if (this->_anomaly.RAM(RAMGetFree()))
+    {
+        // Debug message
+    }
 }
 
 bool Sandbox::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)

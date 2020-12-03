@@ -5,7 +5,7 @@
 #include "Common/Vec3.hpp"
 
 #include "Controllers/Motor.hpp"
-#include "Controllers/Proximity.hpp"
+#include "Controllers/Anomaly.hpp"
 
 #include "Interfaces/ROS.hpp"
 
@@ -40,6 +40,8 @@ public:
 
     int RAMGetFree();
 
+    void check_anomalies();
+
 private:
     unsigned long _glob_millis;
     ControllerMotor _controller_motor;
@@ -48,6 +50,7 @@ private:
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
     SensorTemp _sensor_temp;
+    Anomaly _anomaly;
 };
 
 // public functions

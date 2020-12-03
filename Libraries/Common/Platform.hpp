@@ -12,6 +12,13 @@
 #include "Common/Datatypes.hpp"
 #include "Common/Deployment.hpp"
 
+/* ANOMALY DATA */
+#define ULTRASONIC_DIST 30
+#define OVERHEATING 70
+#define HEAT_WARNING 50
+#define LOW_BATTERY 15
+#define RAM_SPACE 100
+
 /* RANGES */
 #define MOTOR_THROTTLE_HIGH 100
 #define MOTOR_THROTTLE_LOW 0
