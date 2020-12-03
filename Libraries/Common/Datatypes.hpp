@@ -19,7 +19,7 @@ enum e_corner {
 enum e_relays {
     REL_POWER = 0,
     REL_V12 = 2,
-    REL_MOTORS = 3
+    REL_MOTORS = 3,
     REL_FAN = 4,
 };
 
