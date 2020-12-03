@@ -2,7 +2,6 @@
 #define SENSOR_HPP
 
 #include <stddef.h>
-#include "arduino.h"
 
 class Sensor {
 public:

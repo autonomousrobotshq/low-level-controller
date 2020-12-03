@@ -23,8 +23,6 @@ ARDUINO_LIBS += Interfaces
 ARDUINO_LIBS += Common
 ARDUINO_LIBS += SteerLogic
 
-
-
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.
 USER_LIB_PATH    :=  $(realpath ../Libraries)
@@ -97,12 +95,12 @@ CXXFLAGS_STD      = -std=gnu++11
 
 ### CXXFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
-CXXFLAGS         += -Wall -Wextra -Os -g
+CXXFLAGS         += -Wall -Wextra -g
 CXXFLAGS		+= -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-truncation -Wno-restrict -Wno-sized-deallocation -Wno-switch -Wno-implicit-fallthrough # just to get the bloody external libraries to work..
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
-MONITOR_PORT      = /dev/tty.usbmodem144101 # /dev/ttyACM1
+MONITOR_PORT      = * # /dev/ttyACM1
 
 ### CURRENT_DIR
 ### Do not touch - used for binaries path

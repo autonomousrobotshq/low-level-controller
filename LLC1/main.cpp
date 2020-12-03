@@ -10,21 +10,25 @@
 
 using namespace sb;
 
-Sandbox sandbox;
-SensorIMU imu(LLC1::pins_imu);
+Sandbox *sandbox;
+//SensorIMU imu(LLC1::pins_imu);
 
 void setup() //runs on startup
 {
-	sandbox.Setup();
+	sandbox = new Sandbox();
+	sandbox->Setup();
+	Serial.begin(115200);
+	Serial.println("INIT");
 }
 
 void loop() // loops indefinitely
 {
-	SteerLogic steer(sandbox);
+	SteerLogic steer(*sandbox);
 	// all your code here
-	sandbox.SpinOnce();
+	sandbox->SpinOnce();
 	
 	int distance = 150; // sample code this will be received by ROS
 	int angle = 90; // sample code this will be received by ROS
 	steer.driveLogic(distance, angle);
+	Serial.println("LOOP");
 }
