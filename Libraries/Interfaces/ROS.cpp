@@ -1,6 +1,6 @@
 #include "Interfaces/ROS.hpp"
 
-static ROS &ROS::GetInstance()
+ROS &ROS::GetInstance()
 {
     static ROS instance;
 
