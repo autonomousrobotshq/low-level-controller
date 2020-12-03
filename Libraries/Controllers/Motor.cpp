@@ -42,10 +42,11 @@ bool ControllerMotor::IsReady() {
 	return _current_throttle == _desired_throttle;
 }
 
-void ControllerMotor::SetValues(const e_corner corner, const e_drive_action action, const uint8_t throttle) {
+bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) {
 	_corner = corner;
 	_action = action;
 	_desired_throttle = throttle;
+	return (true);
 }
 
 bool ControllerMotor::Update()
@@ -101,7 +102,7 @@ bool ControllerMotor::Update()
             break;
         }
     }
-    return (false);
+    return (true);
 }
 
 int8_t ControllerMotor::getRPM(const e_corner corner)
