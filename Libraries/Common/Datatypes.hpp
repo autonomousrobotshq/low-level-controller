@@ -21,14 +21,13 @@ enum e_relays {
     REL_V12 = 2,
     REL_MOTORS = 3,
     REL_FAN = 4,
-	REL_BEEP = 6
+    REL_BEEP = 6
 };
 
 enum e_lifephase {
     STARTUP,
     SHUTDOWN
 };
-
 
 typedef struct s_pins_motor {
     const uint8_t pin_pwm;

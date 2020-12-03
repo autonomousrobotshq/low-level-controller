@@ -5,8 +5,8 @@
 
 class SensorCurrent {
 public:
-    float getCurrent();
-    bool update();
+    float GetCurrent();
+    bool Update();
     SensorCurrent(const uint8_t analogPin);
     ~SensorCurrent();
 

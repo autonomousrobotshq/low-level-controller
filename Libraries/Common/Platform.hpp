@@ -75,8 +75,8 @@ const uint8_t pins_relay[NUM_RELAYS] = {
     40,
     41,
     42,
-	43,
-	44
+    43,
+    44
 };
 
 const uint8_t pins_temp[NUM_TEMP] {

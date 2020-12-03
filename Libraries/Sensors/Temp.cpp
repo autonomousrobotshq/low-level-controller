@@ -16,7 +16,7 @@ int8_t SensorTemp::GetTemp()
     return (this->_celsius);
 }
 
-bool SensorTemp::update()
+bool SensorTemp::Update()
 {
     this->_sensors.requestTemperatures();
     this->_celsius = (int)_sensors.getTempCByIndex(0);

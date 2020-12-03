@@ -1,6 +1,6 @@
 #include "Sensors/Current.hpp"
 
-float SensorCurrent::getCurrent()
+float SensorCurrent::GetCurrent()
 {
     return (this->_DCCurrent);
 }
@@ -58,7 +58,7 @@ long SensorCurrent::_readVref()
 #endif
 }
 
-bool SensorCurrent::update()
+bool SensorCurrent::Update()
 {
     this->_DCCurrent = this->_readDCCurrent();
     // check for out of range updates and restore old value if necessary

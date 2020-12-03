@@ -18,21 +18,21 @@ class ControllerMotor : public Controller {
 public:
     bool Driver(const e_corner corner, const e_drive_action action);
     bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
-    int8_t getRPM(const e_corner);
+    int8_t GetRPM(const e_corner);
     bool Driver();
-	bool IsReady();
-	bool Update();
+    bool IsReady();
+    bool Update();
     ControllerMotor();
     ~ControllerMotor();
 
 private:
-    ActuatorMotor*	_actuators_motor[NUM_MOTORS];
-    SensorCurrent*	_sensors_current[NUM_MOTORS];
-    SensorHall*		_sensors_hall[NUM_MOTORS];
-	e_corner		_corner;
-	e_drive_action	_action;
-	uint8_t			_desired_throttle;
-	uint8_t			_current_throttle;
+    ActuatorMotor* _actuators_motor[NUM_MOTORS];
+    SensorCurrent* _sensors_current[NUM_MOTORS];
+    SensorHall* _sensors_hall[NUM_MOTORS];
+    e_corner _corner;
+    e_drive_action _action;
+    uint8_t _desired_throttle;
+    uint8_t _current_throttle;
 };
 
 #endif

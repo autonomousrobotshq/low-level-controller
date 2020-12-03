@@ -4,9 +4,9 @@
 #include "Common/Datatypes.hpp"
 #include "Common/Vec3.hpp"
 
-#include "Controllers/Motor.hpp"
 #include "Controllers/Anomaly.hpp"
 #include "Controllers/Lifetime.hpp"
+#include "Controllers/Motor.hpp"
 
 #include "Interfaces/ROS.hpp"
 
@@ -39,14 +39,14 @@ public:
     int8_t TEMPGetTemp();
 
     int RAMGetFree();
-	int8_t	GetRPM(const e_corner corner);
+    int8_t GetRPM(const e_corner corner);
 
     void check_anomalies();
 
 private:
     unsigned long _glob_millis;
     ControllerMotor _controller_motor;
-	ControllerLifetime _controller_lifetime;
+    ControllerLifetime _controller_lifetime;
     //ControllerProximity _controller_proximity;
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
@@ -73,6 +73,6 @@ int GPSGetCourse();
 
 int8_t TEMPGetTemp();
 
-int 	RAMGetFree();
+int RAMGetFree();
 } // namespace sb
 #endif

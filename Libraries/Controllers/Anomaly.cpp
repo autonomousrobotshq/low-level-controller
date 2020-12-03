@@ -17,15 +17,15 @@ int ControllerProximity::GetDistance(const e_corner corner)
     return (_ultrasonic_sensors[corner]->GetDistance());
 }
 
-Anomaly::Anomaly() {}
+Anomaly::Anomaly() { }
 
-Anomaly::~Anomaly() {}
+Anomaly::~Anomaly() { }
 
 bool Anomaly::UltraSonic(int left, int right) { return (left < ULTRASONIC_DIST or right < ULTRASONIC_DIST); }
 
 bool Anomaly::Heat_Warning(int8_t degr) { return (degr >= HEAT_WARNING); }
 
-bool Anomaly::Overheating(int8_t degr){ return (degr >= OVERHEATING); }
+bool Anomaly::Overheating(int8_t degr) { return (degr >= OVERHEATING); }
 
 bool Anomaly::Battery(uint8_t percantage) { return (percantage <= LOW_BATTERY); }
 

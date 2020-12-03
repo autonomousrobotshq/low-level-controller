@@ -9,7 +9,7 @@ namespace sb {
 static Sandbox* g_sb;
 
 Sandbox::Sandbox()
-	: _controller_lifetime(LLC::pins_relay)
+    : _controller_lifetime(LLC::pins_relay)
     , _sensor_imu(LLC::pins_imu)
     , _sensor_gps(LLC::pins_gps)
     , _sensor_temp(LLC::pins_temp[0])
@@ -27,7 +27,7 @@ Sandbox::~Sandbox()
 
 void Sandbox::Setup()
 {
-	_controller_lifetime.Lifephase(STARTUP);
+    _controller_lifetime.Lifephase(STARTUP);
 }
 
 void Sandbox::SpinOnce()
@@ -35,10 +35,11 @@ void Sandbox::SpinOnce()
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
-	_sensor_imu.update();
-    // control anomalies
-    //this->check_anomalies();
-	_controller_motor.Update();
+    _sensor_imu.Update();
+    _sensor_gps.Update();
+    _sensor_temp.Update();
+
+    _controller_motor.Update();
 }
 
 void Sandbox::check_anomalies()
@@ -76,7 +77,7 @@ bool Sandbox::Driver(const e_corner corner, const e_drive_action action, const u
     }
 #endif
     _controller_motor.Driver(corner, action, throttle);
-	return (true); // NEEDS TO BE REWORKED
+    return (true); // NEEDS TO BE REWORKED
 }
 
 bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
@@ -86,27 +87,27 @@ bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
 
 int8_t Sandbox::GetRPM(const e_corner corner)
 {
-	return (_controller_motor.getRPM(corner));
+    return (_controller_motor.GetRPM(corner));
 }
 int Sandbox::IMUGetNavigationAngle()
 {
-    return (this->_sensor_imu.getNavigationAngle());
+    return (this->_sensor_imu.GetNavigationAngle());
 }
 
 Vec3 Sandbox::IMUGetMagnetoData()
 {
-    return (this->_sensor_imu.getMagnetometerData());
+    return (this->_sensor_imu.GetMagnetometerData());
 }
 
 Vec3 Sandbox::IMUGetAcceleroData()
 {
-    return (this->_sensor_imu.getAccelerometerData());
+    return (this->_sensor_imu.GetAccelerometerData());
 }
 
 int Sandbox::USGetDistance(e_corner corner)
 {
-	return (0);
-	(void)corner;
+    return (0);
+    (void)corner;
     //return (this->_controller_proximity.GetDistance(corner));
 }
 

@@ -9,8 +9,8 @@
 
 class SensorHall : public Sensor {
 public:
-    int getRPM();
-    bool update();
+    int GetRPM();
+    bool Update();
     SensorHall(const t_pins_hall pins_hall);
     ~SensorHall();
 

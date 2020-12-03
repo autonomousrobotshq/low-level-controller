@@ -18,8 +18,8 @@ private:
 
 class Anomaly {
 public:
-    Anomaly();    
-    ~Anomaly(); 
+    Anomaly();
+    ~Anomaly();
     bool UltraSonic(int left, int right);
     bool Heat_Warning(int8_t degr);
     bool Overheating(int8_t degr);

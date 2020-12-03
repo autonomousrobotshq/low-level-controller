@@ -1,6 +1,6 @@
 #include "Interfaces/ROS.hpp"
 
-ROS &ROS::GetInstance()
+ROS& ROS::GetInstance()
 {
     static ROS instance;
 
@@ -9,7 +9,7 @@ ROS &ROS::GetInstance()
 
 ROS::ROS()
 {
-	// Init ROS node
+    // Init ROS node
     _nh.initNode();
 
     // Init ROS topics
@@ -29,49 +29,48 @@ ROS::~ROS()
     delete _pub_IMU;
 }
 
-void ROS::Send(const ros::Msg *msg, ROS_TOPIC topic)
+void ROS::Send(const ros::Msg* msg, ROS_TOPIC topic)
 {
-	switch(topic) {
-      case GPS :
+    switch (topic) {
+    case GPS:
         _pub_GPS->publish(msg); // cast msg
         break;
-      case IMU :
+    case IMU:
         _pub_IMU->publish(msg); // cast msg
-         break;
-      case TEST :
+        break;
+    case TEST:
         _pub_test->publish(msg); // cast msg
-         break;
-   }
+        break;
+    }
 }
 
 bool ROS::Connected()
 {
-  return _nh.connected();
+    return _nh.connected();
 }
 
 void ROS::SpinOnce()
 {
-	_nh.spinOnce();
+    _nh.spinOnce();
 }
 
-void ROS::Log(const char *msg, ROS_LOG_LEVEL level)
+void ROS::Log(const char* msg, ROS_LOG_LEVEL level)
 {
-	switch(level)
-    {
-        case ROS_DEBUG :
+    switch (level) {
+    case ROS_DEBUG:
         _nh.logdebug(msg);
         break;
-        case ROS_INFO :
+    case ROS_INFO:
         _nh.loginfo(msg);
         break;
-        case ROS_WARN :
+    case ROS_WARN:
         _nh.logwarn(msg);
         break;
-        case ROS_ERROR :
+    case ROS_ERROR:
         _nh.logerror(msg);
         break;
-        case ROS_FATAL :
+    case ROS_FATAL:
         _nh.logfatal(msg);
         break;
-   }
+    }
 }
