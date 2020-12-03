@@ -10,7 +10,7 @@ class ActuatorMotor : public Actuator {
 public:
     void forward(const uint8_t pulse_width);
     void reverse(const uint8_t pulse_width);
-    void halt();
+    void halt(); // not using parameter
     ActuatorMotor(const t_pins_motor pins_motor);
     ~ActuatorMotor();
 
