@@ -37,6 +37,7 @@ void Sandbox::SpinOnce()
 
     // control anomalies
     this->check_anomalies();
+	_controller_motor.Update();
 }
 
 void Sandbox::check_anomalies()
@@ -61,7 +62,6 @@ void Sandbox::check_anomalies()
     {
         // Debug message
     }
-	_controller_motor.Update();
 }
 
 void Sandbox::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
