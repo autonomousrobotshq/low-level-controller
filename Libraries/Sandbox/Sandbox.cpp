@@ -37,31 +37,41 @@ void Sandbox::SpinOnce()
 
     // control anomalies
     this->check_anomalies();
+	_controller_motor.Update();
 }
 
 void Sandbox::check_anomalies()
 {
-    if (this->_anomaly.Battery(100)) // Function needs to be made
+    if (this->_anomaly.battery(100)) // Function needs to be made
     {
+        // DEGBUG: MESSAGE
     }
-    if (this->_anomaly.UltraSonic(USGetDistance(FRONT_LEFT),USGetDistance(FRONT_RIGHT)))
+    if (this->_anomaly.ultrasonic(USGetDistance(FRONT_LEFT),USGetDistance(FRONT_RIGHT)))
     {
-        Driver(ALL, HALT, 0);
+        _controller_motor.SetValues(ALL, HALT, 0);
+        // DEGBUG: MESSAGE
     }
-    if (this->_anomaly.Overheating(TEMPGetTemp()))
+    if (this->_anomaly.overheating(TEMPGetTemp()))
     {
-        // Turn off everything except fans
+        // DEBUG: MESSAGE
+        // TURN EVERYTHING OFF EXCEPT FANS
     }
-    else if (this->_anomaly.Heat_Warning(TEMPGetTemp()))
+    else if (this->_anomaly.heat_warning(TEMPGetTemp()))
     {
-        // Slow down everything
+        // DEBUG: MESSAGE
     }
-    // DEBUG
+    // ONLY DEBUG
     if (this->_anomaly.RAM(RAMGetFree()))
     {
-        // Debug message
+        // DEBUG: MESSAGE
     }
-	_controller_motor.Update();
+    if (this->_anomaly.current((float)0.1, (float)0.1, (float)0.1, (float)0.1))
+    {
+        e_corner corner = this->_anomaly.get_error_current_corner();
+        float current = this->_anomaly.get_error_current_value();
+        // SWITCH OFF
+        // DEBUG: MESSAGE
+    }
 }
 
 void Sandbox::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)

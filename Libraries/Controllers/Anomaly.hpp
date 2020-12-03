@@ -20,11 +20,18 @@ class Anomaly {
 public:
     Anomaly();    
     ~Anomaly(); 
-    bool UltraSonic(int left, int right);
-    bool Heat_Warning(int8_t degr);
-    bool Overheating(int8_t degr);
-    bool Battery(uint8_t percantage);
+    bool ultrasonic(int left, int right);
+    bool heat_warning(int8_t degr);
+    bool overheating(int8_t degr);
+    bool battery(uint8_t percentage);
     bool RAM(int free_space);
+    bool current(float current_fl, float current_fr, float current_bl, float current_br);
+    float get_error_current_value() const;
+    e_corner get_error_current_corner() const;
+
+private:
+    float _error_current;
+    e_corner _corner_current_error;
 };
 
 #endif

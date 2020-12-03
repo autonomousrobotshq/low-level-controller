@@ -18,6 +18,8 @@
 #define HEAT_WARNING 50
 #define LOW_BATTERY 15
 #define RAM_SPACE 100
+#define OVER_CURRENT 30
+#define UNDER_CURRENT 10 ////////?????
 
 /* RANGES */
 #define MOTOR_THROTTLE_HIGH 100
