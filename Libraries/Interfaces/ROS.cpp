@@ -1,33 +1,26 @@
 #include "Interfaces/ROS.hpp"
 
-// uint16_t distance;
-// uint16_t angle;
-// void driveCallBack(const std_msgs::UInt16 &msg)
-// {
-// 	distance = msg.data;
-// 	// angle = msg.angle;
-// }
+static ROS &ROS::GetInstance()
+{
+    static ROS instance;
+
+    return instance;
+}
 
 ROS::ROS()
 {
-	  // Init ROS node
+	// Init ROS node
     _nh.initNode();
 
-    std_msgs::UInt16 placeholder;
     // Init ROS topics
-    _pub_GPS = new ros::Publisher("GPS", &placeholder); // TODO change to real msg
-    _pub_IMU = new ros::Publisher("IMU", &placeholder); // TODO change to real msg
-
-    std_msgs::String str_msg;
-    _pub_test = new ros::Publisher("chatter", &str_msg); // TODO change to real msg
+    _pub_test = new ros::Publisher("chatter", &_str_msg); // Left this in for testing purposes
     _nh.advertise(*_pub_test);
 
-    // Make topics available to ROS
+    // Init ROS topics GPS and IMU
+    _pub_GPS = new ros::Publisher("GPS", &_uint16_msg); // TODO change to custom msg type
     _nh.advertise(*_pub_GPS);
+    _pub_IMU = new ros::Publisher("IMU", &_uint16_msg); // TODO change to custom msg type
     _nh.advertise(*_pub_IMU);
-
-    // Start receiving
-    // ros::Subscriber<std_msgs::UInt16> sub("Drive", &driveCallBack );
 }
 
 ROS::~ROS()
@@ -36,7 +29,7 @@ ROS::~ROS()
     delete _pub_IMU;
 }
 
-void ROS::send(const ros::Msg *msg, ROS_TOPIC topic)
+void ROS::Send(const ros::Msg *msg, ROS_TOPIC topic)
 {
 	switch(topic) {
       case GPS :
@@ -51,11 +44,34 @@ void ROS::send(const ros::Msg *msg, ROS_TOPIC topic)
    }
 }
 
+bool ROS::Connected()
+{
+  return _nh.connected();
+}
+
 void ROS::SpinOnce()
 {
 	_nh.spinOnce();
 }
 
-void ROS::receive()
+void ROS::Log(const char *msg, ROS_LOG_LEVEL level)
 {
+	switch(level)
+    {
+        case ROS_DEBUG :
+        _nh.logdebug(msg);
+        break;
+        case ROS_INFO :
+        _nh.loginfo(msg);
+        break;
+        case ROS_WARN :
+        _nh.logwarn(msg);
+        break;
+        case ROS_ERROR :
+        _nh.logerror(msg);
+        break;
+        case ROS_FATAL :
+        _nh.logfatal(msg);
+        break;
+   }
 }

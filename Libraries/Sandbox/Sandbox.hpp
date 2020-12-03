@@ -44,7 +44,6 @@ private:
     unsigned long _glob_millis;
     ControllerMotor _controller_motor;
     ControllerProximity _controller_proximity;
-    ROS _interface_ros;
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
     SensorTemp _sensor_temp;
