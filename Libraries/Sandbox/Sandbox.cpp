@@ -45,7 +45,7 @@ void Sandbox::check_anomalies()
     }
     if (this->_anomaly.UltraSonic(USGetDistance(FRONT_LEFT),USGetDistance(FRONT_RIGHT)))
     {
-        Driver(ALL, HALT);
+        Driver(ALL, HALT, 0);
     }
     if (this->_anomaly.Overheating(TEMPGetTemp()))
     {
