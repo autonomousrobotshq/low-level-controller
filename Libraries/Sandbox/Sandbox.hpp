@@ -6,6 +6,7 @@
 
 #include "Controllers/Motor.hpp"
 #include "Controllers/Anomaly.hpp"
+#include "Controllers/Lifetime.hpp"
 
 #include "Interfaces/ROS.hpp"
 
@@ -23,7 +24,7 @@ public:
     Sandbox();
     ~Sandbox();
     bool Driver(const e_corner corner, const e_drive_action action);
-    void Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
+    bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
 
     int IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();
@@ -45,7 +46,8 @@ public:
 private:
     unsigned long _glob_millis;
     ControllerMotor _controller_motor;
-    ControllerProximity _controller_proximity;
+	ControllerLifetime _controller_lifetime;
+    //ControllerProximity _controller_proximity;
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
     SensorTemp _sensor_temp;

@@ -20,24 +20,6 @@ ControllerMotor::~ControllerMotor()
     }
 }
 
-bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action)
-{
-    // motor logic here
-    // if (_sensors_current[corner]->getCurrent()) // is overcurrent
-    // 	return false; // error: overcurrent
-    // if (corner == ALL) {
-    // 	_actuators_motor[FRONT_LEFT]->drive_commands[action]();
-    // 	_actuators_motor[FRONT_RIGHT]->drive_commands[action];
-    // 	_actuators_motor[BACK_LEFT]->drive_commands[action];
-    // 	_actuators_motor[BACK_RIGHT]->drive_commands[action];
-    // }
-    // else
-    // 	_actuators_motor[corner]->drive_commands[action];
-    (void)corner;
-    (void)action;
-    return (false);
-}
-
 bool ControllerMotor::IsReady() {
 	return _current_throttle == _desired_throttle;
 }
@@ -49,13 +31,20 @@ bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action,
 	return (true);
 }
 
+bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action)
+{
+	_corner = corner;
+	_action = action;
+	_desired_throttle = 255;
+	return (true);
+}
+
 bool ControllerMotor::Update()
 {
-	Sensor	t;
-
     // motor logic here
-    if (_sensors_current[_corner]->getCurrent()) // is overcurrent
-        return false; // error: overcurrent
+    //if (_sensors_current[_corner]->getCurrent()) // is overcurrent
+    //    return false; // error: overcurrent
+
     if (_corner == ALL) {
         switch (_action) {
 			case FORWARD:
@@ -67,8 +56,8 @@ bool ControllerMotor::Update()
 				_actuators_motor[BACK_RIGHT]->forward(_current_throttle);
 				break;
 			case BACKWARD:
-				if (_current_throttle > _desired_throttle)
-					_current_throttle -= 1;
+				if (_current_throttle < _desired_throttle)
+					_current_throttle += 1;
 				_actuators_motor[FRONT_LEFT]->reverse(_current_throttle);
 				_actuators_motor[FRONT_RIGHT]->reverse(_current_throttle);
 				_actuators_motor[BACK_LEFT]->reverse(_current_throttle);

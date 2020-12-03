@@ -9,7 +9,8 @@ namespace sb {
 static Sandbox* g_sb;
 
 Sandbox::Sandbox()
-    : _sensor_imu(LLC::pins_imu)
+	: _controller_lifetime(LLC::pins_relay)
+    , _sensor_imu(LLC::pins_imu)
     , _sensor_gps(LLC::pins_gps)
     , _sensor_temp(LLC::pins_temp[0])
 {
@@ -26,7 +27,7 @@ Sandbox::~Sandbox()
 
 void Sandbox::Setup()
 {
-
+	_controller_lifetime.Lifephase(STARTUP);
 }
 
 void Sandbox::SpinOnce()
@@ -34,37 +35,37 @@ void Sandbox::SpinOnce()
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
-
+	_sensor_imu.update();
     // control anomalies
-    this->check_anomalies();
+    //this->check_anomalies();
+	_controller_motor.Update();
 }
 
 void Sandbox::check_anomalies()
 {
-    if (this->_anomaly.Battery(100)) // Function needs to be made
-    {
-    }
-    if (this->_anomaly.UltraSonic(USGetDistance(FRONT_LEFT),USGetDistance(FRONT_RIGHT)))
-    {
-        Driver(ALL, HALT, 0);
-    }
-    if (this->_anomaly.Overheating(TEMPGetTemp()))
-    {
-        // Turn off everything except fans
-    }
-    else if (this->_anomaly.Heat_Warning(TEMPGetTemp()))
-    {
-        // Slow down everything
-    }
-    // DEBUG
-    if (this->_anomaly.RAM(RAMGetFree()))
-    {
-        // Debug message
-    }
-	_controller_motor.Update();
+    //if (this->_anomaly.Battery(100)) // Function needs to be made
+    //{
+    //}
+    //if (this->_anomaly.UltraSonic(USGetDistance(FRONT_LEFT),USGetDistance(FRONT_RIGHT)))
+    //{
+    //    Driver(ALL, HALT, 0);
+    //}
+    //if (this->_anomaly.Overheating(TEMPGetTemp()))
+    //{
+    //    // Turn off everything except fans
+    //}
+    //else if (this->_anomaly.Heat_Warning(TEMPGetTemp()))
+    //{
+    //    // Slow down everything
+    //}
+    //// DEBUG
+    //if (this->_anomaly.RAM(RAMGetFree()))
+    //{
+    //    // Debug message
+    //}
 }
 
-void Sandbox::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
+bool Sandbox::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
 {
 #if VERBOSITY & DEBUG
     if (throttle >= MOTOR_THROTTLE_LOW && throttle <= MOTOR_THROTTLE_HIGH)
@@ -74,13 +75,14 @@ void Sandbox::Driver(const e_corner corner, const e_drive_action action, const u
         ;
     }
 #endif
-    _controller_motor.SetValues(corner, action, throttle);
+    _controller_motor.Driver(corner, action, throttle);
+	return (true); // NEEDS TO BE REWORKED
 }
 
-// bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
-// {
-//     return (_controller_motor.Driver(corner, action));
-// }
+bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
+{
+    return (_controller_motor.Driver(corner, action));
+}
 
 int8_t Sandbox::GetRPM(const e_corner corner)
 {
@@ -103,7 +105,9 @@ Vec3 Sandbox::IMUGetAcceleroData()
 
 int Sandbox::USGetDistance(e_corner corner)
 {
-    return (this->_controller_proximity.GetDistance(corner));
+	return (0);
+	(void)corner;
+    //return (this->_controller_proximity.GetDistance(corner));
 }
 
 void Sandbox::GPSGetLocation(float* flat, float* flon)
@@ -136,8 +140,8 @@ int Sandbox::RAMGetFree()
     return (freeMemory());
 }
 
-// bool Driver(const e_corner corner, const e_drive_action action) { return (g_sb->Driver(corner, action)); }
-// bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(corner, action, throttle)); }
+bool Driver(const e_corner corner, const e_drive_action action) { return (g_sb->Driver(corner, action)); }
+bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(corner, action, throttle)); }
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
 Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
 Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }
