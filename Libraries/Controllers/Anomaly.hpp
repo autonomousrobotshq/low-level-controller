@@ -16,4 +16,15 @@ private:
     SensorUltrasonic* _ultrasonic_sensors[NUM_ULTRASONIC];
 };
 
+class Anomaly {
+public:
+    Anomaly();    
+    ~Anomaly(); 
+    bool UltraSonic(int left, int right);
+    bool Heat_Warning(int8_t degr);
+    bool Overheating(int8_t degr);
+    bool Battery(uint8_t percantage);
+    bool RAM(int free_space);
+};
+
 #endif

@@ -12,6 +12,13 @@
 #include "Common/Datatypes.hpp"
 #include "Common/Deployment.hpp"
 
+/* ANOMALY DATA */
+#define ULTRASONIC_DIST 30
+#define OVERHEATING 70
+#define HEAT_WARNING 50
+#define LOW_BATTERY 15
+#define RAM_SPACE 100
+
 /* RANGES */
 #define MOTOR_THROTTLE_HIGH 100
 #define MOTOR_THROTTLE_LOW 0
@@ -39,7 +46,7 @@ const t_pins_motor pins_motors[NUM_MOTORS] = {
 const t_pins_imu pins_imu = { 20, 21 };
 
 // BAUDRATE, HARDWARESERIAL
-const t_pins_gps pins_gps = { 9600, Serial2 };
+const t_pins_gps pins_gps = { 9600, Serial }; // Changed Serial2 --> Serial for mac users
 
 // PIN, INTERRUPT INDEX
 const t_pins_hall pins_hall[NUM_MOTORS] = {
