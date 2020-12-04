@@ -13,15 +13,17 @@ ARDUINO_LIBS += External/Vector-1.2.0
 ARDUINO_LIBS += External/RosserialArduino-0.7.9
 ARDUINO_LIBS += External/TinyGPS-13.0.0
 ARDUINO_LIBS += External/MemoryFree-a2d60bd
+ARDUINO_LIBS += External/ArduinoPIDLibrary-1.2.0
 
 ARDUINO_LIBS += . # relative offsets are used for internal libraries
-ARDUINO_LIBS += Sandbox
+
+ARDUINO_LIBS += Common
 ARDUINO_LIBS += Sensors
 ARDUINO_LIBS += Actuators
 ARDUINO_LIBS += Controllers
 ARDUINO_LIBS += Interfaces
-ARDUINO_LIBS += Common
-
+ARDUINO_LIBS += Sandbox
+ARDUINO_LIBS += Logic
 
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.
@@ -54,11 +56,8 @@ endif
 
 ### BOARD_TAG
 ### It must be set to the board you are currently using. (i.e uno, mega2560, etc.)
-# BOARD_TAG             = mega
-# BOARD_SUB             = atmega2560
-
-#ARDUIN UNO
-BOARD_TAG             = uno
+BOARD_TAG             = mega
+BOARD_SUB             = atmega2560
 
 ### MONITOR_BAUDRATE
 ### It must be set to Serial baudrate value you are using.
@@ -98,12 +97,12 @@ CXXFLAGS_STD      = -std=gnu++11
 
 ### CXXFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
-CXXFLAGS         += -Wall -Wextra -Os -g
+CXXFLAGS         += -Wall -Wextra -Werror -g
 CXXFLAGS		+= -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-truncation -Wno-restrict -Wno-sized-deallocation -Wno-switch -Wno-implicit-fallthrough # just to get the bloody external libraries to work..
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
-MONITOR_PORT      = /dev/tty.usbmodem141301 # /dev/ttyACM1
+MONITOR_PORT      = * # /dev/ttyACM1
 
 ### CURRENT_DIR
 ### Do not touch - used for binaries path

@@ -10,10 +10,10 @@ class SensorIMU {
 public:
     SensorIMU(const t_pins_imu pins_imu);
     ~SensorIMU();
-    bool update();
-    float getNavigationAngle();
-    Vec3 getMagnetometerData();
-    Vec3 getAccelerometerData();
+    bool Update();
+    float GetNavigationAngle();
+    Vec3 GetMagnetometerData();
+    Vec3 GetAccelerometerData();
 
 private:
     const uint8_t _pin_sda, _pin_scl;

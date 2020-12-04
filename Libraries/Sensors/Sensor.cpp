@@ -1,7 +1,7 @@
 #include "Sensor.hpp"
 #include <Arduino.h>
 
-unsigned long Sensor::getDuration()
+unsigned long Sensor::GetDuration()
 {
     if (this->_glob_millis) {
         unsigned long last_millis_tmp = this->_last_millis;
@@ -11,12 +11,12 @@ unsigned long Sensor::getDuration()
         return (0);
 }
 
-bool Sensor::isWaiting()
+bool Sensor::IsWaiting()
 {
     return this->_end_millis > millis();
 }
 
-void Sensor::setWaitTime(const unsigned long wait_millis)
+void Sensor::SetWaitTime(const unsigned long wait_millis)
 {
     this->_end_millis = millis() + wait_millis;
 }

@@ -19,7 +19,7 @@ public:
     ~SensorTemp();
 
     int8_t GetTemp();
-    bool update();
+    bool Update();
 };
 
 #endif

@@ -6,6 +6,7 @@
 #include "Controllers/Controller.hpp"
 #include "Sensors/Ultrasonic.hpp"
 
+// should the MotorController class hold ownership over the ultrasonic sensor?
 class ControllerProximity : public Controller {
 public:
     ControllerProximity();
@@ -16,14 +17,18 @@ private:
     SensorUltrasonic* _ultrasonic_sensors[NUM_ULTRASONIC];
 };
 
-class Anomaly {
+class ControllerAnomaly {
 public:
-    Anomaly();    
-    ~Anomaly(); 
-    bool ultrasonic(int left, int right);
-    bool heat_warning(int8_t degr);
-    bool overheating(int8_t degr);
-    bool battery(uint8_t percentage);
+    ControllerAnomaly();
+    ~ControllerAnomaly();
+
+	// change to clear boolean naming like IsOverheated
+    bool UltraSonic(int left, int right);
+    bool Heat_Warning(int8_t degr);
+    bool Overheating(int8_t degr);
+    bool Battery(uint8_t percentage);
+
+	//this is a debugging option -> only check for things that we can react upon
     bool RAM(int free_space);
     bool current(float current_fl, float current_fr, float current_bl, float current_br);
     float get_error_current_value() const;

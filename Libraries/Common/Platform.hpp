@@ -48,7 +48,7 @@ const t_pins_motor pins_motors[NUM_MOTORS] = {
 const t_pins_imu pins_imu = { 20, 21 };
 
 // BAUDRATE, HARDWARESERIAL
-const t_pins_gps pins_gps = { 9600, Serial }; // Changed Serial2 --> Serial for mac users
+const t_pins_gps pins_gps = { 9600, Serial2 };
 
 // PIN, INTERRUPT INDEX
 const t_pins_hall pins_hall[NUM_MOTORS] = {
@@ -77,8 +77,8 @@ const uint8_t pins_relay[NUM_RELAYS] = {
     40,
     41,
     42,
-	43,
-	44
+    43,
+    44
 };
 
 const uint8_t pins_temp[NUM_TEMP] {

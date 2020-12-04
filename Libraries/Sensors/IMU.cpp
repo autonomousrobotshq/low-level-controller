@@ -9,7 +9,7 @@ SensorIMU::SensorIMU(const t_pins_imu pins_imu)
 }
 SensorIMU::~SensorIMU() { }
 
-bool SensorIMU::update()
+bool SensorIMU::Update()
 {
     _compass.read();
     _navigationAngle = _compass.getNavigationAngle();
@@ -22,17 +22,17 @@ bool SensorIMU::update()
     return (true);
 }
 
-float SensorIMU::getNavigationAngle()
+float SensorIMU::GetNavigationAngle()
 {
     return (this->_navigationAngle);
 }
 
-Vec3 SensorIMU::getAccelerometerData()
+Vec3 SensorIMU::GetAccelerometerData()
 {
     return (Vec3(_compass.accelerometer.x, _compass.accelerometer.y, _compass.accelerometer.z));
 }
 
-Vec3 SensorIMU::getMagnetometerData()
+Vec3 SensorIMU::GetMagnetometerData()
 {
     return (Vec3(_compass.magnetometer.x, _compass.magnetometer.y, _compass.magnetometer.z));
 }

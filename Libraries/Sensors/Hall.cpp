@@ -6,16 +6,22 @@
 // attach interrupt doesnt allow arguments(like a 'this' argument), so hardcoded globs are required
 static unsigned int pulses[NUM_MOTORS];
 
-bool SensorHall::update()
+bool SensorHall::Update()
 {
-    unsigned long millisDev = this->getDuration();
+    unsigned long millisDev = this->GetDuration();
     this->_rpm = millisDev == 0 ? 0 : (pulses[this->_interrupt_index] / HALL_CPR) / (millisDev / 60000);
     pulses[this->_interrupt_index] = 0;
+	this->_revelations = pulses[this->_interrupt_index] / HALL_CPR;
     // error handling here
     return (true);
 }
 
-int SensorHall::getRPM()
+int	SensorHall::GetRevelations()
+{
+	return (this->_revelations);
+}
+
+int SensorHall::GetRPM()
 {
     return (this->_rpm);
 }

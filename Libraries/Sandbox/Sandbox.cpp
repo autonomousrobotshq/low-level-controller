@@ -9,7 +9,8 @@ namespace sb {
 static Sandbox* g_sb;
 
 Sandbox::Sandbox()
-    : _sensor_imu(LLC::pins_imu)
+    : _controller_lifetime(LLC::pins_relay)
+    , _sensor_imu(LLC::pins_imu)
     , _sensor_gps(LLC::pins_gps)
     , _sensor_temp(LLC::pins_temp[0])
 {
@@ -26,7 +27,7 @@ Sandbox::~Sandbox()
 
 void Sandbox::Setup()
 {
-
+    _controller_lifetime.Lifephase(STARTUP);
 }
 
 void Sandbox::SpinOnce()
@@ -34,49 +35,38 @@ void Sandbox::SpinOnce()
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
+    _sensor_imu.Update();
+    _sensor_gps.Update();
+    _sensor_temp.Update();
 
-    // control anomalies
-    this->check_anomalies();
-	_controller_motor.Update();
+    _controller_motor.Update();
 }
 
 void Sandbox::check_anomalies()
 {
-    if (this->_anomaly.battery(100)) // Function needs to be made
-    {
-        // DEGBUG: MESSAGE
-    }
-    if (this->_anomaly.ultrasonic(USGetDistance(FRONT_LEFT),USGetDistance(FRONT_RIGHT)))
-    {
-        _controller_motor.SetValues(ALL, HALT, 0);
-        // DEGBUG: MESSAGE
-    }
-    if (this->_anomaly.overheating(TEMPGetTemp()))
-    {
-        // DEBUG: MESSAGE
-        // TURN EVERYTHING OFF EXCEPT FANS
-    }
-    else if (this->_anomaly.heat_warning(TEMPGetTemp()))
-    {
-        // DEBUG: MESSAGE
-    }
-    // ONLY DEBUG
-    if (this->_anomaly.RAM(RAMGetFree()))
-    {
-        // DEBUG: MESSAGE
-    }
-    if (this->_anomaly.current(this->get_current(FRONT_LEFT), this->get_current(FRONT_RIGHT), this->get_current(BACK_LEFT), this->get_current(BACK_RIGHT)))
-    {
-        e_corner corner = this->_anomaly.get_error_current_corner();
-        float current = this->_anomaly.get_error_current_value();
-        (void)corner;
-        (void)current;
-        // SWITCH OFF
-        // DEBUG: MESSAGE
-    }
+    //if (this->_anomaly.Battery(100)) // Function needs to be made
+    //{
+    //}
+    //if (this->_anomaly.UltraSonic(USGetDistance(FRONT_LEFT),USGetDistance(FRONT_RIGHT)))
+    //{
+    //    Driver(ALL, HALT, 0);
+    //}
+    //if (this->_anomaly.Overheating(TEMPGetTemp()))
+    //{
+    //    // Turn off everything except fans
+    //}
+    //else if (this->_anomaly.Heat_Warning(TEMPGetTemp()))
+    //{
+    //    // Slow down everything
+    //}
+    //// DEBUG
+    //if (this->_anomaly.RAM(RAMGetFree()))
+    //{
+    //    // Debug message
+    //}
 }
 
-void Sandbox::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
+bool Sandbox::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
 {
 #if VERBOSITY & DEBUG
     if (throttle >= MOTOR_THROTTLE_LOW && throttle <= MOTOR_THROTTLE_HIGH)
@@ -86,32 +76,45 @@ void Sandbox::Driver(const e_corner corner, const e_drive_action action, const u
         ;
     }
 #endif
-    _controller_motor.SetValues(corner, action, throttle);
+    _controller_motor.Driver(corner, action, throttle);
+    return (true); // NEEDS TO BE REWORKED
 }
 
-// bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
-// {
-//     return (_controller_motor.Driver(corner, action));
-// }
+bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
+{
+    return (_controller_motor.Driver(corner, action));
+}
+
+int8_t Sandbox::GetRPM(const e_corner corner)
+{
+    return (_controller_motor.GetRPM(corner));
+}
+
+int8_t Sandbox::GetRevelation(const e_corner corner)
+{
+	return (_controller_motor.GetRevelation(corner));
+}
 
 int Sandbox::IMUGetNavigationAngle()
 {
-    return (this->_sensor_imu.getNavigationAngle());
+    return (this->_sensor_imu.GetNavigationAngle());
 }
 
 Vec3 Sandbox::IMUGetMagnetoData()
 {
-    return (this->_sensor_imu.getMagnetometerData());
+    return (this->_sensor_imu.GetMagnetometerData());
 }
 
 Vec3 Sandbox::IMUGetAcceleroData()
 {
-    return (this->_sensor_imu.getAccelerometerData());
+    return (this->_sensor_imu.GetAccelerometerData());
 }
 
 int Sandbox::USGetDistance(e_corner corner)
 {
-    return (this->_controller_proximity.GetDistance(corner));
+    return (0);
+    (void)corner;
+    //return (this->_controller_proximity.GetDistance(corner));
 }
 
 void Sandbox::GPSGetLocation(float* flat, float* flon)
@@ -144,70 +147,17 @@ int Sandbox::RAMGetFree()
     return (freeMemory());
 }
 
-float Sandbox::get_current(e_corner corner)
-{
-    return (this->_controller_motor.get_current(corner));
-}
-
-bool Driver(const e_corner corner, const e_drive_action action) {
-	return (g_sb->Driver(corner, action));
-}
-
-// bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) {
-// 	return (g_sb->Driver(corner, action, throttle));
-
-// }
-
-int IMUGetNavigationAngle() {
-	return (g_sb->IMUGetNavigationAngle());
+bool Driver(const e_corner corner, const e_drive_action action) { return (g_sb->Driver(corner, action)); }
+bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(corner, action, throttle)); }
+int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
+Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
+Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }
+int USGetDistance(e_corner corner) { return (g_sb->USGetDistance(corner)); }
+void GPSGetLocation(float* flat, float* flon) { g_sb->GPSGetLocation(flat, flon); }
+void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time) { g_sb->GPSGetTime(age, date, time); }
+int GPSGetSpeed() { return (g_sb->GPSGetSpeed()); }
+int GPSGetCourse() { return (g_sb->GPSGetCourse()); }
+int8_t TEMPGetTemp() { return (g_sb->TEMPGetTemp()); }
+int RAMGetFree() { return (g_sb->RAMGetFree()); }
 
 }
-
-Vec3 IMUGetMagnetoData() {
-	return (g_sb->IMUGetMagnetoData());
-
-}
-
-Vec3 IMUGetAcceleroData() {
-	return (g_sb->IMUGetAcceleroData());
-
-}
-
-int USGetDistance(e_corner corner) {
-	return (g_sb->USGetDistance(corner));
-
-}
-
-void GPSGetLocation(float* flat, float* flon) {
-	g_sb->GPSGetLocation(flat, flon);
-}
-
-void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time) {
-	g_sb->GPSGetTime(age, date, time);
-}
-
-int GPSGetSpeed() {
-	return (g_sb->GPSGetSpeed());
-
-}
-
-int GPSGetCourse() {
-	return (g_sb->GPSGetCourse());
-
-}
-
-int8_t TEMPGetTemp() {
-	return (g_sb->TEMPGetTemp());
-
-}
-
-int RAMGetFree() {
-	return (g_sb->RAMGetFree());
-
-}
-
-float get_current(e_corner corner) {
-    return (g_sb->get_current(corner));
-}
-
-} // namespace sb
