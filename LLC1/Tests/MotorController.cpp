@@ -30,7 +30,17 @@ void setup() //runs on startup
 
 void loop() // loops indefinitely
 {
-	Driver(BOTH_SIDES, FORWARD);
+	Driver(RIGHT_SIDE, FORWARD);
+	Driver(LEFT_SIDE, BACKWARD);
+
+	//Driver(RIGHT_SIDE, BACKWARD);
+	//Driver(LEFT_SIDE, FORWARD);
+
+	//Driver(BOTH_SIDES, BACKWARD);
+	//Driver(BOTH_SIDES, FORWARD);
+	
+	//Driver(BOTH_SIDES, HALT);
+	//Driver(BOTH_SIDES, HALT);
 
 	delay (20);
 	sandbox->SpinOnce();
