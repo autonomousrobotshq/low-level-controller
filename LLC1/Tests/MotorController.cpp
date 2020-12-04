@@ -12,10 +12,16 @@ using namespace sb;
 
 Sandbox *sandbox;
 
+bool DriverLogicUpdate(void) // is called just before update of motorcontroller in Sandbox::Spinonce
+{
+	return (true);
+}
+
 void setup() //runs on startup
 {
 	sandbox = new Sandbox();
 	sandbox->Setup();
+	sandbox->SetDriverLogicUpdate(DriverLogicUpdate);
 
 	Serial.begin(115200);
 
@@ -24,8 +30,7 @@ void setup() //runs on startup
 
 void loop() // loops indefinitely
 {
-
-	Driver(ALL, FORWARD);
+	Driver(BOTH_SIDES, FORWARD);
 
 	delay (20);
 	sandbox->SpinOnce();
