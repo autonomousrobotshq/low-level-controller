@@ -54,22 +54,22 @@ void ROS::SpinOnce()
     _nh.spinOnce();
 }
 
-void ROS::Log(const char* msg, ROS_LOG_LEVEL level)
+void ROS::Log(const char* msg, LOG_LEVEL level)
 {
     switch (level) {
-    case ROS_DEBUG:
+    case LOG_DEBUG:
         _nh.logdebug(msg);
         break;
-    case ROS_INFO:
+    case LOG_INFO:
         _nh.loginfo(msg);
         break;
-    case ROS_WARN:
+    case LOG_WARN:
         _nh.logwarn(msg);
         break;
-    case ROS_ERROR:
+    case LOG_ERROR:
         _nh.logerror(msg);
         break;
-    case ROS_FATAL:
+    case LOG_FATAL:
         _nh.logfatal(msg);
         break;
     }

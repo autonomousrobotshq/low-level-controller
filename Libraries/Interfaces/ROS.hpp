@@ -2,6 +2,7 @@
 #define INTERFACE_ROS_HPP
 
 #include "Interfaces/Interface.hpp"
+#include "Common/Logger.hpp"
 #include "ros.h"
 #include <std_msgs/String.h>
 #include <std_msgs/UInt16.h>
@@ -34,7 +35,7 @@ public:
     ~ROS();
 
     void Send(const ros::Msg* msg, ROS_TOPIC topic);
-    void Log(const char* msg, ROS_LOG_LEVEL level);
+    void Log(const char* msg, LOG_LEVEL level);
     void SpinOnce();
     bool Connected();
 
