@@ -8,12 +8,18 @@
 #include <HardwareSerial.h>
 #include <stdint.h>
 
+enum e_side {
+    LEFT_SIDE = 0,
+    RIGHT_SIDE = 1,
+    BOTH_SIDES = 2,
+    ALL = 3
+};
+
 enum e_corner {
     FRONT_LEFT = 0,
     FRONT_RIGHT = 1,
     BACK_LEFT = 2,
-    BACK_RIGHT = 3,
-    ALL = 4
+    BACK_RIGHT = 3
 };
 
 enum e_relays {

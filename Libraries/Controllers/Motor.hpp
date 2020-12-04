@@ -8,7 +8,7 @@
 #include "Sensors/Hall.hpp"
 #include "Sensors/Sensor.hpp"
 
-enum e_drive_action {
+enum e_drive_action { // SHOULDN'T THIS BE IN Datatpes.hpp???
     FORWARD = 0,
     BACKWARD = 1,
     HALT = 2
@@ -16,8 +16,8 @@ enum e_drive_action {
 
 class ControllerMotor : public Controller {
 public:
-    bool Driver(const e_corner corner, const e_drive_action action);
-    bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
+    bool Driver(const e_side side, const e_drive_action action);
+    bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
 	bool SetThrottle();
     int8_t GetRPM(const e_corner);
 	int8_t GetRevelation(const e_corner);
@@ -31,7 +31,8 @@ private:
     ActuatorMotor* _actuators_motor[NUM_MOTORS];
     SensorCurrent* _sensors_current[NUM_MOTORS];
     SensorHall* _sensors_hall[NUM_MOTORS];
-    e_corner _corner;
+    // e_corner _corner;
+    e_side _side;
     e_drive_action _action;
     uint8_t _desired_throttle;
     uint8_t _current_throttle;
