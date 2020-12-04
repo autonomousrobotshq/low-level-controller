@@ -56,7 +56,7 @@ bool ControllerMotor::Update()
     //if (_sensors_current[_corner]->getCurrent()) // is overcurrent
     //    return false; // error: overcurrent
 
-    if (_side == ALL) {
+    if (_side == BOTH_SIDES) {
         switch (_action) {
         case FORWARD:
             SetThrottle();
