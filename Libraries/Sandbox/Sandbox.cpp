@@ -89,6 +89,12 @@ int8_t Sandbox::GetRPM(const e_corner corner)
 {
     return (_controller_motor.GetRPM(corner));
 }
+
+int8_t Sandbox::GetRevelation(const e_corner corner)
+{
+	return (_controller_motor.GetRevelation(corner));
+}
+
 int Sandbox::IMUGetNavigationAngle()
 {
     return (this->_sensor_imu.GetNavigationAngle());

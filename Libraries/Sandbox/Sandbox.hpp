@@ -40,6 +40,7 @@ public:
 
     int RAMGetFree();
     int8_t GetRPM(const e_corner corner);
+	int8_t GetRevelation(const e_corner corner);
 
     void check_anomalies();
 

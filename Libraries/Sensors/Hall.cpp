@@ -11,8 +11,14 @@ bool SensorHall::Update()
     unsigned long millisDev = this->GetDuration();
     this->_rpm = millisDev == 0 ? 0 : (pulses[this->_interrupt_index] / HALL_CPR) / (millisDev / 60000);
     pulses[this->_interrupt_index] = 0;
+	this->_revelations = pulses[this->_interrupt_index] / HALL_CPR;
     // error handling here
     return (true);
+}
+
+int	SensorHall::GetRevelations()
+{
+	return (this->_revelations);
 }
 
 int SensorHall::GetRPM()

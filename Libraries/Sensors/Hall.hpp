@@ -10,6 +10,7 @@
 class SensorHall : public Sensor {
 public:
     int GetRPM();
+	int	GetRevelations();
     bool Update();
     SensorHall(const t_pins_hall pins_hall);
     ~SensorHall();
@@ -17,6 +18,7 @@ public:
 private:
     const uint8_t _interrupt_index, _interrupt_pin;
     unsigned int _rpm;
+	unsigned int _revelations;
 };
 
 #endif
