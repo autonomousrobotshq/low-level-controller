@@ -1,8 +1,6 @@
 #include "Common/Deployment.hpp"
-#include "Sandbox/Sandbox.hpp"
-#include "Sensors/IMU.hpp"
-#include "Common/Platform.hpp"
 #include "Logic/Steering.hpp"
+#include "Sandbox/Sandbox.hpp"
 
 /*
 ** SAMPLE CODE
@@ -13,29 +11,33 @@ using namespace sb;
 Sandbox *sandbox;
 LogicSteering *steering;
 
+bool DriverLogicUpdate(void) // is called just before update of motorcontroller in Sandbox::Spinonce
+{
+	steering->drive();
+	return (true);
+}
+
 void setup() //runs on startup
 {
 	sandbox = new Sandbox();
 	sandbox->Setup();
-
+	sandbox->SetDriverLogicUpdate(DriverLogicUpdate);
+	
 	steering = new LogicSteering(*sandbox);
 
-	Serial.begin(115200);
+    Serial.begin(115200);
 
-	Serial.println("Test_SteeringLogic.cpp");
+    Serial.println("Test_SteeringLogic.cpp");
 }
 
 void loop() // loops indefinitely
 {
-	int distance = 150; // sample code this will be received by ROS
-	int angle = 90; // sample code this will be received by ROS
-
-	steering->driveLogic(distance, angle);
-
+	
 	sandbox->SpinOnce();
 }
 
-void post() // runs after break in loop()
+void post()
 {
-	Serial.println("DIDDA");
+
 }
+

@@ -43,16 +43,12 @@ void LogicSteering::driveLogic(int distance, int angle)
 void LogicSteering::_pivot(int angle)
 {
     if (angle < 0) {
-        _sandbox.Driver(FRONT_LEFT, FORWARD, _power);
-        _sandbox.Driver(BACK_LEFT, FORWARD, _power);
-        _sandbox.Driver(FRONT_RIGHT, BACKWARD, _power);
-        _sandbox.Driver(BACK_RIGHT, BACKWARD, _power);
+        _sandbox.Driver(LEFT_SIDE, FORWARD, _power);
+        _sandbox.Driver(RIGHT_SIDE, BACKWARD, _power);
 	}
     if (angle > 0) {
-		_sandbox.Driver(FRONT_LEFT, BACKWARD, _power);
-        _sandbox.Driver(BACK_LEFT, BACKWARD, _power);
-        _sandbox.Driver(FRONT_RIGHT, FORWARD, _power);
-        _sandbox.Driver(BACK_RIGHT, FORWARD, _power);
+		_sandbox.Driver(LEFT_SIDE, BACKWARD, _power);
+        _sandbox.Driver(RIGHT_SIDE, FORWARD, _power);
 	}
 }
 
@@ -61,17 +57,13 @@ void LogicSteering::_turnAngle(int angle)
 	
     if (angle > 0)
 	{
-        _sandbox.Driver(FRONT_RIGHT, HALT, _power);
-        _sandbox.Driver(BACK_RIGHT, HALT, _power);
-        _sandbox.Driver(FRONT_LEFT, FORWARD, _power);
-        _sandbox.Driver(BACK_LEFT, FORWARD, _power);
+        _sandbox.Driver(RIGHT_SIDE, HALT, _power);
+        _sandbox.Driver(LEFT_SIDE, FORWARD, _power);
     }
 	else 
 	{
-        _sandbox.Driver(FRONT_RIGHT, FORWARD, _power);
-        _sandbox.Driver(BACK_RIGHT, FORWARD, _power);
-        _sandbox.Driver(FRONT_LEFT, HALT, _power);
-        _sandbox.Driver(BACK_LEFT, HALT, _power);
+        _sandbox.Driver(RIGHT_SIDE, FORWARD, _power);
+        _sandbox.Driver(LEFT_SIDE, HALT, _power);
     }
 	
 }
@@ -79,18 +71,14 @@ void LogicSteering::_turnAngle(int angle)
 void LogicSteering::_driveDistance()
 {
     _target_count_distance = _numRev_distance * _countsPerRev;
-	_sandbox.Driver(FRONT_RIGHT, FORWARD, _right_power);
-	_sandbox.Driver(BACK_RIGHT, FORWARD, _right_power);
-	_sandbox.Driver(FRONT_LEFT, FORWARD, _left_power);
-	_sandbox.Driver(BACK_LEFT, FORWARD, _left_power);
+	_sandbox.Driver(RIGHT_SIDE, FORWARD, _right_power);
+	_sandbox.Driver(LEFT_SIDE, FORWARD, _left_power);
 }
 
 void LogicSteering::_stop()
 {
-	_sandbox.Driver(FRONT_LEFT, HALT, _power);
-	_sandbox.Driver(BACK_LEFT, HALT, _power);
-	_sandbox.Driver(FRONT_RIGHT, HALT, _power);
-	_sandbox.Driver(BACK_RIGHT, HALT, _power);
+	_sandbox.Driver(LEFT_SIDE, HALT, _power);
+	_sandbox.Driver(RIGHT_SIDE, HALT, _power);
 }
 
 void LogicSteering::_update_turn()
@@ -124,10 +112,8 @@ void LogicSteering::_update_distance()
 			_left_power = _left_power + _offset;
 			_right_power = _right_power - _offset;
 		}
-		_sandbox.Driver(FRONT_RIGHT, FORWARD, _right_power);
-		_sandbox.Driver(BACK_RIGHT, FORWARD, _right_power);
-		_sandbox.Driver(FRONT_LEFT, FORWARD, _left_power);
-		_sandbox.Driver(BACK_LEFT, FORWARD, _left_power);
+		_sandbox.Driver(RIGHT_SIDE, FORWARD, _right_power);
+		_sandbox.Driver(LEFT_SIDE, FORWARD, _left_power);
 		_leftcount += _sandbox.GetRevelation(FRONT_LEFT);
 		_rightcount += _sandbox.GetRevelation(BACK_RIGHT);
 	}
