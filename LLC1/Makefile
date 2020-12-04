@@ -13,6 +13,7 @@ ARDUINO_LIBS += External/Vector-1.2.0
 ARDUINO_LIBS += External/RosserialArduino-0.7.9
 ARDUINO_LIBS += External/TinyGPS-13.0.0
 ARDUINO_LIBS += External/MemoryFree-a2d60bd
+ARDUINO_LIBS += External/ArduinoPIDLibrary-1.2.0
 
 ARDUINO_LIBS += . # relative offsets are used for internal libraries
 
