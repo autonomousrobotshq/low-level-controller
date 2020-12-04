@@ -32,7 +32,9 @@ private:
     SensorCurrent* _sensors_current[NUM_MOTORS];
     SensorHall* _sensors_hall[NUM_MOTORS];
     // e_corner _corner;
-    e_side _side;
+	bool _is_side[2];
+    e_side _r_side;
+    e_side _l_side;
     e_drive_action _action;
     uint8_t _desired_throttle;
     uint8_t _current_throttle;
