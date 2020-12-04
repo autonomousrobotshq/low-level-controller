@@ -17,7 +17,7 @@ int ControllerProximity::GetDistance(const e_corner corner)
     return (_ultrasonic_sensors[corner]->GetDistance());
 }
 
-ControllerAnomaly::ControllerAnomaly() { }
+ControllerAnomaly::ControllerAnomaly(ControllerLifetime *controller_lifetime) : _controller_lifetime(controller_lifetime) { }
 
 ControllerAnomaly::~ControllerAnomaly() { }
 
@@ -35,10 +35,10 @@ bool ControllerAnomaly::handle_errno(uint8_t errno)
 {
     switch (errno) {
     case OVERHEATING_ERRNO:
-        
+        this->_controller_lifetime->Lifephase(COOLDOWN);
         // Handle errno
         break ;
-    case HEAT_WARNING_ERRNO:
+    case HEATWARNING_ERRNO:
         // Handle errno
         break ;
     case US_PROXIMITY_ERRNO:
@@ -59,7 +59,8 @@ bool ControllerAnomaly::handle_errno(uint8_t errno)
         break ;
 #endif
     default:
+        return false;
         break ;
     }
-    return false;
+    return true;
 }

@@ -5,6 +5,7 @@
 #include "Common/Platform.hpp"
 #include "Common/Errno.hpp"
 #include "Controllers/Controller.hpp"
+#include "Controllers/Lifetime.hpp"
 #include "Sensors/Ultrasonic.hpp"
 
 // should the MotorController class hold ownership over the ultrasonic sensor?
@@ -20,7 +21,7 @@ private:
 
 class ControllerAnomaly {
 public:
-    ControllerAnomaly();
+    ControllerAnomaly(ControllerLifetime *controller_lifetime);
     ~ControllerAnomaly();
 
 	// change to clear boolean naming like IsOverheated
@@ -40,6 +41,7 @@ public:
 private:
     float _error_current;
     e_corner _corner_current_error;
+    ControllerLifetime *_controller_lifetime;
 };
 
 #endif

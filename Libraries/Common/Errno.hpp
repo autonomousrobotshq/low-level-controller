@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-static uint8_t g_errno;
+// static uint8_t g_errno;
 
 enum e_errno {
 	OVERHEATING_ERRNO,

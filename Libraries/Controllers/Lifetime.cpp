@@ -16,6 +16,9 @@ void ControllerLifetime::Lifephase(e_lifephase lifephase)
             delay(200); // tiny wait to avoid current spike
         }
         break;
+    case COOLDOWN:
+        _relays[REL_MOTORS]->SetState(false); // Switch everything off except fans
+        break;
     }
 };
 

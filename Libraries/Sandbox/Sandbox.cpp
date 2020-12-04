@@ -10,6 +10,7 @@ static Sandbox* g_sb;
 
 Sandbox::Sandbox()
     : _controller_lifetime(LLC::pins_relay)
+    , _controller_anomaly(&_controller_lifetime)
     , _sensor_imu(LLC::pins_imu)
     , _sensor_gps(LLC::pins_gps)
     , _sensor_temp(LLC::pins_temp[0])
