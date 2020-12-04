@@ -30,6 +30,11 @@ void Sandbox::Setup()
     _controller_lifetime.Lifephase(STARTUP);
 }
 
+void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
+{
+	this->_DriverLogicUpdate = f;
+}
+
 void Sandbox::SpinOnce()
 {
     // todo update all modules with timing (+ priority queued)
@@ -39,6 +44,11 @@ void Sandbox::SpinOnce()
     _sensor_gps.Update();
     _sensor_temp.Update();
 
+#if VERBOSITY & DEBUG
+	// if (!this->_DriverLogicUpdate)
+	// DEBUG: Hook _DriverLogicUpdate is not set
+#endif
+	_DriverLogicUpdate();
     _controller_motor.Update();
 }
 

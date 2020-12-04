@@ -42,6 +42,8 @@ public:
     int8_t GetRPM(const e_corner corner);
 	int8_t GetRevelation(const e_corner corner);
 
+	void SetDriverLogicUpdate(bool (*f)(void));
+
     void check_anomalies();
 
 private:
@@ -53,6 +55,8 @@ private:
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
     SensorTemp _sensor_temp;
+
+	bool (*_DriverLogicUpdate)(void);
 };
 
 // public functions
