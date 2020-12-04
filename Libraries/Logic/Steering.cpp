@@ -127,23 +127,19 @@ void LogicSteering::_driveDistance(int distance)
     int leftpower = 50;
     int rightpower = 50;
     int offset = 5;
-    int leftCount = 0;
-    int rightcount = 0;
     int prevLeftCount = 0;
     int prevRightCount = 0;
-    int leftDiff;
-    int rightDiff;
 
     float numRev = distance / _wheelCirc;
 
     float targetCount = numRev * _countsPerRev;
 
     while (abs(rightcount) < abs(targetCount)) {
-        leftCount = _sandbox.GetRevelation(FRONT_LEFT);
-        rightcount = _sandbox.GetRevelation(BACK_RIGHT);
+        int leftCount = _sandbox.GetRevelation(FRONT_LEFT);
+        int rightcount = _sandbox.GetRevelation(BACK_RIGHT);
 
-        leftDiff = abs(leftCount - prevLeftCount);
-        rightDiff = abs(rightcount - prevRightCount);
+        int leftDiff = abs(leftCount - prevLeftCount);
+        int rightDiff = abs(rightcount - prevRightCount);
 
         prevLeftCount = leftCount;
         prevRightCount = rightcount;
@@ -159,6 +155,7 @@ void LogicSteering::_driveDistance(int distance)
         _sandbox.Driver(BACK_RIGHT, FORWARD, rightpower);
         _sandbox.Driver(FRONT_LEFT, FORWARD, leftpower);
         _sandbox.Driver(BACK_LEFT, FORWARD, leftpower);
+        // Add some sort of delay ?
     }
     _sandbox.Driver(FRONT_RIGHT, HALT, rightpower);
     _sandbox.Driver(BACK_RIGHT, HALT, rightpower);
