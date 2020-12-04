@@ -23,19 +23,19 @@
 #define MOTOR_THROTTLE_HIGH 100
 #define MOTOR_THROTTLE_LOW 0
 
-#define MAG_MIN_X -1003
-#define MAG_MAX_X 737
-#define MAG_MIN_Y -768
-#define MAG_MAX_Y 998
-#define MAG_MIN_Z -811
-#define MAG_MAX_Z 928
+#define MAG_MIN_X -1003L
+#define MAG_MAX_X 737L
+#define MAG_MIN_Y -768L
+#define MAG_MAX_Y 998L
+#define MAG_MIN_Z -811L
+#define MAG_MAX_Z 928L
 
-#define ACC_MIN_X -20752
-#define ACC_MAX_X 32624
-#define ACC_MIN_Y -32768
-#define ACC_MAX_Y 19840
-#define ACC_MIN_Z -24592
-#define ACC_MAX_Z 22624
+#define ACC_MIN_X -20752L
+#define ACC_MAX_X 32624L
+#define ACC_MIN_Y -32768L
+#define ACC_MAX_Y 19840L
+#define ACC_MIN_Z -24592L
+#define ACC_MAX_Z 22624L
 
 /* FACTS */
 #define NUM_MOTORS 4

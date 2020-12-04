@@ -5,6 +5,7 @@
 
 #include "Common/Datatypes.hpp"
 #include "Common/Vec3.hpp"
+#include "Common/Platform.hpp"
 
 class SensorIMU {
 public:
@@ -14,6 +15,8 @@ public:
     float GetNavigationAngle();
     Vec3 GetMagnetometerData();
     Vec3 GetAccelerometerData();
+	Vec3 GetNormalizedAccelerometerData();
+	Vec3 GetNormalizedMagnetometerData();
 
 private:
     const uint8_t _pin_sda, _pin_scl;

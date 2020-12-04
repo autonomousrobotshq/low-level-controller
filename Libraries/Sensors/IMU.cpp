@@ -22,6 +22,22 @@ bool SensorIMU::Update()
     return (true);
 }
 
+Vec3 SensorIMU::GetNormalizedAccelerometerData() {
+	Vec3 ret;
+	ret.x = 100 * ((_compass.accelerometer.x - ACC_MIN_X) / (ACC_MAX_X - ACC_MIN_X));
+	ret.y = 100 * ((_compass.accelerometer.y - ACC_MIN_Y) / (ACC_MAX_Y - ACC_MIN_Y));
+	ret.z = 100 * ((_compass.accelerometer.z - ACC_MIN_Z) / (ACC_MAX_Z - ACC_MIN_Z));
+	return (ret);
+}
+
+Vec3 SensorIMU::GetNormalizedMagnetometerData() {
+	Vec3 ret;
+	ret.x = 100 * ((_compass.magnetometer.x - MAG_MIN_X) / (MAG_MAX_X - MAG_MIN_X));
+	ret.y = 100 * ((_compass.magnetometer.y - MAG_MIN_Y) / (MAG_MAX_Y - MAG_MIN_Y));
+	ret.z = 100 * ((_compass.magnetometer.z - MAG_MIN_Z) / (MAG_MAX_Z - MAG_MIN_Z));
+	return (ret);
+}
+
 float SensorIMU::GetNavigationAngle()
 {
     return (this->_navigationAngle);
