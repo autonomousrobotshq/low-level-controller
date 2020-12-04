@@ -3,15 +3,15 @@
 
 void ActuatorMotor::forward(const uint8_t pulse_width)
 {
-    digitalWrite(this->_pin_a, LOW);
-    digitalWrite(this->_pin_b, HIGH);
+    digitalWrite(this->_pin_a, HIGH);
+    digitalWrite(this->_pin_b, LOW);
     analogWrite(this->_pin_pwm, pulse_width);
 }
 
 void ActuatorMotor::reverse(const uint8_t pulse_width)
 {
-    digitalWrite(this->_pin_a, HIGH);
-    digitalWrite(this->_pin_b, LOW);
+    digitalWrite(this->_pin_a, LOW);
+    digitalWrite(this->_pin_b, HIGH);
     analogWrite(this->_pin_pwm, pulse_width);
 }
 
