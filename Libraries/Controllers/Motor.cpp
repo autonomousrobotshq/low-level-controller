@@ -41,6 +41,15 @@ bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action)
     return (true);
 }
 
+bool ControllerMotor::SetThrottle()
+{
+	if (_current_throttle < _desired_throttle)
+		_current_throttle += 1;
+	if (_current_throttle > _desired_throttle)
+		_current_throttle -= 1;
+	return (true);
+}
+
 bool ControllerMotor::Update()
 {
     // motor logic here
@@ -50,16 +59,14 @@ bool ControllerMotor::Update()
     if (_corner == ALL) {
         switch (_action) {
         case FORWARD:
-            if (_current_throttle < _desired_throttle)
-                _current_throttle += 1;
+            SetThrottle();
             _actuators_motor[FRONT_LEFT]->forward(_current_throttle);
             _actuators_motor[FRONT_RIGHT]->forward(_current_throttle);
             _actuators_motor[BACK_LEFT]->forward(_current_throttle);
             _actuators_motor[BACK_RIGHT]->forward(_current_throttle);
             break;
         case BACKWARD:
-            if (_current_throttle < _desired_throttle)
-                _current_throttle += 1;
+            SetThrottle();
             _actuators_motor[FRONT_LEFT]->reverse(_current_throttle);
             _actuators_motor[FRONT_RIGHT]->reverse(_current_throttle);
             _actuators_motor[BACK_LEFT]->reverse(_current_throttle);
@@ -77,13 +84,11 @@ bool ControllerMotor::Update()
     } else {
         switch (_action) {
         case FORWARD:
-            if (_current_throttle < _desired_throttle)
-                _current_throttle += 1;
+            SetThrottle();
             _actuators_motor[_corner]->forward(_current_throttle);
             break;
         case BACKWARD:
-            if (_current_throttle > _desired_throttle)
-                _current_throttle -= 1;
+            SetThrottle();
             _actuators_motor[_corner]->reverse(_current_throttle);
             break;
         case HALT:
