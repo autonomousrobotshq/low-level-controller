@@ -47,11 +47,11 @@ private:
     unsigned long _glob_millis;
     ControllerMotor _controller_motor;
     ControllerLifetime _controller_lifetime;
+    ControllerAnomaly _controller_anomaly;
     //ControllerProximity _controller_proximity;
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
     SensorTemp _sensor_temp;
-    Anomaly _anomaly;
 };
 
 // public functions
