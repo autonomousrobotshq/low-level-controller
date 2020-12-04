@@ -21,17 +21,7 @@ ControllerAnomaly::ControllerAnomaly(ControllerLifetime *controller_lifetime) : 
 
 ControllerAnomaly::~ControllerAnomaly() { }
 
-bool ControllerAnomaly::UltraSonic(int left, int right) { return (left < ULTRASONIC_DIST or right < ULTRASONIC_DIST); }
-
-bool ControllerAnomaly::Heat_Warning(int8_t degr) { return (degr >= HEAT_WARNING); }
-
-bool ControllerAnomaly::Overheating(int8_t degr) { return (degr >= OVERHEATING); }
-
-bool ControllerAnomaly::Battery(uint8_t percantage) { return (percantage <= LOW_BATTERY); }
-
-bool ControllerAnomaly::RAM(int free_space) { return (free_space <= RAM_SPACE); }
-
-bool ControllerAnomaly::handle_errno(uint8_t errno)
+bool ControllerAnomaly::HandleErrno(uint8_t errno)
 {
     switch (errno) {
     case OVERHEATING_ERRNO:

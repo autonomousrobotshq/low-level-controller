@@ -7,9 +7,8 @@
 
 #include <stdint.h>
 
-// static uint8_t g_errno;
-
 enum e_errno {
+	OK_ERRNO,
 	OVERHEATING_ERRNO,
 	HEATWARNING_ERRNO,
 	US_PROXIMITY_ERRNO,
@@ -20,5 +19,9 @@ enum e_errno {
 	LOW_RAM
 #endif
 };
+
+extern e_errno *__geterrno(void);
+
+#define g_errno (*__geterrno())
 
 #endif
