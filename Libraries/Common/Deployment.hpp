@@ -22,7 +22,7 @@ enum e_runtime { LAUNCH,
 
 enum e_verbosity {
 	PRODUCTION = 0,
-    ROS_DEBUG = 1,
+    ROS_DEBUG_TEST = 1,
     SERIAL_DEBUG = 2 };
 /*
 * VERBOSITY defined as:
