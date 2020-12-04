@@ -1,4 +1,4 @@
-#include "Controllers/Anomaly.hpp"
+#include "Controllers/ControllerAnomaly.hpp"
 
 ControllerProximity::ControllerProximity()
 {
@@ -17,16 +17,16 @@ int ControllerProximity::GetDistance(const e_corner corner)
     return (_ultrasonic_sensors[corner]->GetDistance());
 }
 
-Anomaly::Anomaly() { }
+ControllerAnomaly::ControllerAnomaly() { }
 
-Anomaly::~Anomaly() { }
+ControllerAnomaly::~ControllerAnomaly() { }
 
-bool Anomaly::UltraSonic(int left, int right) { return (left < ULTRASONIC_DIST or right < ULTRASONIC_DIST); }
+bool ControllerAnomaly::UltraSonic(int left, int right) { return (left < ULTRASONIC_DIST or right < ULTRASONIC_DIST); }
 
-bool Anomaly::Heat_Warning(int8_t degr) { return (degr >= HEAT_WARNING); }
+bool ControllerAnomaly::Heat_Warning(int8_t degr) { return (degr >= HEAT_WARNING); }
 
-bool Anomaly::Overheating(int8_t degr) { return (degr >= OVERHEATING); }
+bool ControllerAnomaly::Overheating(int8_t degr) { return (degr >= OVERHEATING); }
 
-bool Anomaly::Battery(uint8_t percantage) { return (percantage <= LOW_BATTERY); }
+bool ControllerAnomaly::Battery(uint8_t percantage) { return (percantage <= LOW_BATTERY); }
 
-bool Anomaly::RAM(int free_space) { return (free_space <= RAM_SPACE); }
+bool ControllerAnomaly::RAM(int free_space) { return (free_space <= RAM_SPACE); }
