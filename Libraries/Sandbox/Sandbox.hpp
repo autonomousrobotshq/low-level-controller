@@ -4,8 +4,9 @@
 #include "Common/Datatypes.hpp"
 #include "Common/Vec3.hpp"
 
-#include "Controllers/Motor.hpp"
 #include "Controllers/Anomaly.hpp"
+#include "Controllers/Lifetime.hpp"
+#include "Controllers/Motor.hpp"
 
 #include "Interfaces/ROS.hpp"
 
@@ -23,7 +24,7 @@ public:
     Sandbox();
     ~Sandbox();
     bool Driver(const e_corner corner, const e_drive_action action);
-    void Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
+    bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
 
     int IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();
@@ -38,18 +39,20 @@ public:
     int8_t TEMPGetTemp();
 
     int RAMGetFree();
-	int8_t	GetRPM(const e_corner corner);
+    int8_t GetRPM(const e_corner corner);
+	int8_t GetRevelation(const e_corner corner);
 
     void check_anomalies();
 
 private:
     unsigned long _glob_millis;
     ControllerMotor _controller_motor;
-    ControllerProximity _controller_proximity;
+    ControllerLifetime _controller_lifetime;
+    ControllerAnomaly _controller_anomaly;
+    //ControllerProximity _controller_proximity;
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
     SensorTemp _sensor_temp;
-    Anomaly _anomaly;
 };
 
 // public functions
@@ -71,6 +74,6 @@ int GPSGetCourse();
 
 int8_t TEMPGetTemp();
 
-int 	RAMGetFree();
+int RAMGetFree();
 } // namespace sb
 #endif

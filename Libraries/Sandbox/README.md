@@ -1,24 +1,4 @@
 # Sandbox
 
-bool	Driver(e_corner corner, e_drive_action action);
-
-int		IMUGetNavigationAngle();
-
-Vec3	IMUGetMagnetoData();
-
-Vec3	IMUGetAcceleroData();
-
-int		USGetDistance(e_corner corner);
-
-void	GPSGetLocation(float *flat, float *flon);
-
-void	GPSGetTime(unsigned long *age, unsigned long *date, unsigned long *time);
-
-int		GPSGetSpeed();
-
-int		GPSGetCourse();
-
-int8_t	TEMPGetTemp();
-
-int		RAMGetFree();
-
+The Sandbox provides a unified interface for higher Logic and makes sure all higher level input is sanitized
+before sending it downstairs where a magical poof of spook is never far away.
