@@ -30,6 +30,11 @@ void Sandbox::Setup()
     _controller_lifetime.Lifephase(STARTUP);
 }
 
+void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
+{
+	this->_DriverLogicUpdate = f;
+}
+
 void Sandbox::SpinOnce()
 {
     // todo update all modules with timing (+ priority queued)
@@ -39,6 +44,11 @@ void Sandbox::SpinOnce()
     _sensor_gps.Update();
     _sensor_temp.Update();
 
+#if VERBOSITY & DEBUG
+	// if (!this->_DriverLogicUpdate)
+	// DEBUG: Hook _DriverLogicUpdate is not set
+#endif
+	_DriverLogicUpdate();
     _controller_motor.Update();
 }
 
@@ -66,23 +76,23 @@ void Sandbox::check_anomalies()
     //}
 }
 
-bool Sandbox::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
+bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
 {
 #if VERBOSITY & DEBUG
     if (throttle >= MOTOR_THROTTLE_LOW && throttle <= MOTOR_THROTTLE_HIGH)
-        _controller_motor.Driver(corner, action, throttle);
+        _controller_motor.Driver(side, action, throttle);
     else {
         // DEBUG: FALSE DRIVER CALL
         ;
     }
 #endif
-    _controller_motor.Driver(corner, action, throttle);
+    _controller_motor.Driver(side, action, throttle);
     return (true); // NEEDS TO BE REWORKED
 }
 
-bool Sandbox::Driver(const e_corner corner, const e_drive_action action)
+bool Sandbox::Driver(const e_side side, const e_drive_action action)
 {
-    return (_controller_motor.Driver(corner, action));
+    return (_controller_motor.Driver(side, action));
 }
 
 int8_t Sandbox::GetRPM(const e_corner corner)
@@ -147,8 +157,8 @@ int Sandbox::RAMGetFree()
     return (freeMemory());
 }
 
-bool Driver(const e_corner corner, const e_drive_action action) { return (g_sb->Driver(corner, action)); }
-bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(corner, action, throttle)); }
+bool Driver(const e_side side, const e_drive_action action) { return (g_sb->Driver(side, action)); }
+bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(side, action, throttle)); }
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
 Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
 Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }
