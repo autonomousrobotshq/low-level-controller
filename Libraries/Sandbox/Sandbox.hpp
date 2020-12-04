@@ -62,8 +62,8 @@ private:
 };
 
 // public functions
-bool Driver(const e_corner corner, const e_drive_action action);
-bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
+bool Driver(const e_side side, const e_drive_action action);
+bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
 
 int8_t GetRPM(const e_corner corner);
 
