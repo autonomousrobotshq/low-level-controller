@@ -1,151 +1,147 @@
-// #include "Logic/Steering.hpp"
-// #include "Common/Deployment.hpp"
-// #include "Sandbox/Sandbox.hpp"
-// #include <math.h>
+#include "Logic/Steering.hpp"
+#include "Common/Deployment.hpp"
+#include "Sandbox/Sandbox.hpp"
+#include <math.h>
+#define  PRECISION 5
+using namespace sb;
 
-// using namespace sb;
+LogicSteering::LogicSteering(Sandbox& sandbox)
+    : _sandbox(sandbox)
+{
+}
 
-// LogicSteering::LogicSteering(Sandbox& sandbox)
-//     : _sandbox(sandbox)
-// {
-// }
+LogicSteering::~LogicSteering()
+{
+}
 
-// LogicSteering::~LogicSteering()
-// {
-// }
+void LogicSteering::driveLogic(int distance, int angle)
+{
+	_starting_angle = _sandbox.GPSGetCourse();
+    _target_angle = angle;
+	_target_distance = distance;
+	_leftcount = 0;
+	_rightcount = 0;
+	_prev_left_count = 0;
+	_prev_right_count = 0;
+	_left_diff = 0;
+	_right_diff = 0;
+	_right_power = 20;
+	_left_power = 20;
+	_left_power = 50;
+    _right_power = 50; // needs to be set
+    _offset = 5; // pid controller controls this
+	_numRev_distance = _target_distance / _wheelCirc;
+	_target_count_distance = _numRev_distance * _countsPerRev;
+	if (angle != 0)
+	{
+		state = TURNING;
+		_pivot(angle);
+		// _turnAngle(angle);
+	}
+}
 
-// void LogicSteering::_turn(int angle)
-// {
-//     int power = 10; // need to do this differently
-//     if (angle < 0)
-//         power *= -1;
-//     float correction = -5.0;
-//     if (angle > 0)
-//         angle += correction;
-//     else if (angle < 0)
-//         angle -= correction;
+void LogicSteering::_pivot(int angle)
+{
+    if (angle < 0) {
+        _sandbox.Driver(FRONT_LEFT, FORWARD, _power);
+        _sandbox.Driver(BACK_LEFT, FORWARD, _power);
+        _sandbox.Driver(FRONT_RIGHT, BACKWARD, _power);
+        _sandbox.Driver(BACK_RIGHT, BACKWARD, _power);
+	}
+    if (angle > 0) {
+		_sandbox.Driver(FRONT_LEFT, BACKWARD, _power);
+        _sandbox.Driver(BACK_LEFT, BACKWARD, _power);
+        _sandbox.Driver(FRONT_RIGHT, FORWARD, _power);
+        _sandbox.Driver(BACK_RIGHT, FORWARD, _power);
+	}
+}
 
-//     int rpmcount = 0;
+void LogicSteering::_turnAngle(int angle)
+{
+	
+    if (angle > 0)
+	{
+        _sandbox.Driver(FRONT_RIGHT, HALT, _power);
+        _sandbox.Driver(BACK_RIGHT, HALT, _power);
+        _sandbox.Driver(FRONT_LEFT, FORWARD, _power);
+        _sandbox.Driver(BACK_LEFT, FORWARD, _power);
+    }
+	else 
+	{
+        _sandbox.Driver(FRONT_RIGHT, FORWARD, _power);
+        _sandbox.Driver(BACK_RIGHT, FORWARD, _power);
+        _sandbox.Driver(FRONT_LEFT, HALT, _power);
+        _sandbox.Driver(BACK_LEFT, HALT, _power);
+    }
+	
+}
 
-//     float distance = abs(angle) / 360.0 * _pivotCirc;
+void LogicSteering::_driveDistance()
+{
+    _target_count_distance = _numRev_distance * _countsPerRev;
+	_sandbox.Driver(FRONT_RIGHT, FORWARD, _right_power);
+	_sandbox.Driver(BACK_RIGHT, FORWARD, _right_power);
+	_sandbox.Driver(FRONT_LEFT, FORWARD, _left_power);
+	_sandbox.Driver(BACK_LEFT, FORWARD, _left_power);
+}
 
-//     int numRev = distance / _wheelCirc;
+void LogicSteering::_stop()
+{
+	_sandbox.Driver(FRONT_LEFT, HALT, _power);
+	_sandbox.Driver(BACK_LEFT, HALT, _power);
+	_sandbox.Driver(FRONT_RIGHT, HALT, _power);
+	_sandbox.Driver(BACK_RIGHT, HALT, _power);
+}
 
-//     int targetCount = numRev * _countsPerRev;
-//     _pivot(angle, rpmcount, targetCount, power); // we can test this type of turning
-//     _turnAngle(angle, targetCount, power); // or we can use this one;
-// }
+void LogicSteering::_update_turn()
+{
+	int current_angle = _sandbox.IMUGetNavigationAngle();
+	if (current_angle < _target_angle + PRECISION && current_angle > _target_angle - PRECISION)
+	{
+		_stop();
+		state = DRIVING;
+		_driveDistance();
+	}
+}
 
-// void LogicSteering::_pivot(int angle, int rpmcount, int targetCount, int power)
-// {
+void LogicSteering::_update_distance()
+{
+	
+	
+	if (abs(_rightcount) < abs(_target_count_distance) || abs(_leftcount) < abs(_target_count_distance))
+	{
+		_left_diff = abs(_leftcount - _prev_left_count);
+		_right_diff = abs(_rightcount - _prev_right_count);
 
-//     if (angle < 0) {
-//         _sandbox.Driver(LEFT_SIDE, FORWARD, power);
-//         _sandbox.Driver(RIGHT_SIDE, BACKWARD, power);
-//         while (abs(rpmcount < targetCount)) {
-//             if (_sandbox.GetRPM(FRONT_LEFT) != _sandbox.GetRPM(BACK_RIGHT)) {
-//                 _sandbox.Driver(BOTH_SIDES, HALT, power);
-//                 // should be changed why do we need power if we are halting?
-//             }
-//             rpmcount += _sandbox.GetRPM(FRONT_LEFT); // I added this so someone has to check if this works
-//         }
-//         _sandbox.Driver(BOTH_SIDES, HALT, power);
-//     }
-//     if (angle > 0) {
-//         _sandbox.Driver(LEFT_SIDE, BACKWARD, power);
-//         _sandbox.Driver(RIGHT_SIDE, FORWARD, power);
-//         while (abs(rpmcount < targetCount)) {
-//             if (_sandbox.GetRPM(FRONT_LEFT) != _sandbox.GetRPM(BACK_RIGHT)) {
-//                 _sandbox.Driver(FRONT_LEFT, HALT, power);
-//                 _sandbox.Driver(BACK_LEFT, HALT, power);
-//                 _sandbox.Driver(FRONT_RIGHT, HALT, power);
-//                 _sandbox.Driver(BACK_RIGHT, HALT, power);
-//                 // should be changed why do we need power if we are halting?
-//             }
-//             rpmcount += _sandbox.GetRPM(FRONT_LEFT); // I added this so someone has to check if this works
-//         }
-//         _sandbox.Driver(FRONT_LEFT, HALT, power);
-//         _sandbox.Driver(BACK_LEFT, HALT, power);
-//         _sandbox.Driver(FRONT_RIGHT, HALT, power);
-//         _sandbox.Driver(BACK_RIGHT, HALT, power);
-//     }
-// }
+		_prev_left_count = _leftcount;
+		_prev_right_count = _rightcount;
 
-// void LogicSteering::_turnAngle(int angle, int targetCount, int power)
-// {
-//     if (angle > 0) {
-//         _sandbox.Driver(FRONT_RIGHT, HALT, power);
-//         _sandbox.Driver(BACK_RIGHT, HALT, power);
-//         _sandbox.Driver(FRONT_LEFT, FORWARD, power);
-//         _sandbox.Driver(BACK_LEFT, FORWARD, power);
-//         long leftcount = 0;
-//         while (leftcount < targetCount) {
-//             leftcount += _sandbox.GetRPM(FRONT_LEFT);
-//         }
-//     } else {
-//         _sandbox.Driver(FRONT_RIGHT, FORWARD, power);
-//         _sandbox.Driver(BACK_RIGHT, FORWARD, power);
-//         _sandbox.Driver(FRONT_LEFT, HALT, power);
-//         _sandbox.Driver(BACK_LEFT, HALT, power);
-//         long rightcount = 0;
-//         while (rightcount < targetCount) {
-//             rightcount += _sandbox.GetRPM(BACK_RIGHT);
-//         }
-//     }
-//     _sandbox.Driver(FRONT_RIGHT, HALT, power);
-//     _sandbox.Driver(BACK_RIGHT, HALT, power);
-//     _sandbox.Driver(FRONT_LEFT, HALT, power);
-//     _sandbox.Driver(BACK_LEFT, HALT, power);
-// }
+		if (_left_diff > _right_diff) {
+			_left_power = _left_power - _offset;
+			_right_power = _right_power + _offset;
+		} 
+		else if (_left_diff < _right_diff) {
+			_left_power = _left_power + _offset;
+			_right_power = _right_power - _offset;
+		}
+		_sandbox.Driver(FRONT_RIGHT, FORWARD, _right_power);
+		_sandbox.Driver(BACK_RIGHT, FORWARD, _right_power);
+		_sandbox.Driver(FRONT_LEFT, FORWARD, _left_power);
+		_sandbox.Driver(BACK_LEFT, FORWARD, _left_power);
+		_leftcount += _sandbox.GetRevelation(FRONT_LEFT);
+		_rightcount += _sandbox.GetRevelation(BACK_RIGHT);
+	}
+	else
+		_stop();
+}
 
-// void LogicSteering::_driveDistance(int distance)
-// {
-//     int leftpower = 50;
-//     int rightpower = 50;
-//     int offset = 5;
-//     int leftCount = 0;
-//     int rightcount = 0;
-//     int prevLeftCount = 0;
-//     int prevRightCount = 0;
-//     int leftDiff;
-//     int rightDiff;
-
-//     float numRev = distance / _wheelCirc;
-
-//     float targetCount = numRev * _countsPerRev;
-
-//     while (abs(rightcount) < abs(targetCount)) {
-//         leftCount = _sandbox.GetRPM(FRONT_LEFT);
-//         rightcount = _sandbox.GetRPM(BACK_RIGHT);
-
-//         leftDiff = abs(leftCount - prevLeftCount);
-//         rightDiff = abs(rightcount - prevRightCount);
-
-//         prevLeftCount = leftCount;
-//         prevRightCount = rightcount;
-
-//         if (leftDiff > rightDiff) {
-//             leftpower = leftpower - offset;
-//             rightpower = rightpower + offset;
-//         } else if (leftDiff < rightDiff) {
-//             leftpower = leftpower + offset;
-//             rightpower = rightpower - offset;
-//         }
-//         _sandbox.Driver(FRONT_RIGHT, FORWARD, rightpower);
-//         _sandbox.Driver(BACK_RIGHT, FORWARD, rightpower);
-//         _sandbox.Driver(FRONT_LEFT, FORWARD, leftpower);
-//         _sandbox.Driver(BACK_LEFT, FORWARD, leftpower);
-//     }
-//     _sandbox.Driver(FRONT_RIGHT, HALT, rightpower);
-//     _sandbox.Driver(BACK_RIGHT, HALT, rightpower);
-//     _sandbox.Driver(FRONT_LEFT, HALT, leftpower);
-//     _sandbox.Driver(BACK_LEFT, HALT, leftpower);
-// }
-
-// void LogicSteering::driveLogic(int distance, int angle)
-// {
-//     if (angle != 0)
-//         _turn(angle);
-//     // drive straight the distance given by the ROS node
-//     _driveDistance(distance);
-// }
+void LogicSteering::drive()
+{
+	if (state == DONE)
+		driveLogic(100, 20);
+	if (state == TURNING)
+		_update_turn(); // Stan komt hiervoor terug met een betere oplossing
+	if (state == DRIVING)
+		_update_distance();
+	
+}
