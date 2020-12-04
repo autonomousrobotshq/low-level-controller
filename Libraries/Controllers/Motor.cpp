@@ -25,17 +25,31 @@ bool ControllerMotor::IsReady()
     return _current_throttle == _desired_throttle;
 }
 
-bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
+bool ControllerMotor::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
 {
-    _corner = corner;
+   	if (side == RIGHT_SIDE) {
+		_is_side[0] = true;
+		_r_side = side;
+	}
+	if (side == LEFT_SIDE) {
+		_is_side[1] = true;
+		_l_side = side;
+	}
     _action = action;
     _desired_throttle = throttle;
     return (true);
 }
 
-bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action)
+bool ControllerMotor::Driver(const e_side side, const e_drive_action action)
 {
-    _corner = corner;
+	if (side == RIGHT_SIDE) {
+		_is_side[0] = true;
+		_r_side = side;
+	}
+	if (side == LEFT_SIDE) {
+		_is_side[1] = true;
+		_l_side = side;
+	}
     _action = action;
     _desired_throttle = 255;
     return (true);
@@ -56,7 +70,7 @@ bool ControllerMotor::Update()
     //if (_sensors_current[_corner]->getCurrent()) // is overcurrent
     //    return false; // error: overcurrent
 
-    if (_corner == ALL) {
+    if (_is_side[0] == true && _is_side[1] == true) {
         switch (_action) {
         case FORWARD:
             SetThrottle();
@@ -82,21 +96,45 @@ bool ControllerMotor::Update()
             break;
         }
     } else {
-        switch (_action) {
-        case FORWARD:
-            SetThrottle();
-            _actuators_motor[_corner]->forward(_current_throttle);
-            break;
-        case BACKWARD:
-            SetThrottle();
-            _actuators_motor[_corner]->reverse(_current_throttle);
-            break;
-        case HALT:
-            _actuators_motor[_corner]->halt();
-            break;
-        default:
-            break;
+		if (_is_side[1] == true)
+			switch (_action) {
+			case FORWARD:
+				SetThrottle();
+				_actuators_motor[FRONT_LEFT]->forward(_current_throttle);
+				_actuators_motor[BACK_LEFT]->forward(_current_throttle);
+				break;
+			case BACKWARD:
+				SetThrottle();
+				_actuators_motor[FRONT_LEFT]->reverse(_current_throttle);
+				_actuators_motor[BACK_LEFT]->reverse(_current_throttle);
+				break;
+			case HALT:
+				_actuators_motor[FRONT_LEFT]->halt();
+				_actuators_motor[BACK_LEFT]->halt();
+				break;
+			default:
+				break;
         }
+    	if (_is_side[0] == true) {
+			switch (_action) {
+			case FORWARD:
+				SetThrottle();
+				_actuators_motor[FRONT_RIGHT]->forward(_current_throttle);
+				_actuators_motor[BACK_RIGHT]->forward(_current_throttle);
+				break;
+			case BACKWARD:
+				SetThrottle();
+				_actuators_motor[FRONT_RIGHT]->reverse(_current_throttle);
+				_actuators_motor[BACK_RIGHT]->reverse(_current_throttle);
+				break;
+			case HALT:
+				_actuators_motor[FRONT_RIGHT]->halt();
+				_actuators_motor[BACK_RIGHT]->halt();
+				break;
+			default:
+				break;
+			}
+		}
     }
     return (true);
 }
