@@ -32,7 +32,8 @@ enum e_relays {
 
 enum e_lifephase {
     STARTUP,
-    SHUTDOWN
+    SHUTDOWN,
+    COOLDOWN
 };
 
 typedef struct s_pins_motor {

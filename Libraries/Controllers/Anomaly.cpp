@@ -35,6 +35,7 @@ bool ControllerAnomaly::handle_errno(uint8_t errno)
 {
     switch (errno) {
     case OVERHEATING_ERRNO:
+        
         // Handle errno
         break ;
     case HEAT_WARNING_ERRNO:
@@ -54,7 +55,7 @@ bool ControllerAnomaly::handle_errno(uint8_t errno)
         break ;
 #if VERBOSITY & DEBUG
     case LOW_RAM_ERRNO:
-        // Handle errno
+        // Send debug message
         break ;
 #endif
     default:
