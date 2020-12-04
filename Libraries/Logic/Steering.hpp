@@ -4,25 +4,20 @@
 
 using namespace sb;
 
+enum e_turn {
+    LEFT,
+    RIGHT
+};
+
 class LogicSteering {
 public:
     LogicSteering(Sandbox& sandbox);
     ~LogicSteering();
-    void driveLogic(int distance, int angle);
+    Drive(uint8_t distance, uint8_t throttle);
+    Pivot(e_turn turn);
 
 private:
-    void _turn(int angle);
-    void _pivot(int angle, int rpmcount, int targetCount, int power);
-    void _turnAngle(int angle, int targetCount, int power);
-    void _driveDistance(int distance);
-
-private: // data members
     Sandbox& _sandbox;
-    const int _countsPerRev = 64;
-    const int _wheelDiam = 120;
-    const float _wheelCirc = 376.99;
-    const float _pivotDiam = 203.763;
-    const float _pivotCirc = 640.140;
 };
 
 #endif
