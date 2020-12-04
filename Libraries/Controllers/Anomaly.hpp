@@ -3,6 +3,7 @@
 
 #include "Common/Datatypes.hpp"
 #include "Common/Platform.hpp"
+#include "Common/Errno.hpp"
 #include "Controllers/Controller.hpp"
 #include "Sensors/Ultrasonic.hpp"
 
@@ -33,6 +34,8 @@ public:
     bool current(float current_fl, float current_fr, float current_bl, float current_br);
     float get_error_current_value() const;
     e_corner get_error_current_corner() const;
+
+    bool handle_errno(uint8_t errno);
 
 private:
     float _error_current;

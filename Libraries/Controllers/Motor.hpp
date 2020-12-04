@@ -22,15 +22,8 @@ public:
     int8_t GetRPM(const e_corner);
 	int8_t GetRevelation(const e_corner);
     bool Driver();
-<<<<<<< HEAD
-	void SetValues(const e_corner corner, const e_drive_action action, const uint8_t throttle);
-	bool IsReady();
-	bool Update();
-    float get_current(e_corner corner);
-=======
     bool IsReady();
     bool Update();
->>>>>>> 5ce55339474a11ab83aa49ed1c92687b0465a573
     ControllerMotor();
     ~ControllerMotor();
 

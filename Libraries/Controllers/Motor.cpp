@@ -110,5 +110,3 @@ int8_t ControllerMotor::GetRevelation(const e_corner corner)
 {
 	return (_sensors_hall[corner]->GetRevelations());
 }
-
-float ControllerMotor::get_current(e_corner corner) { return this->_sensors_current[corner]->getCurrent(); }
