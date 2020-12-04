@@ -8,6 +8,7 @@ using namespace sb;
 LogicSteering::LogicSteering(Sandbox& sandbox)
     : _sandbox(sandbox)
 {
+	state = DONE;
 }
 
 LogicSteering::~LogicSteering()
@@ -70,6 +71,7 @@ void LogicSteering::_turnAngle(int angle)
 
 void LogicSteering::_driveDistance()
 {
+	Serial.println("LogicSteering::driveDistance() called");
     _target_count_distance = _numRev_distance * _countsPerRev;
 	_sandbox.Driver(RIGHT_SIDE, FORWARD, _right_power);
 	_sandbox.Driver(LEFT_SIDE, FORWARD, _left_power);
@@ -123,11 +125,20 @@ void LogicSteering::_update_distance()
 
 void LogicSteering::drive()
 {
+	Serial.println("LogicSteering::drive() called");
 	if (state == DONE)
 		driveLogic(100, 20);
 	if (state == TURNING)
+	{
+		Serial.print("LogicSteering::drive() -> ANGLE : ");
+		Serial.println(_sandbox.IMUGetNavigationAngle());
+
 		_update_turn(); // Stan komt hiervoor terug met een betere oplossing
+	}
 	if (state == DRIVING)
+	{
+		Serial.println("LogicSteering::drive() -> state == DRIVING");
 		_update_distance();
+	}
 	
 }
