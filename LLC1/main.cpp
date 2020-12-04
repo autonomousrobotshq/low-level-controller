@@ -1,6 +1,6 @@
 #include "Common/Deployment.hpp"
 #include "Sandbox/Sandbox.hpp"
-
+#include "Logic/Steering.hpp"
 /*
 ** SAMPLE CODE
 */
@@ -18,5 +18,8 @@ void setup() //runs on startup
 void loop() // loops indefinitely
 {
 	// all your code here
+	LogicSteering steer();
+	// given by ROS dispatcher
+	steer.driveLogic(100, 90);
 	sandbox->SpinOnce();
 }

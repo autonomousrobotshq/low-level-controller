@@ -14,6 +14,7 @@
 #include "Sensors/IMU.hpp"
 #include "Sensors/Temp.hpp"
 #include "Sensors/Ultrasonic.hpp"
+#include "Logic/Steering.hpp"
 
 namespace sb {
 

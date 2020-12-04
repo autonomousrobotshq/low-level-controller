@@ -3,6 +3,7 @@
 #include "Common/Deployment.hpp"
 #include "Common/Platform.hpp"
 #include "Sandbox/Sandbox.hpp"
+#include "Logic/Steering.hpp"
 
 namespace sb {
 
@@ -38,8 +39,9 @@ void Sandbox::SpinOnce()
     _sensor_imu.Update();
     _sensor_gps.Update();
     _sensor_temp.Update();
-
     _controller_motor.Update();
+	_steer.update_turn();
+	_steer.update_distance();
 }
 
 void Sandbox::check_anomalies()
