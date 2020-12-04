@@ -17,8 +17,6 @@ LogicSteering::~LogicSteering()
 
 void LogicSteering::driveLogic(int distance, int angle)
 {
-	Serial.println("distance received");
-	Serial.println(distance);
 	_starting_angle = _sandbox.GPSGetCourse();
     _target_angle = angle;
 	_target_distance = distance;
@@ -35,9 +33,6 @@ void LogicSteering::driveLogic(int distance, int angle)
     _offset = 5; // pid controller controls this
 	_numRev_distance = _target_distance / _wheelCirc;
 	_target_count_distance = _numRev_distance * _countsPerRev;
-	Serial.println("target count distance");
-	Serial.println(_target_count_distance);
-	delay(20000);
 	if (angle != 0)
 	{
 		state = TURNING;
@@ -83,7 +78,6 @@ void LogicSteering::_driveDistance()
 	Serial.println(_right_power);
 	Serial.println("LEFT_SIDE _power");
 	Serial.println(_left_power);
-	delay(10000);
 }
 
 void LogicSteering::_stop()
@@ -99,38 +93,80 @@ void LogicSteering::_update_turn()
 	{
 		_stop();
 		Serial.println("Done with turning");
-		delay(10000);
-		state = DRIVING;
-		_driveDistance();
+		// state = DRIVING;
+		// _driveDistance();
 	}
 }
 
+// void LogicSteering::_update_distance()
+// {
+// 	if (abs(_rightcount) < abs(_target_count_distance) || abs(_leftcount) < abs(_target_count_distance))
+// 	{
+// 		_left_diff = abs(_leftcount - _prev_left_count);
+// 		_right_diff = abs(_rightcount - _prev_right_count);
+
+// 		_prev_left_count = _leftcount;
+// 		_prev_right_count = _rightcount;
+
+// 		if (_left_diff > _right_diff) {
+// 			_left_power = _left_power - _offset;
+// 			_right_power = _right_power + _offset;
+// 		} 
+// 		else if (_left_diff < _right_diff) {
+// 			_left_power = _left_power + _offset;
+// 			_right_power = _right_power - _offset;
+// 		}
+// 		Serial.println("new powers per side");
+// 		Serial.println(_right_power);
+// 		Serial.println(_left_power);
+// 		delay(1000);
+// 		_sandbox.Driver(RIGHT_SIDE, FORWARD, _right_power);
+// 		_sandbox.Driver(LEFT_SIDE, FORWARD, _left_power);
+// 		_leftcount += _sandbox.GetRevelation(FRONT_LEFT);
+// 		_rightcount += _sandbox.GetRevelation(BACK_RIGHT);
+// 	}
+// 	else
+// 		_stop();
+// }
+
 void LogicSteering::_update_distance()
 {
-	if (abs(_rightcount) < abs(_target_count_distance) || abs(_leftcount) < abs(_target_count_distance))
+	int current_angle = _sandbox.IMUGetNavigationAngle();
+	if(current_angle < _target_angle + PRECISION)
 	{
-		_left_diff = abs(_leftcount - _prev_left_count);
-		_right_diff = abs(_rightcount - _prev_right_count);
-
-		_prev_left_count = _leftcount;
-		_prev_right_count = _rightcount;
-
-		if (_left_diff > _right_diff) {
-			_left_power = _left_power - _offset;
-			_right_power = _right_power + _offset;
-		} 
-		else if (_left_diff < _right_diff) {
-			_left_power = _left_power + _offset;
-			_right_power = _right_power - _offset;
-		}
+		_left_power = _left_power + _offset;
+		_right_power = _right_power - _offset;
+		if(_left_power < 0)
+			_left_power = 0;
+		if(_left_power > 100)
+			_left_power = 100;
+		if(_right_power < 0)
+			_right_power = 0;
+		if(_right_power > 100)
+			_right_power = 100;
+		_sandbox.Driver(RIGHT_SIDE, FORWARD, _right_power);
+		_sandbox.Driver(LEFT_SIDE, FORWARD, _left_power);
 		Serial.println("new powers per side");
 		Serial.println(_right_power);
 		Serial.println(_left_power);
-		delay(1000);
+	}
+	if (current_angle > _target_angle - PRECISION)
+	{
+		_right_power = _right_power - _offset;
+		_left_power = _left_power + _offset;
+		if(_right_power < 0)
+			_right_power = 0;
+		if(_right_power > 100)
+			_right_power = 100;
+		if(_left_power < 0)
+			_left_power = 0;
+		if(_left_power > 100)
+			_left_power = 100;
 		_sandbox.Driver(RIGHT_SIDE, FORWARD, _right_power);
 		_sandbox.Driver(LEFT_SIDE, FORWARD, _left_power);
-		_leftcount += _sandbox.GetRevelation(FRONT_LEFT);
-		_rightcount += _sandbox.GetRevelation(BACK_RIGHT);
+		Serial.println("new powers per side");
+		Serial.println(_right_power);
+		Serial.println(_left_power);
 	}
 	else
 		_stop();
@@ -140,18 +176,16 @@ void LogicSteering::drive()
 {
 	Serial.println("LogicSteering::drive() called");
 	if (state == DONE)
-		driveLogic(10000, 20);
+		driveLogic(0, 0);
 	if (state == TURNING)
 	{
 		Serial.print("LogicSteering::drive() -> ANGLE : ");
 		Serial.println(_sandbox.IMUGetNavigationAngle());
-
 		_update_turn(); // Stan komt hiervoor terug met een betere oplossing
 	}
 	if (state == DRIVING)
 	{
 		Serial.println("update distance");
-		delay(1000);
 		_update_distance();
 	}
 	

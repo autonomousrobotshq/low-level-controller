@@ -46,7 +46,7 @@ private: // data members
 	int			_numRev_distance;
 	int			_offset;
 	// const never changing var's
-	const int 	_power = 50; // needs adjustments
+	const int 	_power = 100; // needs adjustments
     const int 	_countsPerRev = 64;
     const int 	_wheelDiam = 120;
     const float _wheelCirc = 376.99;
