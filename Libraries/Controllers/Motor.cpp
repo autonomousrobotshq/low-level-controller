@@ -25,17 +25,17 @@ bool ControllerMotor::IsReady()
     return _current_throttle == _desired_throttle;
 }
 
-bool ControllerMotor::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
+bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle)
 {
-    _side = side;
+    _corner = corner;
     _action = action;
     _desired_throttle = throttle;
     return (true);
 }
 
-bool ControllerMotor::Driver(const e_side side, const e_drive_action action)
+bool ControllerMotor::Driver(const e_corner corner, const e_drive_action action)
 {
-    _side = side;
+    _corner = corner;
     _action = action;
     _desired_throttle = 255;
     return (true);
@@ -56,7 +56,7 @@ bool ControllerMotor::Update()
     //if (_sensors_current[_corner]->getCurrent()) // is overcurrent
     //    return false; // error: overcurrent
 
-    if (_side == BOTH_SIDES) {
+    if (_corner == ALL) {
         switch (_action) {
         case FORWARD:
             SetThrottle();
@@ -81,40 +81,18 @@ bool ControllerMotor::Update()
         default:
             break;
         }
-    } else if (_side == LEFT_SIDE) {
+    } else {
         switch (_action) {
         case FORWARD:
             SetThrottle();
-            _actuators_motor[FRONT_LEFT]->forward(_current_throttle);
-            _actuators_motor[BACK_LEFT]->forward(_current_throttle);
+            _actuators_motor[_corner]->forward(_current_throttle);
             break;
         case BACKWARD:
             SetThrottle();
-            _actuators_motor[FRONT_LEFT]->reverse(_current_throttle);
-            _actuators_motor[BACK_LEFT]->reverse(_current_throttle);
+            _actuators_motor[_corner]->reverse(_current_throttle);
             break;
         case HALT:
-            _actuators_motor[FRONT_LEFT]->halt();
-            _actuators_motor[BACK_LEFT]->halt();
-            break;
-        default:
-            break;
-        }
-    } else if (_side == RIGHT_SIDE) {
-        switch (_action) {
-        case FORWARD:
-            SetThrottle();
-            _actuators_motor[FRONT_RIGHT]->forward(_current_throttle);
-            _actuators_motor[BACK_RIGHT]->forward(_current_throttle);
-            break;
-        case BACKWARD:
-            SetThrottle();
-            _actuators_motor[FRONT_RIGHT]->reverse(_current_throttle);
-            _actuators_motor[BACK_RIGHT]->reverse(_current_throttle);
-            break;
-        case HALT:
-            _actuators_motor[FRONT_RIGHT]->halt();
-            _actuators_motor[BACK_RIGHT]->halt();
+            _actuators_motor[_corner]->halt();
             break;
         default:
             break;
