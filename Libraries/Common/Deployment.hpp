@@ -22,7 +22,7 @@ enum e_runtime { LAUNCH,
 
 enum e_verbosity {
 	PRODUCTION = 0,
-    ROS_DEBUG_TEST = 1,
+    DEBUG = 1,
     SERIAL_DEBUG = 2 };
 /*
 * VERBOSITY defined as:
@@ -32,6 +32,9 @@ enum e_verbosity {
 *
 *	Always set to PRODUCTION when deploying autonomous.
 */
-#define VERBOSITY SERIAL_DEBUG
+
+#define VERBOSITY DEBUG | SERIAL_DEBUG // for SERIAL_DEBUGGING
+//#define VERBOSITY DEBUG // for ROS DEBUGGING
+//#define VERBOSITY PRODUCTION // when performance is key
 
 #endif

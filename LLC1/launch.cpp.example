@@ -9,10 +9,16 @@ using namespace sb;
 
 Sandbox *sandbox;
 
+bool DriverLogicUpdate(void) // is called just before update of motorcontroller in Sandbox::Spinonce
+{
+	return (true);
+}
+
 void setup() //runs on startup
 {
 	sandbox = new Sandbox();
 	sandbox->Setup();
+	sandbox->SetDriverLogicUpdate(DriverLogicUpdate);
 }
 
 void loop() // loops indefinitely

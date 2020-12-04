@@ -23,6 +23,20 @@
 #define MOTOR_THROTTLE_HIGH 100
 #define MOTOR_THROTTLE_LOW 0
 
+#define MAG_MIN_X -1003
+#define MAG_MAX_X 737
+#define MAG_MIN_Y -768
+#define MAG_MAX_Y 998
+#define MAG_MIN_Z -811
+#define MAG_MAX_Z 928
+
+#define ACC_MIN_X -20752
+#define ACC_MAX_X 32624
+#define ACC_MIN_Y -32768
+#define ACC_MAX_Y 19840
+#define ACC_MIN_Z -24592
+#define ACC_MAX_Z 22624
+
 /* FACTS */
 #define NUM_MOTORS 4
 #define NUM_ULTRASONIC 4

@@ -23,8 +23,8 @@ public:
     void SpinOnce();
     Sandbox();
     ~Sandbox();
-    bool Driver(const e_corner corner, const e_drive_action action);
-    bool Driver(const e_corner corner, const e_drive_action action, const uint8_t throttle);
+    bool Driver(const e_side side, const e_drive_action action);
+    bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
 
     int IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();
@@ -42,6 +42,8 @@ public:
     int8_t GetRPM(const e_corner corner);
 	int8_t GetRevelation(const e_corner corner);
 
+	void SetDriverLogicUpdate(bool (*f)(void));
+
     void check_anomalies();
 
 private:
@@ -53,6 +55,8 @@ private:
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
     SensorTemp _sensor_temp;
+
+	bool (*_DriverLogicUpdate)(void);
 };
 
 // public functions
