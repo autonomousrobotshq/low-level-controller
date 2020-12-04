@@ -14,40 +14,33 @@ LogicSteering::~LogicSteering()
 {
 }
 
-void LogicSteering::_turn(int angle)
+void LogicSteering::driveLogic(int distance, int angle)
 {
-    
-    int revelationcount = 0;
-
-    float distance = abs(angle) / 360.0 * _pivotCirc;
-
-    int numRev = distance / _wheelCirc;
-
-    _target_count = numRev * _countsPerRev;
-    _pivot(angle, revelationcount); // we can test this type of turning
-    // _turnAngle(angle); // or we can use this one;
-}
-
-void LogicSteering::_VerifyDirection()
-{
-	int current_angle;
-	int adjusted_angle;
-	current_angle = _sandbox.GPSGetCourse();
-	if (current_angle + PRECISION < _target_angle || current_angle - PRECISION > expected_angle)
+	_starting_angle = _sandbox.GPSGetCourse();
+    _target_angle = angle;
+	_target_distance = distance;
+	_leftcount = 0;
+	_rightcount = 0;
+	_prev_left_count = 0;
+	_prev_right_count = 0;
+	_left_diff = 0;
+	_right_diff = 0;
+	_right_power = 20;
+	_left_power = 20;
+	_left_power = 50;
+    _right_power = 50; // needs to be set
+    _offset = 5; // pid controller controls this
+	_numRev_distance = _target_distance / _wheelCirc;
+	_target_count_distance = _numRev_distance * _countsPerRev;
+	if (angle != 0)
 	{
-		// debugging message is needed here because we did not turn as much as we needed
-		adjusted_angle = _target_angle - current_angle;
-		_retryCount += 1;
-		if (_retryCount < 10)
-		{
-			_turn(adjusted_angle);
-		}
-		else
-			;// error message not reached target angle within 10 tries.
+		state = TURNING;
+		_pivot(angle);
+		// _turnAngle(angle);
 	}
 }
 
-void LogicSteering::_pivot(int angle, int revelationcount)
+void LogicSteering::_pivot(int angle)
 {
     if (angle < 0) {
         _sandbox.Driver(FRONT_LEFT, FORWARD, _power);
@@ -83,83 +76,72 @@ void LogicSteering::_turnAngle(int angle)
 	
 }
 
-void LogicSteering::_driveDistance(int distance)
+void LogicSteering::_driveDistance()
 {
-    int leftpower = 50;
-    int rightpower = 50;
-    int offset = 5;
-    int leftCount = 0;
-    int rightcount = 0;
-    int prevLeftCount = 0;
-    int prevRightCount = 0;
-    int leftDiff;
-    int rightDiff;
-
-    float numRev = distance / _wheelCirc;
-
-    float targetCount = numRev * _countsPerRev;
-
-    while (abs(rightcount) < abs(targetCount)) {
-        leftCount = _sandbox.GetRevelation(FRONT_LEFT);
-        rightcount = _sandbox.GetRevelation(BACK_RIGHT);
-
-        leftDiff = abs(leftCount - prevLeftCount);
-        rightDiff = abs(rightcount - prevRightCount);
-
-        prevLeftCount = leftCount;
-        prevRightCount = rightcount;
-
-        if (leftDiff > rightDiff) {
-            leftpower = leftpower - offset;
-            rightpower = rightpower + offset;
-        } else if (leftDiff < rightDiff) {
-            leftpower = leftpower + offset;
-            rightpower = rightpower - offset;
-        }
-        _sandbox.Driver(FRONT_RIGHT, FORWARD, rightpower);
-        _sandbox.Driver(BACK_RIGHT, FORWARD, rightpower);
-        _sandbox.Driver(FRONT_LEFT, FORWARD, leftpower);
-        _sandbox.Driver(BACK_LEFT, FORWARD, leftpower);
-    }
-    _sandbox.Driver(FRONT_RIGHT, HALT, rightpower);
-    _sandbox.Driver(BACK_RIGHT, HALT, rightpower);
-    _sandbox.Driver(FRONT_LEFT, HALT, leftpower);
-    _sandbox.Driver(BACK_LEFT, HALT, leftpower);
+    _target_count_distance = _numRev_distance * _countsPerRev;
+	_sandbox.Driver(FRONT_RIGHT, FORWARD, _right_power);
+	_sandbox.Driver(BACK_RIGHT, FORWARD, _right_power);
+	_sandbox.Driver(FRONT_LEFT, FORWARD, _left_power);
+	_sandbox.Driver(BACK_LEFT, FORWARD, _left_power);
 }
 
-void LogicSteering::driveLogic(int distance, int angle)
+void LogicSteering::_stop()
 {
-	// start turning
-	_starting_angle = _sandbox.GPSGetCourse();
-    _start_turning(angle);
-	_target_angle = angle;
-	// start driving distance
-	// update distance
-	// stop driving distance
+	_sandbox.Driver(FRONT_LEFT, HALT, _power);
+	_sandbox.Driver(BACK_LEFT, HALT, _power);
+	_sandbox.Driver(FRONT_RIGHT, HALT, _power);
+	_sandbox.Driver(BACK_RIGHT, HALT, _power);
 }
 
-void LogicSteering::_start_turning(int angle)
+void LogicSteering::_update_turn()
 {
-	if (angle != 0)
-        _turn(angle);
-}
-
-void LogicSteering::_stopturning()
-{
-		_sandbox.Driver(FRONT_LEFT, HALT, _power);
-		_sandbox.Driver(BACK_LEFT, HALT, _power);
-		_sandbox.Driver(FRONT_RIGHT, HALT, _power);
-		_sandbox.Driver(BACK_RIGHT, HALT, _power);
-}
-
-void LogicSteering::update_turn()
-{
-	_revelation_count += _sandbox.GetRevelation(FRONT_LEFT);
-	// _leftcount += _sandbox.GetRevelation(FRONT_LEFT);
-	// _rightcount += _sandbox.GetRevelation(BACK_RIGHT); being activated when we start testing the other steering form
-	if (_revelation_count == _target_count)
+	int current_angle = _sandbox.IMUGetNavigationAngle();
+	if (current_angle < _target_angle + PRECISION && current_angle > _target_angle - PRECISION)
 	{
-		_stopturning();
-		_VerifyDirection()
+		_stop();
+		state = DRIVING;
+		_driveDistance();
 	}
+}
+
+void LogicSteering::_update_distance()
+{
+	
+	
+	if (abs(_rightcount) < abs(_target_count_distance) || abs(_leftcount) < abs(_target_count_distance))
+	{
+		_left_diff = abs(_leftcount - _prev_left_count);
+		_right_diff = abs(_rightcount - _prev_right_count);
+
+		_prev_left_count = _leftcount;
+		_prev_right_count = _rightcount;
+
+		if (_left_diff > _right_diff) {
+			_left_power = _left_power - _offset;
+			_right_power = _right_power + _offset;
+		} 
+		else if (_left_diff < _right_diff) {
+			_left_power = _left_power + _offset;
+			_right_power = _right_power - _offset;
+		}
+		_sandbox.Driver(FRONT_RIGHT, FORWARD, _right_power);
+		_sandbox.Driver(BACK_RIGHT, FORWARD, _right_power);
+		_sandbox.Driver(FRONT_LEFT, FORWARD, _left_power);
+		_sandbox.Driver(BACK_LEFT, FORWARD, _left_power);
+		_leftcount += _sandbox.GetRevelation(FRONT_LEFT);
+		_rightcount += _sandbox.GetRevelation(BACK_RIGHT);
+	}
+	else
+		_stop();
+}
+
+void LogicSteering::drive()
+{
+	if (state == DONE)
+		driveLogic(100, 20);
+	if (state == TURNING)
+		_update_turn(); // Stan komt hiervoor terug met een betere oplossing
+	if (state == DRIVING)
+		_update_distance();
+	
 }
