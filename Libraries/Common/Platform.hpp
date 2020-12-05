@@ -39,6 +39,8 @@
 #define ACC_MIN_Z -24592
 #define ACC_MAX_Z 22624
 
+#define IMU_SAMPLE_COUNT 10
+
 /* FACTS */
 #define NUM_MOTORS 4
 #define NUM_ULTRASONIC 4

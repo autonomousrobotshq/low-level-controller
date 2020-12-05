@@ -1,8 +1,10 @@
+#include "Common/Platform.hpp"
 #include "Sensors/IMU.hpp"
 
 SensorIMU::SensorIMU(const t_pins_imu pins_imu)
     : _pin_sda(pins_imu.pin_sda)
     , _pin_scl(pins_imu.pin_scl)
+	, _filter(IMU_SAMPLE_COUNT)
 {
     _compass.init();
     _compass.enable();
@@ -11,9 +13,13 @@ SensorIMU::~SensorIMU() { }
 
 bool SensorIMU::Update()
 {
-    _compass.read();
-    _navigationAngle = _compass.getNavigationAngle();
-
+	_filter.Reset();
+	for (uint8_t i = 0; i < IMU_SAMPLE_COUNT; i++)
+	{
+    	_compass.read();
+    	_filter.NewReading(_compass.getNavigationAngle());
+	}
+	_navigation_angle = _filter.GetFilteredAverage();
     /* No error handling as of yet.
 	** This might be implemented here,
 	** but can also be implemented when dissecting the MageticSensorLsm303 code.
@@ -22,9 +28,9 @@ bool SensorIMU::Update()
     return (true);
 }
 
-float SensorIMU::GetNavigationAngle()
+uint16_t SensorIMU::GetNavigationAngle()
 {
-    return (this->_navigationAngle);
+    return (this->_navigation_angle);
 }
 
 Vec3 SensorIMU::GetAccelerometerData()
