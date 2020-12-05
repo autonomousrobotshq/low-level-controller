@@ -4,8 +4,8 @@
 #include <MagneticSensorLsm303.h>
 
 #include "Common/Datatypes.hpp"
-#include "Common/Vec3.hpp"
 #include "Common/SigFilter.hpp"
+#include "Common/Vec3.hpp"
 
 class SensorIMU {
 public:
@@ -20,7 +20,7 @@ private:
     const uint8_t _pin_sda, _pin_scl;
     MagneticSensorLsm303 _compass;
     uint16_t _navigation_angle;
-	SigFilter _filter;
+    SigFilter _filter;
 };
 
 #endif

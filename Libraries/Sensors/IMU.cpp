@@ -1,10 +1,10 @@
-#include "Common/Platform.hpp"
 #include "Sensors/IMU.hpp"
+#include "Common/Platform.hpp"
 
 SensorIMU::SensorIMU(const t_pins_imu pins_imu)
     : _pin_sda(pins_imu.pin_sda)
     , _pin_scl(pins_imu.pin_scl)
-	, _filter(IMU_SAMPLE_COUNT)
+    , _filter(IMU_SAMPLE_COUNT)
 {
     _compass.init();
     _compass.enable();
@@ -13,13 +13,12 @@ SensorIMU::~SensorIMU() { }
 
 bool SensorIMU::Update()
 {
-	_filter.Reset();
-	for (uint8_t i = 0; i < IMU_SAMPLE_COUNT; i++)
-	{
-    	_compass.read();
-    	_filter.NewReading(_compass.getNavigationAngle());
-	}
-	_navigation_angle = _filter.GetFilteredAverage();
+    _filter.Reset();
+    for (uint8_t i = 0; i < IMU_SAMPLE_COUNT; i++) {
+        _compass.read();
+        _filter.NewReading(_compass.getNavigationAngle());
+    }
+    _navigation_angle = _filter.GetFilteredAverage();
     /* No error handling as of yet.
 	** This might be implemented here,
 	** but can also be implemented when dissecting the MageticSensorLsm303 code.

@@ -21,9 +21,10 @@ enum e_runtime { LAUNCH,
 #define RUNTIME NOINIT
 
 enum e_verbosity {
-	PRODUCTION = 0,
+    PRODUCTION = 0,
     DEBUG = 1,
-    SERIAL_DEBUG = 2 };
+    SERIAL_DEBUG = 2
+};
 /*
 * VERBOSITY defined as:
 *	PRODUCTION		:	Log only output marked critical.

@@ -8,22 +8,22 @@
 
 using namespace sb;
 
-Sandbox *sandbox;
-LogicSteering *steering;
+Sandbox* sandbox;
+LogicSteering* steering;
 
 bool DriverLogicUpdate(void) // is called just before update of motorcontroller in Sandbox::Spinonce
 {
-	steering->drive();
-	return (true);
+    steering->drive();
+    return (true);
 }
 
 void setup() //runs on startup
 {
-	sandbox = new Sandbox();
-	sandbox->Setup();
-	sandbox->SetDriverLogicUpdate(DriverLogicUpdate);
-	
-	steering = new LogicSteering(*sandbox);
+    sandbox = new Sandbox();
+    sandbox->Setup();
+    sandbox->SetDriverLogicUpdate(DriverLogicUpdate);
+
+    steering = new LogicSteering(*sandbox);
 
     Serial.begin(115200);
 
@@ -32,12 +32,10 @@ void setup() //runs on startup
 
 void loop() // loops indefinitely
 {
-	
-	sandbox->SpinOnce();
+
+    sandbox->SpinOnce();
 }
 
 void post()
 {
-
 }
-

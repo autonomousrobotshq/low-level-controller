@@ -2,7 +2,7 @@
 
 static e_errno errno;
 
-e_errno *__geterrno(void)
+e_errno* __geterrno(void)
 {
-	return (&errno);
+    return (&errno);
 }

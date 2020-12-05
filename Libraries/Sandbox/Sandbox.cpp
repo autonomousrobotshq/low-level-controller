@@ -35,31 +35,31 @@ void Sandbox::Setup()
 
 void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
 {
-	this->_DriverLogicUpdate = f;
+    this->_DriverLogicUpdate = f;
 }
 
 void Sandbox::SpinOnce()
 {
-	g_errno = OK_ERRNO;
+    g_errno = OK_ERRNO;
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
     if (!_sensor_imu.Update())
-		_controller_anomaly.HandleErrno(g_errno);
-    if(!_sensor_gps.Update())
-		_controller_anomaly.HandleErrno(g_errno);
+        _controller_anomaly.HandleErrno(g_errno);
+    if (!_sensor_gps.Update())
+        _controller_anomaly.HandleErrno(g_errno);
     if (!_sensor_temp.Update())
-		_controller_anomaly.HandleErrno(g_errno);
+        _controller_anomaly.HandleErrno(g_errno);
 
 #if VERBOSITY & DEBUG
-	// if (!this->_DriverLogicUpdate)
-	// DEBUG: Hook _DriverLogicUpdate is not set
+        // if (!this->_DriverLogicUpdate)
+        // DEBUG: Hook _DriverLogicUpdate is not set
 #endif
 
-	if (!_DriverLogicUpdate())
-		_controller_anomaly.HandleErrno(g_errno);
+    if (!_DriverLogicUpdate())
+        _controller_anomaly.HandleErrno(g_errno);
     if (!_controller_motor.Update())
-		_controller_anomaly.HandleErrno(g_errno);
+        _controller_anomaly.HandleErrno(g_errno);
 }
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
@@ -88,7 +88,7 @@ int8_t Sandbox::GetRPM(const e_corner corner)
 
 int8_t Sandbox::GetRevelation(const e_corner corner)
 {
-	return (_controller_motor.GetRevelation(corner));
+    return (_controller_motor.GetRevelation(corner));
 }
 
 int Sandbox::IMUGetNavigationAngle()

@@ -2,8 +2,8 @@
 #define CONTROLLER_PROXIMITY_HPP
 
 #include "Common/Datatypes.hpp"
-#include "Common/Platform.hpp"
 #include "Common/Errno.hpp"
+#include "Common/Platform.hpp"
 #include "Controllers/Controller.hpp"
 #include "Controllers/Lifetime.hpp"
 #include "Sensors/Ultrasonic.hpp"
@@ -21,12 +21,13 @@ private:
 
 class ControllerAnomaly {
 public:
-    ControllerAnomaly(ControllerLifetime *controller_lifetime);
+    ControllerAnomaly(ControllerLifetime* controller_lifetime);
     ~ControllerAnomaly();
 
     bool HandleErrno(uint8_t errno);
+
 private:
-    ControllerLifetime *_controller_lifetime;
+    ControllerLifetime* _controller_lifetime;
 };
 
 #endif
