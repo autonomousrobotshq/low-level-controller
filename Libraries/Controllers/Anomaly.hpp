@@ -2,8 +2,10 @@
 #define CONTROLLER_PROXIMITY_HPP
 
 #include "Common/Datatypes.hpp"
+#include "Common/Errno.hpp"
 #include "Common/Platform.hpp"
 #include "Controllers/Controller.hpp"
+#include "Controllers/Lifetime.hpp"
 #include "Sensors/Ultrasonic.hpp"
 
 // should the MotorController class hold ownership over the ultrasonic sensor?
@@ -19,17 +21,13 @@ private:
 
 class ControllerAnomaly {
 public:
-    ControllerAnomaly();
+    ControllerAnomaly(ControllerLifetime* controller_lifetime);
     ~ControllerAnomaly();
 
-	// change to clear boolean naming like IsOverheated
-    bool UltraSonic(int left, int right);
-    bool Heat_Warning(int8_t degr);
-    bool Overheating(int8_t degr);
-    bool Battery(uint8_t percentage);
+    bool HandleErrno(uint8_t errno);
 
-	//this is a debugging option -> only check for things that we can react upon
-    bool RAM(int free_space);
+private:
+    ControllerLifetime* _controller_lifetime;
 };
 
 #endif

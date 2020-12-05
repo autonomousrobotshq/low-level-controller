@@ -1,5 +1,7 @@
 #include "MemoryFree.h"
 
+#include "Common/Errno.hpp"
+
 #include "Common/Deployment.hpp"
 #include "Common/Platform.hpp"
 #include "Sandbox/Sandbox.hpp"
@@ -10,6 +12,7 @@ static Sandbox* g_sb;
 
 Sandbox::Sandbox()
     : _controller_lifetime(LLC::pins_relay)
+    , _controller_anomaly(&_controller_lifetime)
     , _sensor_imu(LLC::pins_imu)
     , _sensor_gps(LLC::pins_gps)
     , _sensor_temp(LLC::pins_temp[0])
@@ -32,48 +35,31 @@ void Sandbox::Setup()
 
 void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
 {
-	this->_DriverLogicUpdate = f;
+    this->_DriverLogicUpdate = f;
 }
 
 void Sandbox::SpinOnce()
 {
+    g_errno = OK_ERRNO;
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
-    _sensor_imu.Update();
-    _sensor_gps.Update();
-    _sensor_temp.Update();
+    if (!_sensor_imu.Update())
+        _controller_anomaly.HandleErrno(g_errno);
+    if (!_sensor_gps.Update())
+        _controller_anomaly.HandleErrno(g_errno);
+    if (!_sensor_temp.Update())
+        _controller_anomaly.HandleErrno(g_errno);
 
 #if VERBOSITY & DEBUG
-	// if (!this->_DriverLogicUpdate)
-	// DEBUG: Hook _DriverLogicUpdate is not set
+        // if (!this->_DriverLogicUpdate)
+        // DEBUG: Hook _DriverLogicUpdate is not set
 #endif
-	_DriverLogicUpdate();
-    _controller_motor.Update();
-}
 
-void Sandbox::check_anomalies()
-{
-    //if (this->_anomaly.Battery(100)) // Function needs to be made
-    //{
-    //}
-    //if (this->_anomaly.UltraSonic(USGetDistance(FRONT_LEFT),USGetDistance(FRONT_RIGHT)))
-    //{
-    //    Driver(ALL, HALT, 0);
-    //}
-    //if (this->_anomaly.Overheating(TEMPGetTemp()))
-    //{
-    //    // Turn off everything except fans
-    //}
-    //else if (this->_anomaly.Heat_Warning(TEMPGetTemp()))
-    //{
-    //    // Slow down everything
-    //}
-    //// DEBUG
-    //if (this->_anomaly.RAM(RAMGetFree()))
-    //{
-    //    // Debug message
-    //}
+    if (!_DriverLogicUpdate())
+        _controller_anomaly.HandleErrno(g_errno);
+    if (!_controller_motor.Update())
+        _controller_anomaly.HandleErrno(g_errno);
 }
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
@@ -102,7 +88,7 @@ int8_t Sandbox::GetRPM(const e_corner corner)
 
 int8_t Sandbox::GetRevelation(const e_corner corner)
 {
-	return (_controller_motor.GetRevelation(corner));
+    return (_controller_motor.GetRevelation(corner));
 }
 
 int Sandbox::IMUGetNavigationAngle()

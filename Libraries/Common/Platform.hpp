@@ -18,6 +18,8 @@
 #define HEAT_WARNING 50
 #define LOW_BATTERY 15
 #define RAM_SPACE 100
+#define OVER_CURRENT 30
+#define UNDER_CURRENT 10 ////////?????
 
 /* RANGES */
 #define MOTOR_THROTTLE_HIGH 100
@@ -36,6 +38,8 @@
 #define ACC_MAX_Y 19840
 #define ACC_MIN_Z -24592
 #define ACC_MAX_Z 22624
+
+#define IMU_SAMPLE_COUNT 10
 
 /* FACTS */
 #define NUM_MOTORS 4
