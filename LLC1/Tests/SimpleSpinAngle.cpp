@@ -30,8 +30,8 @@ void setup() //runs on startup
 
 void loop() // loops indefinitely
 {
-    float angle = IMUGetNavigationAngle();
-    const float target = 180;
+    int16_t angle = IMUGetNavigationAngle();
+    const int16_t target = 180;
 
     Serial.print("Angle : ");
     Serial.println(angle);
@@ -47,14 +47,13 @@ void loop() // loops indefinitely
             Driver(RIGHT_SIDE, BACKWARD, 50);
         }
         sandbox->SpinOnce();
-        delay(300);
     } else {
         Serial.println("HALTING");
         Driver(LEFT_SIDE, HALT);
         Driver(RIGHT_SIDE, HALT);
         sandbox->SpinOnce();
-        delay(5000);
         //Driver(BOTH_SIDES, HALT);
+		delay(50);
     }
 }
 
