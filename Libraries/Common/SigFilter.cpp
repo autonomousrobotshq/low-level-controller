@@ -37,7 +37,7 @@ int16_t SigFilter::GetFilteredAverage()
 
     uint8_t _number_of_qualified = 0;
     for (uint8_t i = 0; i + 1 < _index; i++) {
-        if (dev[i] < _dev_avg) {
+        if (dev[i] <= _dev_avg) {
             _avg += _readings[i];
             _number_of_qualified++;
         }

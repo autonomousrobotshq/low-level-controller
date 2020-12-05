@@ -57,4 +57,13 @@ typedef struct s_pins_hall {
     const uint8_t index_interrupt;
 } t_pins_hall;
 
+typedef struct s_imu_calibration {
+    const int16_t x_min;
+    const int16_t x_max;
+    const int16_t y_min;
+    const int16_t y_max;
+    const int16_t z_min;
+    const int16_t z_max;
+} t_imu_calibration;
+
 #endif
