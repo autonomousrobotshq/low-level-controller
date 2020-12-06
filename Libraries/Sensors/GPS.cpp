@@ -28,7 +28,7 @@ void SensorGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* 
 bool SensorGPS::Update()
 {
 	bool newData = false;
-	for (unsigned long start = millis(); millis() - start < 1000;)
+	for (unsigned long start = millis(); millis() - start < GPS_TIMEOUT;)
 	{
 		while(_ss.available())
 		{
