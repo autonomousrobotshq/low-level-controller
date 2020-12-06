@@ -40,11 +40,23 @@ bool SensorGPS::Update()
 	if (newData)
 	{
 		_gps.f_get_position(&_flat, &_flon, &_age);
-			_gps.stats(&_chars, &_sentences, &_checksum);
-			_gps.crack_datetime(&_year, &_month, &_day, &_hour,
-					&_minute, &_second, &_hundredths, &_age);
-			_kmph = _gps.f_speed_kmph();
-			_course = _gps.f_course();
+		_gps.stats(&_chars, &_sentences, &_checksum);
+		_gps.crack_datetime(&_year, &_month, &_day, &_hour,
+				&_minute, &_second, &_hundredths, &_age);
+		_kmph = _gps.f_speed_kmph();
+		_course = _gps.f_course();
+		if (_age == TinyGPS::GPS_INVALID_AGE) {
+			// handle invalid time info
+		}
+		if (_flat == TinyGPS::GPS_INVALID_F_ALTITUDE) {
+			// handle invalid location info
+		}
+		if (_kmph == TinyGPS::GPS_INVALID_F_SPEED) {
+			// handle invalid speed info
+		}
+		if (_course == TinyGPS::GPS_INVALID_F_ANGLE) {
+			// handle invalid course info
+		}
 	}
 	if (newData)
 		return true;
