@@ -1,7 +1,6 @@
 #include "MemoryFree.h"
 
-#include "Common/Errno.hpp"
-
+#include "Common/State.hpp"
 #include "Common/Deployment.hpp"
 #include "Common/Platform.hpp"
 #include "Sandbox/Sandbox.hpp"
@@ -30,7 +29,7 @@ Sandbox::~Sandbox()
 
 void Sandbox::Setup()
 {
-    _controller_lifetime.Lifephase(STARTUP);
+    _controller_lifetime.Lifephase(S_STARTUP);
 }
 
 void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
@@ -40,16 +39,15 @@ void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
 
 void Sandbox::SpinOnce()
 {
-    g_errno = OK_ERRNO;
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
     if (!_sensor_imu.Update())
-        _controller_anomaly.HandleErrno(g_errno);
+        _controller_anomaly.HandleError(g_state);
     if (!_sensor_gps.Update())
-        _controller_anomaly.HandleErrno(g_errno);
+        _controller_anomaly.HandleError(g_state);
     if (!_sensor_temp.Update())
-        _controller_anomaly.HandleErrno(g_errno);
+        _controller_anomaly.HandleError(g_state);
 
 #if VERBOSITY & DEBUG
         // if (!this->_DriverLogicUpdate)
@@ -57,9 +55,9 @@ void Sandbox::SpinOnce()
 #endif
 
     if (!_DriverLogicUpdate())
-        _controller_anomaly.HandleErrno(g_errno);
+        _controller_anomaly.HandleError(g_state);
     if (!_controller_motor.Update())
-        _controller_anomaly.HandleErrno(g_errno);
+        _controller_anomaly.HandleError(g_state);
 }
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
