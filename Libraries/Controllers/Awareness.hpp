@@ -1,5 +1,5 @@
-#ifndef AWARENESS_HPP
-#define AWARENESS_HPP
+#ifndef CONTROLLER_AWARENESS_HPP
+#define CONTROLLER_AWARENESS_HPP
 
 #include "Common/Datatypes.hpp"
 #include "Common/Platform.hpp"
@@ -14,10 +14,10 @@
 #define CRITICAL_TEMPERATURE 80
 
 
-class Awareness : public Controller{
+class ControllerAwareness : public Controller{
 	public:
-		Awareness();
-		~Awareness();
+		ControllerAwareness();
+		~ControllerAwareness();
 		uint8_t GetDistance(const e_corner corner);
 		uint8_t GetTemperature(const uint8_t temp_sensor);
 		bool Update();

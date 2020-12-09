@@ -8,13 +8,14 @@
 
 class ControllerAnomaly {
 public:
-    ControllerAnomaly(ControllerLifetime* controller_lifetime);
+    ControllerAnomaly(void *sandbox, ControllerLifetime* controller_lifetime);
     ~ControllerAnomaly();
 
     bool HandleError(const e_state state);
 
 private:
     ControllerLifetime* _controller_lifetime;
+	void *_sandbox;
 };
 
 #endif

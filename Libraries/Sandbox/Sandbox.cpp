@@ -12,10 +12,9 @@ static Sandbox* g_sb;
 Sandbox::Sandbox()
     : _controller_lifetime(LLC::pins_relay)
     , _controller_physical_feedback(LLC::pins_physicalfeedback)
-    , _controller_anomaly(&_controller_lifetime)
+    , _controller_anomaly(this, &_controller_lifetime)
     , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer)
     , _sensor_gps(LLC::pins_gps)
-    , _sensor_temp(LLC::pins_temp[0])
 {
     if (g_sb) {
         // crit: "Second initialisation of Sandbox!"
@@ -50,11 +49,11 @@ void Sandbox::SpinOnce()
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
-    if (!_sensor_imu.Update())
+	while (!_controller_awareness.Update())
         _controller_anomaly.HandleError(g_state);
-    if (!_sensor_gps.Update())
+    while (!_sensor_imu.Update())
         _controller_anomaly.HandleError(g_state);
-    if (!_sensor_temp.Update())
+    while (!_sensor_gps.Update())
         _controller_anomaly.HandleError(g_state);
 
 #if VERBOSITY & DEBUG
@@ -62,9 +61,9 @@ void Sandbox::SpinOnce()
         // DEBUG: Hook _DriverLogicUpdate is not set
 #endif
 
-    if (!_DriverLogicUpdate())
+    while (!_DriverLogicUpdate())
         _controller_anomaly.HandleError(g_state);
-    if (!_controller_motor.Update())
+    while (!_controller_motor.Update())
         _controller_anomaly.HandleError(g_state);
 }
 
@@ -114,9 +113,7 @@ Vec3 Sandbox::IMUGetAcceleroData()
 
 int16_t Sandbox::USGetDistance(e_corner corner)
 {
-    return (0);
-    (void)corner;
-    //return (this->_controller_proximity.GetDistance(corner));
+	return (this->_controller_awareness.GetDistance(corner));
 }
 
 void Sandbox::GPSGetLocation(float* flat, float* flon)
@@ -141,7 +138,7 @@ int16_t Sandbox::GPSGetCourse()
 
 int8_t Sandbox::TEMPGetTemperature()
 {
-    return (this->_sensor_temp.GetTemp());
+    return (this->_controller_awareness.GetTemperature(0)); // IS JUST USING ZERO'TH INDEX FOR TEMP FOR NOW
 }
 
 void Sandbox::SIGBeep(const e_siglevel siglevel, const uint8_t count)

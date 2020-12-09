@@ -8,6 +8,7 @@
 #include "Controllers/PhysicalFeedback.hpp"
 #include "Controllers/Lifetime.hpp"
 #include "Controllers/Motor.hpp"
+#include "Controllers/Awareness.hpp"
 
 #include "Interfaces/ROS.hpp"
 
@@ -55,9 +56,9 @@ private:
     ControllerLifetime _controller_lifetime;
 	ControllerPhysicalFeedback _controller_physical_feedback;
     ControllerAnomaly _controller_anomaly;
+	ControllerAwareness _controller_awareness;
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
-    SensorTemp _sensor_temp;
 
     bool (*_DriverLogicUpdate)(void);
 };
