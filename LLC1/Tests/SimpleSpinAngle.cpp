@@ -31,12 +31,12 @@ void setup() //runs on startup
 void loop() // loops indefinitely
 {
     int16_t angle = IMUGetNavigationAngle();
-    const int16_t target = 180;
+    const int16_t target = 175;
 
     Serial.print("Angle : ");
     Serial.println(angle);
 
-    if (abs(target - angle) > 10) {
+    if (abs(target - angle) > 1) {
         if (angle > target) {
             Serial.println("RIGHT");
             Driver(LEFT_SIDE, BACKWARD, 50);
