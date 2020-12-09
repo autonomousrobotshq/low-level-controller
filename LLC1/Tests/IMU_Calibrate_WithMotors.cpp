@@ -1,10 +1,17 @@
 #include <Wire.h>
 #include <LSM303.h>
+#include "Controllers/Motor.hpp"
+#include "Controllers/Lifetime.hpp"
+#include "Common/Platform.hpp"
 
 LSM303 compass;
 LSM303::vector<int16_t> running_min = {32767, 32767, 32767}, running_max = {-32768, -32768, -32768};
+//LSM303::vector<int16_t> running_min = {-614, -524, -528}, running_max = {358, 522, 515};
 
 char report[80];
+
+ControllerMotor *g_mot;
+ControllerLifetime *g_lifetime;
 
 void setup() {
   Serial.begin(115200);
@@ -25,6 +32,10 @@ void setup() {
   //0xE0 = 0b11100000   ±8.1     230               205
   Wire.write(0x80);
   Wire.endTransmission();
+
+  g_mot = new ControllerMotor();
+  g_lifetime = new ControllerLifetime(LLC::pins_relay);
+  g_lifetime->Lifephase(STARTUP);
 }
 
 void loop() {  
@@ -44,4 +55,7 @@ void loop() {
   Serial.println(report);
   
   delay(100);
+  g_mot->Driver(LEFT_SIDE, FORWARD, 50);
+  g_mot->Driver(RIGHT_SIDE, BACKWARD, 50);
+  g_mot->Update();
 }
