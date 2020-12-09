@@ -14,6 +14,7 @@ ARDUINO_LIBS += External/RosserialArduino-0.7.9
 ARDUINO_LIBS += External/TinyGPS-13.0.0
 ARDUINO_LIBS += External/MemoryFree-a2d60bd
 ARDUINO_LIBS += External/ArduinoPIDLibrary-1.2.0
+ARDUINO_LIBS += External/lsm303-arduino-3.0.1
 
 ARDUINO_LIBS += . # relative offsets are used for internal libraries
 
@@ -102,7 +103,12 @@ CXXFLAGS		+= -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
-MONITOR_PORT      = /dev/tty.usbmodem141101
+ifeq ($(UNAME_S),Linux)
+    MONITOR_PORT      = /dev/ttyACM1
+endif
+ifeq ($(UNAME_S),Darwin)
+    MONITOR_PORT      = /dev/*.usbmodem*
+endif
 
 ### CURRENT_DIR
 ### Do not touch - used for binaries path

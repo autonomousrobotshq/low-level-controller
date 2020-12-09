@@ -13,7 +13,7 @@ static Sandbox* g_sb;
 Sandbox::Sandbox()
     : _controller_lifetime(LLC::pins_relay)
     , _controller_anomaly(&_controller_lifetime)
-    , _sensor_imu(LLC::pins_imu)
+    , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer)
     , _sensor_gps(LLC::pins_gps)
     , _sensor_temp(LLC::pins_temp[0])
 {
@@ -91,7 +91,7 @@ int8_t Sandbox::GetRevelation(const e_corner corner)
     return (_controller_motor.GetRevelation(corner));
 }
 
-int Sandbox::IMUGetNavigationAngle()
+int16_t Sandbox::IMUGetNavigationAngle()
 {
     return (this->_sensor_imu.GetNavigationAngle());
 }
@@ -106,7 +106,7 @@ Vec3 Sandbox::IMUGetAcceleroData()
     return (this->_sensor_imu.GetAccelerometerData());
 }
 
-int Sandbox::USGetDistance(e_corner corner)
+int16_t Sandbox::USGetDistance(e_corner corner)
 {
     return (0);
     (void)corner;
@@ -123,12 +123,12 @@ void Sandbox::GPSGetTime(unsigned long* age, unsigned long* date, unsigned long*
     this->_sensor_gps.GetTime(age, date, time);
 }
 
-int Sandbox::GPSGetSpeed()
+int16_t Sandbox::GPSGetSpeed()
 {
     return (this->_sensor_gps.GetSpeed());
 }
 
-int Sandbox::GPSGetCourse()
+int16_t Sandbox::GPSGetCourse()
 {
     return (this->_sensor_gps.GetCourse());
 }
@@ -138,7 +138,7 @@ int8_t Sandbox::TEMPGetTemp()
     return (this->_sensor_temp.GetTemp());
 }
 
-int Sandbox::RAMGetFree()
+int16_t Sandbox::RAMGetFree()
 {
     return (freeMemory());
 }
@@ -148,12 +148,12 @@ bool Driver(const e_side side, const e_drive_action action, const uint8_t thrott
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
 Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
 Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }
-int USGetDistance(e_corner corner) { return (g_sb->USGetDistance(corner)); }
+int16_t USGetDistance(e_corner corner) { return (g_sb->USGetDistance(corner)); }
 void GPSGetLocation(float* flat, float* flon) { g_sb->GPSGetLocation(flat, flon); }
 void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time) { g_sb->GPSGetTime(age, date, time); }
-int GPSGetSpeed() { return (g_sb->GPSGetSpeed()); }
-int GPSGetCourse() { return (g_sb->GPSGetCourse()); }
+int16_t GPSGetSpeed() { return (g_sb->GPSGetSpeed()); }
+int16_t GPSGetCourse() { return (g_sb->GPSGetCourse()); }
 int8_t TEMPGetTemp() { return (g_sb->TEMPGetTemp()); }
-int RAMGetFree() { return (g_sb->RAMGetFree()); }
+int16_t RAMGetFree() { return (g_sb->RAMGetFree()); }
 
 }

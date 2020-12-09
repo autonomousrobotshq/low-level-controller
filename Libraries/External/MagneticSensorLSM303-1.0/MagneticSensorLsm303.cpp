@@ -23,8 +23,8 @@ MagneticSensorLsm303::MagneticSensorLsm303(void)
 	adjust these values in your own sketch.
 	*/
 	Wire.begin();
-	magnetometer_min = (MagneticSensorLsm303::vector<int16_t>){-32767, -32767, -32767};
-	magnetometer_max = (MagneticSensorLsm303::vector<int16_t>){+32767, +32767, +32767};
+	magnetometer_min = (MagneticSensorLsm303::vector<int16_t>){-1003, -768, -811};
+	magnetometer_max = (MagneticSensorLsm303::vector<int16_t>){+737, +998, +928};
 	_device = device_auto;
 	io_timeout = 0;  ///< 0 = no timeout
 	did_timeout = false;

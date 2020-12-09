@@ -26,19 +26,19 @@ public:
     bool Driver(const e_side side, const e_drive_action action);
     bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
 
-    int IMUGetNavigationAngle();
+    int16_t IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();
     Vec3 IMUGetAcceleroData();
 
-    int USGetDistance(e_corner corner);
+    int16_t USGetDistance(e_corner corner);
 
     void GPSGetLocation(float* flat, float* flon);
     void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time); // overkill?
-    int GPSGetSpeed();
-    int GPSGetCourse();
+    int16_t GPSGetSpeed();
+    int16_t GPSGetCourse();
     int8_t TEMPGetTemp();
 
-    int RAMGetFree();
+    int16_t RAMGetFree();
     int8_t GetRPM(const e_corner corner);
     int8_t GetRevelation(const e_corner corner);
 
@@ -63,19 +63,19 @@ bool Driver(const e_side side, const e_drive_action action, const uint8_t thrott
 
 int8_t GetRPM(const e_corner corner);
 
-int IMUGetNavigationAngle();
+int16_t IMUGetNavigationAngle();
 Vec3 IMUGetMagnetoData();
 Vec3 IMUGetAcceleroData();
 
-int USGetDistance(e_corner corner);
+int16_t USGetDistance(e_corner corner);
 
 void GPSGetLocation(float* flat, float* flon);
 void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time); // overkill?
-int GPSGetSpeed();
-int GPSGetCourse();
+int16_t GPSGetSpeed();
+int16_t GPSGetCourse();
 
 int8_t TEMPGetTemp();
 
-int RAMGetFree();
+int16_t RAMGetFree();
 } // namespace sb
 #endif
