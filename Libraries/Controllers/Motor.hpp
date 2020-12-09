@@ -20,7 +20,7 @@ public:
     bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
     bool SetThrottle(const e_side side);
     int8_t GetRPM(const e_corner);
-    int8_t GetRevelation(const e_corner);
+    int8_t GetRevolutions(const e_corner);
     bool Driver();
     bool IsReady(const e_side side);
     bool Update();

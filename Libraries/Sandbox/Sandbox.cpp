@@ -11,6 +11,7 @@ static Sandbox* g_sb;
 
 Sandbox::Sandbox()
     : _controller_lifetime(LLC::pins_relay)
+    , _controller_physical_feedback(LLC::pins_physicalfeedback)
     , _controller_anomaly(&_controller_lifetime)
     , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer)
     , _sensor_gps(LLC::pins_gps)
@@ -30,6 +31,13 @@ Sandbox::~Sandbox()
 void Sandbox::Setup()
 {
     _controller_lifetime.Lifephase(S_STARTUP);
+	_controller_physical_feedback.SignalState(S_STARTUP);
+}
+
+void Sandbox::Shutdown()
+{
+	_controller_physical_feedback.SignalState(S_SHUTDOWN);
+    _controller_lifetime.Lifephase(S_SHUTDOWN);
 }
 
 void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
@@ -84,9 +92,9 @@ int8_t Sandbox::GetRPM(const e_corner corner)
     return (_controller_motor.GetRPM(corner));
 }
 
-int8_t Sandbox::GetRevelation(const e_corner corner)
+int8_t Sandbox::GetRevolutions(const e_corner corner)
 {
-    return (_controller_motor.GetRevelation(corner));
+    return (_controller_motor.GetRevolutions(corner));
 }
 
 int16_t Sandbox::IMUGetNavigationAngle()
@@ -131,9 +139,14 @@ int16_t Sandbox::GPSGetCourse()
     return (this->_sensor_gps.GetCourse());
 }
 
-int8_t Sandbox::TEMPGetTemp()
+int8_t Sandbox::TEMPGetTemperature()
 {
     return (this->_sensor_temp.GetTemp());
+}
+
+void Sandbox::SIGBeep(const e_siglevel siglevel, const uint8_t count)
+{
+	_controller_physical_feedback.Beep(siglevel, count);
 }
 
 int16_t Sandbox::RAMGetFree()
@@ -151,7 +164,9 @@ void GPSGetLocation(float* flat, float* flon) { g_sb->GPSGetLocation(flat, flon)
 void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time) { g_sb->GPSGetTime(age, date, time); }
 int16_t GPSGetSpeed() { return (g_sb->GPSGetSpeed()); }
 int16_t GPSGetCourse() { return (g_sb->GPSGetCourse()); }
-int8_t TEMPGetTemp() { return (g_sb->TEMPGetTemp()); }
+int8_t TEMPGetTemperature() { return (g_sb->TEMPGetTemperature()); }
+void SIGBeep(const e_siglevel siglevel, const uint8_t count) { g_sb->SIGBeep(siglevel, count); }
+
 int16_t RAMGetFree() { return (g_sb->RAMGetFree()); }
 
 }

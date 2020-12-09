@@ -135,7 +135,7 @@ int8_t ControllerMotor::GetRPM(const e_corner corner)
     return (_sensors_hall[corner]->GetRPM());
 }
 
-int8_t ControllerMotor::GetRevelation(const e_corner corner)
+int8_t ControllerMotor::GetRevolutions(const e_corner corner)
 {
-    return (_sensors_hall[corner]->GetRevelations());
+    return (_sensors_hall[corner]->GetRevolutions());
 }
