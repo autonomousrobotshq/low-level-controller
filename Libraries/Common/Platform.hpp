@@ -47,6 +47,10 @@
 #define NUM_RELAYS 6
 #define NUM_TEMP 1
 
+/* TIMING */
+
+#define TIME_TO_ACCELERATE 1000 // in milliseconds
+
 /* PORTS */
 
 // Don't use 'LLC1 or LLC2 etc. -> LLC is declared in Deployment.hpp

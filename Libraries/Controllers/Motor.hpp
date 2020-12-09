@@ -36,6 +36,8 @@ private:
     e_drive_action _action[3];
     uint8_t _desired_throttle[3];
     uint8_t _current_throttle[3];
+	uint16_t _acceleration_step[3];
+	unsigned long _acceleration_time[3];
 };
 
 #endif
