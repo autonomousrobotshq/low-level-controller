@@ -117,7 +117,7 @@ bool ControllerMotor::Update()
 				break;
         }
     } else {
-        if (_is_side[LEFT_SIDE] == true)
+        if (_is_side[LEFT_SIDE] == true) {
             switch (_action[LEFT_SIDE]) {
 				case FORWARD:
 					SetThrottle(LEFT_SIDE);
@@ -136,6 +136,7 @@ bool ControllerMotor::Update()
 				default:
 					break;
             }
+		}
         if (_is_side[RIGHT_SIDE] == true) {
             switch (_action[RIGHT_SIDE]) {
 				case FORWARD:
@@ -156,26 +157,6 @@ bool ControllerMotor::Update()
 					break;
             }
         }
-    	if (_is_side[1] == true) {
-			switch (_action[1]) {
-				case FORWARD:
-					SetThrottle(RIGHT_SIDE);
-					_actuators_motor[FRONT_RIGHT]->forward(_current_throttle[1]);
-					_actuators_motor[BACK_RIGHT]->forward(_current_throttle[1]);
-					break;
-				case BACKWARD:
-					SetThrottle(RIGHT_SIDE);
-					_actuators_motor[FRONT_RIGHT]->reverse(_current_throttle[1]);
-					_actuators_motor[BACK_RIGHT]->reverse(_current_throttle[1]);
-					break;
-				case HALT:
-					_actuators_motor[FRONT_RIGHT]->halt();
-					_actuators_motor[BACK_RIGHT]->halt();
-					break;
-				default:
-					break;
-			}
-		}
     }
     return (true);
 }
