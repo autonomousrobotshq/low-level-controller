@@ -91,6 +91,23 @@ bool Sandbox::DriverIsReady() // -> MOTORCONTROLLER
 	return (true); // check if motorcontroller has reached desired state
 }
 
+// SLOWHALT
+
+bool Sandbox::DriverIsMoving() // -> MOTORCONTROLLER
+{
+	return (true);
+}
+
+bool Sandbox::DriverIsAccelerating() // -> MOTORCONTROLLER
+{
+	return (true);
+}
+
+bool Sandbox::DriverIsDecelerating() // -> MOTORCONTROLLER
+{
+	return (true);
+}
+
 uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
 {
 	return (0); // get current average speed of motors
@@ -170,6 +187,9 @@ int16_t Sandbox::RAMGetFree()
 bool Driver(const e_side side, const e_drive_action action) { return (g_sb->Driver(side, action)); }
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(side, action, throttle)); }
 bool DriverIsReady() { return g_sb->DriverIsReady(); }
+bool DriverIsMoving() { return g_sb->DriverIsMoving(); }
+bool DriverIsAccelerating() { return g_sb->DriverIsAccelerating(); }
+bool DriverIsDecelerating() { return g_sb->DriverIsDecelerating(); }
 uint8_t DriverGetThrottle() { return g_sb->DriverGetThrottle(); }
 void DriverSetThrottle(const e_side side, const uint8_t throttle) { g_sb->DriverSetThrottle(side, throttle); }
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }

@@ -29,6 +29,10 @@ public:
     bool Driver(const e_side side, const e_drive_action action);
     bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
 	bool DriverIsReady();
+	bool DriverIsMoving();
+	bool DriverIsAccelerating();
+	bool DriverIsDecelerating();
+
 	uint8_t DriverGetThrottle();
 	void DriverSetThrottle(const e_side side, const uint8_t throttle);
 
@@ -70,6 +74,9 @@ private:
 bool Driver(const e_side side, const e_drive_action action);
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
 bool DriverIsReady();
+bool DriverIsMoving();
+bool DriverIsAccelerating();
+bool DriverIsDecelerating();
 uint8_t DriverGetThrottle();
 void DriverSetThrottle(const e_side side, const uint8_t throttle);
 
