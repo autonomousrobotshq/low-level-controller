@@ -28,6 +28,9 @@ public:
     ~Sandbox();
     bool Driver(const e_side side, const e_drive_action action);
     bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
+	bool DriverIsReady();
+	uint8_t DriverGetThrottle();
+	void DriverSetThrottle(const e_side side, const uint8_t throttle);
 
     int16_t IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();
@@ -66,6 +69,9 @@ private:
 // public functions
 bool Driver(const e_side side, const e_drive_action action);
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
+bool DriverIsReady();
+uint8_t DriverGetThrottle();
+void DriverSetThrottle(const e_side side, const uint8_t throttle);
 
 int8_t GetRPM(const e_corner corner);
 

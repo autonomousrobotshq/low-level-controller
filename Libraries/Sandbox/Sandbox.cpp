@@ -67,7 +67,7 @@ void Sandbox::SpinOnce()
         _controller_anomaly.HandleError(g_state);
 }
 
-bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
+bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle) // NEEDS TO BE REWORKED
 {
 #if VERBOSITY & DEBUG
     if (throttle >= MOTOR_THROTTLE_LOW && throttle <= MOTOR_THROTTLE_HIGH)
@@ -78,7 +78,7 @@ bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8
     }
 #endif
     _controller_motor.Driver(side, action, throttle);
-    return (true); // NEEDS TO BE REWORKED
+    return (true);
 }
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action)
@@ -86,12 +86,28 @@ bool Sandbox::Driver(const e_side side, const e_drive_action action)
     return (_controller_motor.Driver(side, action));
 }
 
-int8_t Sandbox::GetRPM(const e_corner corner)
+bool Sandbox::DriverIsReady() // -> MOTORCONTROLLER
+{
+	return (true); // check if motorcontroller has reached desired state
+}
+
+uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
+{
+	return (0); // get current average speed of motors
+}
+
+void Sandbox::DriverSetThrottle(const e_side side, const uint8_t throttle) // -> MOTORCONTROLLER
+{
+	(void) side;
+	(void) throttle;
+}
+
+int8_t Sandbox::GetRPM(const e_corner corner) // -> DOESNT FOLLOW NAMING STYLE
 {
     return (_controller_motor.GetRPM(corner));
 }
 
-int8_t Sandbox::GetRevolutions(const e_corner corner)
+int8_t Sandbox::GetRevolutions(const e_corner corner) // -> DOESNT FOLLOW NAMING STYLE
 {
     return (_controller_motor.GetRevolutions(corner));
 }
@@ -153,6 +169,9 @@ int16_t Sandbox::RAMGetFree()
 
 bool Driver(const e_side side, const e_drive_action action) { return (g_sb->Driver(side, action)); }
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(side, action, throttle)); }
+bool DriverIsReady() { return g_sb->DriverIsReady(); }
+uint8_t DriverGetThrottle() { return g_sb->DriverGetThrottle(); }
+void DriverSetThrottle(const e_side side, const uint8_t throttle) { g_sb->DriverSetThrottle(side, throttle); }
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
 Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
 Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }
