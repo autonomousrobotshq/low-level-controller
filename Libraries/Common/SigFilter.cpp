@@ -33,7 +33,7 @@ int16_t SigFilter::GetFilteredAverage()
         dev[i] = abs(_readings[i] - _readings[i + 1]);
         _dev_avg += dev[i];
     }
-    _dev_avg /= _index;
+    _dev_avg /= _index > 0 ? _index : 1;
 
     uint8_t _number_of_qualified = 0;
     for (uint8_t i = 0; i + 1 < _index; i++) {
@@ -42,5 +42,5 @@ int16_t SigFilter::GetFilteredAverage()
             _number_of_qualified++;
         }
     }
-    return (_avg / _number_of_qualified);
+    return (_number_of_qualified > 0 ? _avg / _number_of_qualified : _readings[0]);
 }
