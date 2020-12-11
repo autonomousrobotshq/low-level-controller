@@ -34,7 +34,7 @@ enum e_verbosity {
 *	Always set to PRODUCTION when deploying autonomous.
 */
 
-#define VERBOSITY DEBUG | SERIAL_DEBUG // for SERIAL_DEBUGGING
+#define VERBOSITY (DEBUG | SERIAL_DEBUG) // for SERIAL_DEBUGGING
 //#define VERBOSITY DEBUG // for ROS DEBUGGING
 //#define VERBOSITY PRODUCTION // when performance is key
 
