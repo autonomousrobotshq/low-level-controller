@@ -37,12 +37,13 @@ class LogicDriving : public Logic
 	public:
 			LogicDriving(sb::Sandbox *sandbox);
 			~LogicDriving();
-		bool HeadTo(const uint16_t heading, const uint8_t throttle);
+		bool HeadTo(const uint16_t desired_heading, const uint8_t desired_throttle);
 		bool Update();
 	private:
 		void Perform(const e_action action);
 		void MeasureSpin();
 		void MeasureDrag();
+		e_side GetSpinDirection(const uint16_t current_heading, const uint16_t desired_heading);
 		int16_t GetThrottleForDragSteering(const e_action action, const e_side side);
 	private:
 		sb::Sandbox *_sandbox;

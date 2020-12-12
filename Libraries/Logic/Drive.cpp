@@ -1,3 +1,4 @@
+#include "Common/Datatypes.hpp"
 #include "Interfaces/Logger.hpp"
 #include "Logic/Drive.hpp"
 
@@ -5,20 +6,20 @@ namespace DR {
 
 using namespace sb;
 
-bool LogicDriving::HeadTo(const uint16_t heading, const uint8_t throttle)
+bool LogicDriving::HeadTo(const uint16_t desired_heading, const uint8_t desired_throttle)
 {
 	_actions.clear();
 
-	_desired_heading = heading;
-	_desired_throttle = throttle;
+	_desired_heading = desired_heading;
+	_desired_throttle = desired_throttle;
 
 	uint16_t current_heading = IMUGetNavigationAngle();
 	uint8_t current_speed = DriverGetThrottle();
 
 	if (current_speed > DRAG_SPEED_THRESHOLD
-		&& (abs(current_heading - heading) < DRAG_ANGULAR_THRESHOLD
-		|| abs((current_heading + 360) - heading) < DRAG_ANGULAR_THRESHOLD
-		|| abs(current_heading - (heading + 360)) < DRAG_ANGULAR_THRESHOLD))
+		&& (abs(current_heading - desired_heading) < DRAG_ANGULAR_THRESHOLD
+		|| abs((current_heading + 360) - desired_heading) < DRAG_ANGULAR_THRESHOLD
+		|| abs(current_heading - (desired_heading + 360)) < DRAG_ANGULAR_THRESHOLD))
 	{
 		// let's drag
 	}
@@ -31,9 +32,18 @@ bool LogicDriving::HeadTo(const uint16_t heading, const uint8_t throttle)
 	else
 	{
 		// turn and drive
+		if (desired_throttle > 0)
+			_actions.push_back(e_action::FORWARD);
+		else
+			_actions.push_back(e_action::HALT);
+
+		e_side direction = GetSpinDirection(current_heading, desired_heading);
+		if (direction == LEFT_SIDE)
+			_actions.push_back(e_action::SPINLEFT);
+		else if (direction == RIGHT_SIDE)
+			_actions.push_back(e_action::SPINRIGHT);
 	}
 
-	(void) throttle;
 	return (true);
 }
 
