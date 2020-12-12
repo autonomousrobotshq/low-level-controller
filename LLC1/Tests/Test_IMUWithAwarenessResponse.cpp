@@ -25,31 +25,41 @@ void setup() //runs on startup
 
     Serial.begin(115200);
 
-    Serial.println("Test_SimpleSpinAngle.cpp");
+    Serial.println("Test_IMUWithAwarenessResponse.cpp");
 }
 
 void loop() // loops indefinitely
 {
     int16_t angle = IMUGetNavigationAngle();
     const int16_t target = 175;
+	static bool goForward;
 
     Serial.print("Angle : "); Serial.println(angle);
-
-    if (abs(target - angle) > 1) {
-        if (angle > target) {
-            Serial.println("RIGHT");
-            Driver(LEFT_SIDE, BACKWARD, 50);
-            Driver(RIGHT_SIDE, FORWARD, 50);
-        } else {
-            Serial.println("LEFT");
-            Driver(LEFT_SIDE, FORWARD, 50);
-            Driver(RIGHT_SIDE, BACKWARD, 50);
-        }
-    } else {
-        Serial.println("HALTING");
-        Driver(LEFT_SIDE, HALT);
-        Driver(RIGHT_SIDE, HALT);
-    }
+	if (!goForward)
+	{
+    	if (abs(target - angle) > 2) {
+    	    if (angle > target) {
+    	        Serial.println("RIGHT");
+    	        Driver(LEFT_SIDE, BACKWARD, 50);
+    	        Driver(RIGHT_SIDE, FORWARD, 50);
+    	    } else {
+    	        Serial.println("LEFT");
+    	        Driver(LEFT_SIDE, FORWARD, 50);
+    	        Driver(RIGHT_SIDE, BACKWARD, 50);
+    	    }
+    	} else {
+			goForward = true;
+    	    Serial.println("HALTING");
+    	    Driver(LEFT_SIDE, HALT);
+    	    Driver(RIGHT_SIDE, HALT);
+    	}
+	}
+	else
+	{
+		// just go forward to test the ControllerAwareness response of the ultrasonics
+		Driver(LEFT_SIDE, FORWARD);
+		Driver(RIGHT_SIDE, FORWARD);
+	}
 	sandbox->SpinOnce();
 }
 

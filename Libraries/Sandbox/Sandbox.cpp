@@ -39,9 +39,9 @@ void Sandbox::Shutdown()
     _controller_lifetime.Lifephase(S_SHUTDOWN);
 }
 
-void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
+void Sandbox::SetLogicDriverUpdate(bool (*f)(void))
 {
-    this->_DriverLogicUpdate = f;
+    this->_LogicDriverUpdate = f;
 }
 
 void Sandbox::SpinOnce()
@@ -49,22 +49,22 @@ void Sandbox::SpinOnce()
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
-	while (!_controller_awareness.Update())
+    if (!_sensor_imu.Update())
         _controller_anomaly.HandleError(g_state);
-    while (!_sensor_imu.Update())
-        _controller_anomaly.HandleError(g_state);
-    while (!_sensor_gps.Update())
+    if (!_sensor_gps.Update())
         _controller_anomaly.HandleError(g_state);
 
 #if VERBOSITY & DEBUG
-        // if (!this->_DriverLogicUpdate)
-        // DEBUG: Hook _DriverLogicUpdate is not set
+        // if (!this->_LogicDriverUpdate)
+        // DEBUG: Hook _LogicDriverUpdate is not set
 #endif
 
-    while (!_DriverLogicUpdate())
-        _controller_anomaly.HandleError(g_state);
-    while (!_controller_motor.Update())
-        _controller_anomaly.HandleError(g_state);
+    if (!_LogicDriverUpdate())
+		_controller_anomaly.HandleError(g_state);
+	while (!_controller_awareness.Update())
+		_controller_anomaly.HandleError(g_state);
+    if (!_controller_motor.Update())
+		_controller_anomaly.HandleError(g_state);
 }
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle) // NEEDS TO BE REWORKED
@@ -91,9 +91,40 @@ bool Sandbox::DriverIsReady() // -> MOTORCONTROLLER
 	return (true); // check if motorcontroller has reached desired state
 }
 
+// SLOWHALT
+
+bool Sandbox::DriverIsMoving() // -> MOTORCONTROLLER
+{
+	return (true);
+}
+
+bool Sandbox::DriverIsAccelerating() // -> MOTORCONTROLLER
+{
+	return (true);
+}
+
+bool Sandbox::DriverIsDecelerating() // -> MOTORCONTROLLER
+{
+	return (true);
+}
+
 uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
 {
 	return (0); // get current average speed of motors
+}
+
+void Sandbox::DriverHalt() // -> MOTORCONTROLLER
+{
+	Driver(LEFT_SIDE, HALT); // needs to use Motorcontroller HALT/SLOWHALT
+	Driver(RIGHT_SIDE, HALT);
+	_controller_motor.Update();
+}
+
+void Sandbox::DriverSlowHalt() // -> MOTORCONTROLLER
+{
+	Driver(LEFT_SIDE, HALT); // needs to use Motorcontroller HALT/SLOWHALT
+	Driver(RIGHT_SIDE, HALT);
+	_controller_motor.Update();
 }
 
 void Sandbox::DriverSetThrottle(const e_side side, const uint8_t throttle) // -> MOTORCONTROLLER
@@ -170,8 +201,13 @@ int16_t Sandbox::RAMGetFree()
 bool Driver(const e_side side, const e_drive_action action) { return (g_sb->Driver(side, action)); }
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(side, action, throttle)); }
 bool DriverIsReady() { return g_sb->DriverIsReady(); }
+bool DriverIsMoving() { return g_sb->DriverIsMoving(); }
+bool DriverIsAccelerating() { return g_sb->DriverIsAccelerating(); }
+bool DriverIsDecelerating() { return g_sb->DriverIsDecelerating(); }
 uint8_t DriverGetThrottle() { return g_sb->DriverGetThrottle(); }
 void DriverSetThrottle(const e_side side, const uint8_t throttle) { g_sb->DriverSetThrottle(side, throttle); }
+void DriverHalt() { g_sb->DriverHalt(); }
+void DriverSlowHalt() { g_sb->DriverSlowHalt(); }
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
 Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
 Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }

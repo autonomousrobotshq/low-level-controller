@@ -42,9 +42,8 @@ const t_imu_calibration imu_calibration_accelerometer = { -32767, 32767,
 enum e_relays {
     REL_POWER = 0,
     REL_V12 = 2,
-    REL_MOTORS = 3,
-    REL_FAN = 4,
-    REL_BEEP = 6
+    REL_MOTORS = 4,
+    REL_FAN = 5,
 };
 
 // PWM, A, B

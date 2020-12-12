@@ -29,6 +29,12 @@ public:
     bool Driver(const e_side side, const e_drive_action action);
     bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
 	bool DriverIsReady();
+	bool DriverIsMoving();
+	bool DriverIsAccelerating();
+	bool DriverIsDecelerating();
+	void DriverHalt();
+	void DriverSlowHalt();
+
 	uint8_t DriverGetThrottle();
 	void DriverSetThrottle(const e_side side, const uint8_t throttle);
 
@@ -51,7 +57,7 @@ public:
     int8_t GetRPM(const e_corner corner);
     int8_t GetRevolutions(const e_corner corner);
 
-    void SetDriverLogicUpdate(bool (*f)(void));
+    void SetLogicDriverUpdate(bool (*f)(void));
 
 private:
     unsigned long _glob_millis;
@@ -63,13 +69,18 @@ private:
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
 
-    bool (*_DriverLogicUpdate)(void);
+    bool (*_LogicDriverUpdate)(void);
 };
 
 // public functions
 bool Driver(const e_side side, const e_drive_action action);
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
 bool DriverIsReady();
+bool DriverIsMoving();
+bool DriverIsAccelerating();
+bool DriverIsDecelerating();
+void DriverHalt();
+void DriverSlowHalt();
 uint8_t DriverGetThrottle();
 void DriverSetThrottle(const e_side side, const uint8_t throttle);
 
