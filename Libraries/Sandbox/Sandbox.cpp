@@ -88,24 +88,24 @@ bool Sandbox::Driver(const e_side side, const e_drive_action action)
 
 bool Sandbox::DriverIsReady() // -> MOTORCONTROLLER
 {
-	return (true); // check if motorcontroller has reached desired state
+	return (_controller_motor.DriverIsReady()); // check if motorcontroller has reached desired state
 }
 
 // SLOWHALT
 
 bool Sandbox::DriverIsMoving() // -> MOTORCONTROLLER
 {
-	return (true);
+	return (_controller_motor.DriverIsMoving());
 }
 
 bool Sandbox::DriverIsAccelerating() // -> MOTORCONTROLLER
 {
-	return (true);
+	return (_controller_motor.DriverIsAccelerating());
 }
 
 bool Sandbox::DriverIsDecelerating() // -> MOTORCONTROLLER
 {
-	return (true);
+	return (_controller_motor.DriverIsDecelerating());
 }
 
 uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
@@ -115,8 +115,7 @@ uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
 
 void Sandbox::DriverSetThrottle(const e_side side, const uint8_t throttle) // -> MOTORCONTROLLER
 {
-	(void) side;
-	(void) throttle;
+	_controller_motor.DriverSetThrottle(side, throttle);
 }
 
 int8_t Sandbox::GetRPM(const e_corner corner) // -> DOESNT FOLLOW NAMING STYLE

@@ -16,9 +16,16 @@ enum e_drive_action { // SHOULDN'T THIS BE IN Datatpes.hpp???
 
 class ControllerMotor : public Controller {
 public:
-    bool Driver(const e_side side, const e_drive_action action);
-    bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
     bool SetThrottle(const e_side side);
+    bool DriverIsReady();
+	bool DriverIsMoving();
+	bool DriverIsAccelerating();
+	bool DriverIsDecelerating();
+	bool SlowHalt();
+	uint8_t DriverGetThrottle();
+	void DriverSetThrottle(const e_side side, const uint8_t throttle);
+	bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
+	bool Driver(const e_side side, const e_drive_action action);
     int8_t GetRPM(const e_corner);
     int8_t GetRevolutions(const e_corner);
     bool Driver();

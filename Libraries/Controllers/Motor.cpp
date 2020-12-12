@@ -27,9 +27,41 @@ ControllerMotor::~ControllerMotor()
     }
 }
 
-bool ControllerMotor::IsReady(const e_side side)
+bool ControllerMotor::DriverIsReady()
 {
-    return (_current_throttle[side] == _desired_throttle[side]);
+    return (_current_throttle[BOTH_SIDES] == _desired_throttle[BOTH_SIDES]);
+}
+
+bool ControllerMotor::DriverIsMoving()
+{
+    return (_current_throttle[BOTH_SIDES] > 0);
+}
+
+bool ControllerMotor::DriverIsAccelerating()
+{
+    return (_current_throttle[BOTH_SIDES] < _desired_throttle[BOTH_SIDES]);
+}
+
+bool ControllerMotor::DriverIsDecelerating()
+{
+    return (_current_throttle[BOTH_SIDES] > _desired_throttle[BOTH_SIDES]);
+}
+
+uint8_t ControllerMotor::DriverGetThrottle() {
+	return (_current_throttle[BOTH_SIDES]);
+}
+
+bool ControllerMotor::SlowHalt() {
+	if (_current_throttle[BOTH_SIDES] > 20)
+		_current_throttle[BOTH_SIDES] -= 1;
+	else
+	{
+		_actuators_motor[FRONT_LEFT]->halt();
+		_actuators_motor[FRONT_RIGHT]->halt();
+		_actuators_motor[BACK_LEFT]->halt();
+		_actuators_motor[BACK_RIGHT]->halt();
+	}
+	return (true);
 }
 
 bool ControllerMotor::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
@@ -50,6 +82,12 @@ bool ControllerMotor::Driver(const e_side side, const e_drive_action action)
     _action[side] = action;
     _desired_throttle[side] = 255;
     return (true);
+}
+
+void ControllerMotor::DriverSetThrottle(const e_side side, const uint8_t throttle)
+{
+	(void) side;
+	(void) throttle;
 }
 
 bool ControllerMotor::SetThrottle(const e_side side)
@@ -78,7 +116,7 @@ bool ControllerMotor::SetThrottle(const e_side side)
 	if (curr_throttle > 255)
 		_current_throttle[side] = 255;
 	else
-		_current_throttle[side] = curr_throttle;
+		_current_throttle[side] += 1;
 	Serial.println("_current_throttle[side]: ");
 	Serial.println(_current_throttle[side]);
 	//_acceleration_time[side] = millis();
