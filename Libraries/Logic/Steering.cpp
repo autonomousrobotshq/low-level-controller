@@ -106,8 +106,8 @@ void LogicSteering::_update_distance()
         }
         _sandbox.Driver(RIGHT_SIDE, FORWARD, _right_power);
         _sandbox.Driver(LEFT_SIDE, FORWARD, _left_power);
-        _leftcount += _sandbox.GetRevelation(FRONT_LEFT);
-        _rightcount += _sandbox.GetRevelation(BACK_RIGHT);
+        _leftcount += _sandbox.GetRevolutions(FRONT_LEFT);
+        _rightcount += _sandbox.GetRevolutions(BACK_RIGHT);
     } else
         _stop();
 }
@@ -117,7 +117,7 @@ void LogicSteering::drive()
     if (state == DONE)
         driveLogic(100, 20);
     if (state == TURNING)
-        _update_turn(); // Stan komt hiervoor terug met een betere oplossing
+        _update_turn();
     if (state == DRIVING)
         _update_distance();
 }

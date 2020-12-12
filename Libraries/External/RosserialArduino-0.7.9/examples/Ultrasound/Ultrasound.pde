@@ -49,7 +49,7 @@ void loop()
   //publish the adc value every 50 milliseconds
   //since it takes that long for the sensor to stablize
   if ( millis() >= range_time ){
-    int r =0;
+    int r = 0;
 
     range_msg.range = getRange_Ultrasound(5);
     range_msg.header.stamp = nh.now();

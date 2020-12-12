@@ -1,59 +1,30 @@
 #include "Controllers/Anomaly.hpp"
+#include "Sandbox/Sandbox.hpp"
 
-ControllerProximity::ControllerProximity()
-{
-    for (int i = 0; i < NUM_ULTRASONIC; i++)
-        _ultrasonic_sensors[i] = new SensorUltrasonic(LLC::pins_ultrasonic[i]);
-}
-
-ControllerProximity::~ControllerProximity()
-{
-    for (int i = 0; i < NUM_ULTRASONIC; i++)
-        delete _ultrasonic_sensors[i];
-}
-
-int ControllerProximity::GetDistance(const e_corner corner)
-{
-    return (_ultrasonic_sensors[corner]->GetDistance());
-}
-
-ControllerAnomaly::ControllerAnomaly(ControllerLifetime* controller_lifetime)
+ControllerAnomaly::ControllerAnomaly(void *sandbox, ControllerLifetime* controller_lifetime)
     : _controller_lifetime(controller_lifetime)
+	, _sandbox(sandbox)
 {
 }
 
 ControllerAnomaly::~ControllerAnomaly() { }
 
-bool ControllerAnomaly::HandleErrno(uint8_t errno)
+bool ControllerAnomaly::HandleError(const e_state state)
 {
-    switch (errno) {
-    case OVERHEATING_ERRNO:
-        this->_controller_lifetime->Lifephase(COOLDOWN);
-        // Handle errno
-        break;
-    case HEATWARNING_ERRNO:
-        // Handle errno
-        break;
-    case US_PROXIMITY_ERRNO:
-        // Handle errno
-        break;
-    case LOW_BATTERY_ERRNO:
-        // Handle errno
-        break;
-    case OVER_CURRENT_ERRNO:
-        // Handle errno
-        break;
-    case MOTOR_FAILURE_ERRNO:
-        // Handle errno
-        break;
-#if VERBOSITY & DEBUG
-    case LOW_RAM_ERRNO:
-        // Send debug message
-        break;
-#endif
+    switch (state) {
+	case S_PROXIMITY_CRIT:
+		((sb::Sandbox *)_sandbox)->Driver(LEFT_SIDE, HALT);
+		((sb::Sandbox *)_sandbox)->Driver(RIGHT_SIDE, HALT);
+		((sb::Sandbox *)_sandbox)->SIGBeep(SIG_CRIT, 5);
+	break;
+	case S_PROXIMITY_WARN:
+		((sb::Sandbox *)_sandbox)->Driver(LEFT_SIDE, HALT);
+		((sb::Sandbox *)_sandbox)->Driver(RIGHT_SIDE, HALT);
+		((sb::Sandbox *)_sandbox)->SIGBeep(SIG_CRIT, 5);
+	break;
+		
     default:
-        return false;
-        break;
+        return (false);
     }
-    return true;
+    return (true);
 }

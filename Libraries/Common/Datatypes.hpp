@@ -22,18 +22,10 @@ enum e_corner {
     ALL = 4
 };
 
-enum e_relays {
-    REL_POWER = 0,
-    REL_V12 = 2,
-    REL_MOTORS = 3,
-    REL_FAN = 4,
-    REL_BEEP = 6
-};
-
-enum e_lifephase {
-    STARTUP,
-    SHUTDOWN,
-    COOLDOWN
+enum e_siglevel {
+	SIG_INFO,
+	SIG_WARN,
+	SIG_CRIT
 };
 
 typedef struct s_pins_motor {
@@ -56,6 +48,10 @@ typedef struct s_pins_hall {
     const uint8_t pin_interrupt;
     const uint8_t index_interrupt;
 } t_pins_hall;
+
+typedef struct s_pins_physicalfeedback {
+	const uint8_t pin_beeper;
+}	t_pins_physicalfeedback;
 
 typedef struct s_imu_calibration {
     const int16_t x_min;

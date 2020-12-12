@@ -1,23 +1,23 @@
 #include "Controllers/Lifetime.hpp"
 #include <Arduino.h>
 
-void ControllerLifetime::Lifephase(e_lifephase lifephase)
+void ControllerLifetime::Lifephase(const e_state state)
 {
-    switch (lifephase) {
-    case STARTUP:
+    switch (state) {
+    case S_STARTUP:
         for (uint8_t i = 0; i < NUM_RELAYS; i++) {
             _relays[i]->SetState(true);
             delay(200); // tiny wait to avoid current spike
         }
         break;
-    case SHUTDOWN:
+    case S_SHUTDOWN:
         for (int8_t i = NUM_RELAYS - 1; i > 0; i--) {
             _relays[i]->SetState(false);
             delay(200); // tiny wait to avoid current spike
         }
         break;
-    case COOLDOWN:
-        _relays[REL_MOTORS]->SetState(false); // Switch everything off except fans
+    case S_COOLDOWN:
+        _relays[LLC::REL_MOTORS]->SetState(false); // Switch everything off except fans
         break;
     }
 };

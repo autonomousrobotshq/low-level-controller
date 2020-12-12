@@ -10,6 +10,8 @@
 #include "Common/Datatypes.hpp"
 #include <Sensors/Sensor.hpp>
 
+#define GPS_TIMEOUT 1000
+
 class SensorGPS : public Sensor {
 public:
     void GetLocation(float* flat, float* flon);

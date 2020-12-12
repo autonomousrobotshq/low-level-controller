@@ -1,7 +1,6 @@
 #include "MemoryFree.h"
 
-#include "Common/Errno.hpp"
-
+#include "Common/State.hpp"
 #include "Common/Deployment.hpp"
 #include "Common/Platform.hpp"
 #include "Sandbox/Sandbox.hpp"
@@ -12,10 +11,10 @@ static Sandbox* g_sb;
 
 Sandbox::Sandbox()
     : _controller_lifetime(LLC::pins_relay)
-    , _controller_anomaly(&_controller_lifetime)
+    , _controller_physical_feedback(LLC::pins_physicalfeedback)
+    , _controller_anomaly(this, &_controller_lifetime)
     , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer)
     , _sensor_gps(LLC::pins_gps)
-    , _sensor_temp(LLC::pins_temp[0])
 {
     if (g_sb) {
         // crit: "Second initialisation of Sandbox!"
@@ -30,7 +29,14 @@ Sandbox::~Sandbox()
 
 void Sandbox::Setup()
 {
-    _controller_lifetime.Lifephase(STARTUP);
+    _controller_lifetime.Lifephase(S_STARTUP);
+	_controller_physical_feedback.SignalState(S_STARTUP);
+}
+
+void Sandbox::Shutdown()
+{
+	_controller_physical_feedback.SignalState(S_SHUTDOWN);
+    _controller_lifetime.Lifephase(S_SHUTDOWN);
 }
 
 void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
@@ -40,29 +46,28 @@ void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
 
 void Sandbox::SpinOnce()
 {
-    g_errno = OK_ERRNO;
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
-    if (!_sensor_imu.Update())
-        _controller_anomaly.HandleErrno(g_errno);
-    if (!_sensor_gps.Update())
-        _controller_anomaly.HandleErrno(g_errno);
-    if (!_sensor_temp.Update())
-        _controller_anomaly.HandleErrno(g_errno);
+	while (!_controller_awareness.Update())
+        _controller_anomaly.HandleError(g_state);
+    while (!_sensor_imu.Update())
+        _controller_anomaly.HandleError(g_state);
+    while (!_sensor_gps.Update())
+        _controller_anomaly.HandleError(g_state);
 
 #if VERBOSITY & DEBUG
         // if (!this->_DriverLogicUpdate)
         // DEBUG: Hook _DriverLogicUpdate is not set
 #endif
 
-    if (!_DriverLogicUpdate())
-        _controller_anomaly.HandleErrno(g_errno);
-    if (!_controller_motor.Update())
-        _controller_anomaly.HandleErrno(g_errno);
+    while (!_DriverLogicUpdate())
+        _controller_anomaly.HandleError(g_state);
+    while (!_controller_motor.Update())
+        _controller_anomaly.HandleError(g_state);
 }
 
-bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
+bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle) // NEEDS TO BE REWORKED
 {
 #if VERBOSITY & DEBUG
     if (throttle >= MOTOR_THROTTLE_LOW && throttle <= MOTOR_THROTTLE_HIGH)
@@ -73,7 +78,7 @@ bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8
     }
 #endif
     _controller_motor.Driver(side, action, throttle);
-    return (true); // NEEDS TO BE REWORKED
+    return (true);
 }
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action)
@@ -81,14 +86,47 @@ bool Sandbox::Driver(const e_side side, const e_drive_action action)
     return (_controller_motor.Driver(side, action));
 }
 
-int8_t Sandbox::GetRPM(const e_corner corner)
+bool Sandbox::DriverIsReady() // -> MOTORCONTROLLER
+{
+	return (true); // check if motorcontroller has reached desired state
+}
+
+// SLOWHALT
+
+bool Sandbox::DriverIsMoving() // -> MOTORCONTROLLER
+{
+	return (true);
+}
+
+bool Sandbox::DriverIsAccelerating() // -> MOTORCONTROLLER
+{
+	return (true);
+}
+
+bool Sandbox::DriverIsDecelerating() // -> MOTORCONTROLLER
+{
+	return (true);
+}
+
+uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
+{
+	return (0); // get current average speed of motors
+}
+
+void Sandbox::DriverSetThrottle(const e_side side, const uint8_t throttle) // -> MOTORCONTROLLER
+{
+	(void) side;
+	(void) throttle;
+}
+
+int8_t Sandbox::GetRPM(const e_corner corner) // -> DOESNT FOLLOW NAMING STYLE
 {
     return (_controller_motor.GetRPM(corner));
 }
 
-int8_t Sandbox::GetRevelation(const e_corner corner)
+int8_t Sandbox::GetRevolutions(const e_corner corner) // -> DOESNT FOLLOW NAMING STYLE
 {
-    return (_controller_motor.GetRevelation(corner));
+    return (_controller_motor.GetRevolutions(corner));
 }
 
 int16_t Sandbox::IMUGetNavigationAngle()
@@ -108,9 +146,7 @@ Vec3 Sandbox::IMUGetAcceleroData()
 
 int16_t Sandbox::USGetDistance(e_corner corner)
 {
-    return (0);
-    (void)corner;
-    //return (this->_controller_proximity.GetDistance(corner));
+	return (this->_controller_awareness.GetDistance(corner));
 }
 
 void Sandbox::GPSGetLocation(float* flat, float* flon)
@@ -133,9 +169,14 @@ int16_t Sandbox::GPSGetCourse()
     return (this->_sensor_gps.GetCourse());
 }
 
-int8_t Sandbox::TEMPGetTemp()
+int8_t Sandbox::TEMPGetTemperature()
 {
-    return (this->_sensor_temp.GetTemp());
+    return (this->_controller_awareness.GetTemperature(0)); // IS JUST USING ZERO'TH INDEX FOR TEMP FOR NOW
+}
+
+void Sandbox::SIGBeep(const e_siglevel siglevel, const uint8_t count)
+{
+	_controller_physical_feedback.Beep(siglevel, count);
 }
 
 int16_t Sandbox::RAMGetFree()
@@ -145,6 +186,12 @@ int16_t Sandbox::RAMGetFree()
 
 bool Driver(const e_side side, const e_drive_action action) { return (g_sb->Driver(side, action)); }
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(side, action, throttle)); }
+bool DriverIsReady() { return g_sb->DriverIsReady(); }
+bool DriverIsMoving() { return g_sb->DriverIsMoving(); }
+bool DriverIsAccelerating() { return g_sb->DriverIsAccelerating(); }
+bool DriverIsDecelerating() { return g_sb->DriverIsDecelerating(); }
+uint8_t DriverGetThrottle() { return g_sb->DriverGetThrottle(); }
+void DriverSetThrottle(const e_side side, const uint8_t throttle) { g_sb->DriverSetThrottle(side, throttle); }
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
 Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
 Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }
@@ -153,7 +200,9 @@ void GPSGetLocation(float* flat, float* flon) { g_sb->GPSGetLocation(flat, flon)
 void GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time) { g_sb->GPSGetTime(age, date, time); }
 int16_t GPSGetSpeed() { return (g_sb->GPSGetSpeed()); }
 int16_t GPSGetCourse() { return (g_sb->GPSGetCourse()); }
-int8_t TEMPGetTemp() { return (g_sb->TEMPGetTemp()); }
+int8_t TEMPGetTemperature() { return (g_sb->TEMPGetTemperature()); }
+void SIGBeep(const e_siglevel siglevel, const uint8_t count) { g_sb->SIGBeep(siglevel, count); }
+
 int16_t RAMGetFree() { return (g_sb->RAMGetFree()); }
 
 }
