@@ -48,5 +48,4 @@ void loop() // loops indefinitely
 
 void post() // runs after break in loop()
 {
-    Serial.println("DIDDA");
 }

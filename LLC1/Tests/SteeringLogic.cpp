@@ -38,4 +38,5 @@ void loop() // loops indefinitely
 
 void post()
 {
+	sandbox->Shutdown();
 }
