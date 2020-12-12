@@ -11,7 +11,7 @@ using namespace sb;
 Sandbox* sandbox;
 LogicSteering* steering;
 
-bool DriverLogicUpdate(void) // is called just before update of motorcontroller in Sandbox::Spinonce
+bool LogicDriverUpdate(void) // is called just before update of motorcontroller in Sandbox::Spinonce
 {
     steering->drive();
     return (true);
@@ -21,7 +21,7 @@ void setup() //runs on startup
 {
     sandbox = new Sandbox();
     sandbox->Setup();
-    sandbox->SetDriverLogicUpdate(DriverLogicUpdate);
+    sandbox->SetLogicDriverUpdate(LogicDriverUpdate);
 
     steering = new LogicSteering(*sandbox);
 
