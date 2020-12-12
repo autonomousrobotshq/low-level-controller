@@ -58,9 +58,9 @@ bool SensorGPS::Update()
 			// handle invalid course info
 		}
 	}
-	if (newData)
-		return true;
-	return false;
+	//if (newData)
+	//	return (true);
+	return (true);
 }
 
 SensorGPS::SensorGPS(const t_pins_gps pins_gps)

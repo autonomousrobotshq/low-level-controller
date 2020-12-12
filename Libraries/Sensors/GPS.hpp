@@ -10,7 +10,7 @@
 #include "Common/Datatypes.hpp"
 #include <Sensors/Sensor.hpp>
 
-#define GPS_TIMEOUT 1000
+#define GPS_TIMEOUT 50
 
 class SensorGPS : public Sensor {
 public:
