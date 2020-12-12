@@ -19,7 +19,8 @@ enum e_state {
     S_PROXIMITY_ERROR,
     S_BATTERY_WARN,
     S_BATTERY_CRIT,
-    S_CURRENT_CRIT
+    S_CURRENT_CRIT,
+	S_OK
 };
 
 extern e_state* __getstate(void);
