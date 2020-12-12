@@ -113,14 +113,14 @@ uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
 	return (0); // get current average speed of motors
 }
 
-void Sandbox::DriverHalt()
+void Sandbox::DriverHalt() // -> MOTORCONTROLLER
 {
 	Driver(LEFT_SIDE, HALT); // needs to use Motorcontroller HALT/SLOWHALT
 	Driver(RIGHT_SIDE, HALT);
 	_controller_motor.Update();
 }
 
-void Sandbox::DriverSlowHalt()
+void Sandbox::DriverSlowHalt() // -> MOTORCONTROLLER
 {
 	Driver(LEFT_SIDE, HALT); // needs to use Motorcontroller HALT/SLOWHALT
 	Driver(RIGHT_SIDE, HALT);
