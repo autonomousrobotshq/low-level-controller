@@ -8,7 +8,7 @@
 #include "Sensors/Temp.hpp"
 #include "Common/State.hpp"
 
-#define DANGEROUS_DISTANCE 30
+#define DANGEROUS_DISTANCE 20
 #define DANGEROUS_TEMPERATURE 60
 #define CRITICAL_DISTANCE 10
 #define CRITICAL_TEMPERATURE 80
