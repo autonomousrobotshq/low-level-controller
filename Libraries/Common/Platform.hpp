@@ -28,18 +28,6 @@ namespace LLC1 {
 #define NUM_RELAYS 6
 #define NUM_TEMP 1
 
-<<<<<<< HEAD
-/* TIMING */
-
-#define TIME_TO_ACCELERATE 1000 // in milliseconds
-
-/* PORTS */
-
-// Don't use 'LLC1 or LLC2 etc. -> LLC is declared in Deployment.hpp
-namespace LLC1 {
-
-=======
->>>>>>> master
 /* IMU CALIBRATION */
 
 // X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX

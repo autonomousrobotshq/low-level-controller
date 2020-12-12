@@ -100,7 +100,7 @@ CXXFLAGS_STD      = -std=gnu++14
 ### Flags you might want to set for debugging purpose. Comment to stop.
 CXXFLAGS         += -Wall -Wextra -Werror -g
 CXXFLAGS		+= -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-truncation -Wno-restrict -Wno-sized-deallocation -Wno-switch -Wno-implicit-fallthrough # just to get the bloody external libraries to work..
-CXXFLAGS		+= -fconcepts-ts # to use 'auto' in function arguments
+CXXFLAGS		+= -fconcepts # to use 'auto' in function arguments
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
 ifeq ($(UNAME_S),Linux)
