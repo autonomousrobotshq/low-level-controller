@@ -11,8 +11,9 @@ ControllerMotor::ControllerMotor()
     }
     for (int i = 0; i < NUM_MOTORS; i++) {
         _actuators_motor[i] = new ActuatorMotor(LLC::pins_motors[i]);
-        _sensors_current[i] = new SensorCurrent(LLC::pins_current[i]);
-        _sensors_hall[i] = new SensorHall(LLC::pins_hall[i]); // use glob millis?
+		TUAN READ THIS BEFORE YOU MERGE
+        _sensors_current[i] = new SensorCurrent(LLC::pins_current[i], LLC::exec_intervals.current); // TUAN SEE THIS BEFORE YOU MERGE
+        _sensors_hall[i] = new SensorHall(LLC::pins_hall[i], LLC::exec_intervals.hall); // TUAN SEE THIS BEFORE YOU MERGE
     }
 }
 
