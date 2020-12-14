@@ -63,8 +63,9 @@ bool SensorGPS::Update()
 	return (true);
 }
 
-SensorGPS::SensorGPS(const t_pins_gps pins_gps)
-	: _ss((HardwareSerial&)pins_gps.serial)
+SensorGPS::SensorGPS(const t_pins_gps pins_gps, const uint16_t exec_interval)
+	: Sensor(exec_interval)
+	, _ss((HardwareSerial&)pins_gps.serial)
 {
 	_ss.begin(pins_gps.baudrate);
 }

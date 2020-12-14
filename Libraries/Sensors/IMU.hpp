@@ -3,13 +3,14 @@
 
 #include <LSM303.h>
 
+#include "Sensors/Sensor.hpp"
 #include "Common/Datatypes.hpp"
 #include "Common/SigFilter.hpp"
 #include "Common/Vec3.hpp"
 
-class SensorIMU {
+class SensorIMU : public Sensor {
 public:
-    SensorIMU(const t_pins_imu pins_imu, t_imu_calibration acc_cal, t_imu_calibration mag_cal);
+    SensorIMU(const t_pins_imu pins_imu, const t_imu_calibration acc_cal, const t_imu_calibration mag_cal, const uint16_t exec_interval);
     ~SensorIMU();
     bool Update();
     int16_t GetNavigationAngle();

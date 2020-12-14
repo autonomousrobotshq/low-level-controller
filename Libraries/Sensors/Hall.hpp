@@ -9,12 +9,11 @@
 
 class SensorHall : public Sensor {
 public:
+    SensorHall(const t_pins_hall pins_hall, const uint16_t exec_interval);
+    ~SensorHall();
     int GetRPM();
     int GetRevolutions();
     bool Update();
-    SensorHall(const t_pins_hall pins_hall);
-    ~SensorHall();
-
 private:
     const uint8_t _interrupt_index, _interrupt_pin;
     unsigned int _rpm;

@@ -13,8 +13,8 @@ Sandbox::Sandbox()
     : _controller_lifetime(LLC::pins_relay)
     , _controller_physical_feedback(LLC::pins_physicalfeedback)
     , _controller_anomaly(this, &_controller_lifetime)
-    , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer)
-    , _sensor_gps(LLC::pins_gps)
+    , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer, LLC::exec_intervals.imu)
+    , _sensor_gps(LLC::pins_gps, LLC::exec_intervals.gps)
 {
     if (g_sb) {
         // crit: "Second initialisation of Sandbox!"
@@ -61,6 +61,8 @@ void Sandbox::SpinOnce()
 
     if (!_LogicDriverUpdate())
 		_controller_anomaly.HandleError(g_state);
+
+	// this definitely needs more love
 	while (!_controller_awareness.Update())
 		_controller_anomaly.HandleError(g_state);
     if (!_controller_motor.Update())

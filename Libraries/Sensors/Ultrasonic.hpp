@@ -2,6 +2,7 @@
 #define SENSOR_ULTRASONIC_HPP
 
 #include <Arduino.h>
+#include "Sensors/Sensor.hpp"
 
 /*!
 **	@brief The max measurement value of the module is 520cm.
@@ -14,9 +15,9 @@
 */
 #define ADC_RESOLUTION (1023.0)
 
-class SensorUltrasonic {
+class SensorUltrasonic : public Sensor {
 public:
-    SensorUltrasonic(const uint8_t pin);
+    SensorUltrasonic(const uint8_t pin, const uint16_t exec_interval);
     ~SensorUltrasonic();
 
     bool Update();

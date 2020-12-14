@@ -3,9 +3,9 @@
 ControllerAwareness::ControllerAwareness()
 {
 	for (int i = 0; i < NUM_ULTRASONIC; i++)
-		_ultrasonic_sensors[i] = new SensorUltrasonic(LLC::pins_ultrasonic[i]);
+		_ultrasonic_sensors[i] = new SensorUltrasonic(LLC::pins_ultrasonic[i], LLC::exec_intervals.ultrasonic);
 	for (int i = 0; i < NUM_TEMP; i++)
-		_temperature_sensors[i] = new SensorTemp(LLC::pins_temp[i]);
+		_temperature_sensors[i] = new SensorTemp(LLC::pins_temp[i], LLC::exec_intervals.temperature);
 }
 
 ControllerAwareness::~ControllerAwareness()

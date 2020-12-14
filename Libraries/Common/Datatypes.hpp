@@ -28,6 +28,19 @@ enum e_siglevel {
 	SIG_CRIT
 };
 
+typedef struct s_exec_intervals {
+	const uint16_t gps;
+	const uint16_t imu;
+	const uint16_t hall;
+	const uint16_t current;
+	const uint16_t temperature;
+	const uint16_t ultrasonic;
+	const uint16_t controller_motor;
+	const uint16_t controller_awareness;
+	const uint16_t controller_anomaly;
+	const uint16_t controller_logging;
+} t_exec_intervals;
+
 typedef struct s_pins_motor {
     const uint8_t pin_pwm;
     const uint8_t pin_a;

@@ -1,20 +1,16 @@
 #ifndef SENSOR_HPP
 #define SENSOR_HPP
 
-#include <stddef.h>
+#include <stdint.h>
 
 class Sensor {
 public:
-    unsigned long GetDuration();
-    bool IsWaiting();
-    void SetWaitTime(const unsigned long wait_millis);
-    Sensor(const unsigned long glob_millis);
-    Sensor();
+    Sensor(const uint16_t sampling_interval);
     ~Sensor();
-
+	uint16_t GetTimeSinceLastExecution();
+	bool IsTimeToExecute();
 private:
-    const unsigned long _glob_millis;
-    unsigned long _last_millis;
-    unsigned long _end_millis;
+	unsigned long _previous_millis;
+	const uint16_t _sampling_interval;
 };
 #endif

@@ -1,7 +1,8 @@
 #include "Sensors/Ultrasonic.hpp"
 
-SensorUltrasonic::SensorUltrasonic(const uint8_t pin)
-    : _analog_pin(pin)
+SensorUltrasonic::SensorUltrasonic(const uint8_t pin, const uint16_t exec_interval)
+	: Sensor(exec_interval)
+   	, _analog_pin(pin)
 {
     pinMode(pin, INPUT);
 }
