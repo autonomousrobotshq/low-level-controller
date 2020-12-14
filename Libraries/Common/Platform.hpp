@@ -30,7 +30,7 @@ namespace LLC1 {
 
 /* EXECUTION INTERVALS */
 // GPS, IMU, HALL, CURRENT, TEMPERATURE, ULTRASONIC, INTERFACE_ROS
-const t_exec_intervals exec_intervals = { 1000, 20, 20, 20, 1000, 20, 50};
+const t_exec_intervals exec_intervals = { 1000, 20, 20, 20, 1000, 20, 50 };
 
 /* IMU CALIBRATION */
 

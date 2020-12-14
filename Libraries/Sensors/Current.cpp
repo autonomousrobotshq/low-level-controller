@@ -1,5 +1,5 @@
-#include <Arduino.h>
 #include "Sensors/Current.hpp"
+#include <Arduino.h>
 
 float SensorCurrent::GetCurrent()
 {
@@ -61,15 +61,15 @@ long SensorCurrent::_readVref()
 
 bool SensorCurrent::Update()
 {
-	if (!this->IsTimeToExecute())
-		return (true);
+    if (!this->IsTimeToExecute())
+        return (true);
     this->_DCCurrent = this->_readDCCurrent();
     // check for out of range updates and restore old value if necessary
     return (true);
 }
 
 SensorCurrent::SensorCurrent(const uint8_t analogPin, const uint16_t exec_interval)
-	: Sensor(exec_interval)
+    : Sensor(exec_interval)
     , _analogPin(analogPin)
 {
     this->_Vref = _readVref(); //read the reference voltage(default:VCC)

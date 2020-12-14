@@ -8,8 +8,8 @@ static unsigned int pulses[NUM_MOTORS];
 
 bool SensorHall::Update()
 {
-	if (!this->IsTimeToExecute())
-		return (true);
+    if (!this->IsTimeToExecute())
+        return (true);
     uint16_t millisDev = this->GetTimeSinceLastExecution();
     this->_rpm = millisDev == 0 ? 0 : (pulses[this->_interrupt_index] / HALL_CPR) / (millisDev / 60000);
     pulses[this->_interrupt_index] = 0;
@@ -38,7 +38,7 @@ static void InterruptCall6() { pulses[6]++; }
 static void InterruptCall7() { pulses[7]++; }
 
 SensorHall::SensorHall(const t_pins_hall pins_hall, const uint16_t exec_interval)
-	: Sensor(exec_interval)
+    : Sensor(exec_interval)
     , _interrupt_index(pins_hall.index_interrupt)
     , _interrupt_pin(pins_hall.pin_interrupt)
 

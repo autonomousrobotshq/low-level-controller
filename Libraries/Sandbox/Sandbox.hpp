@@ -5,10 +5,10 @@
 #include "Common/Vec3.hpp"
 
 #include "Controllers/Anomaly.hpp"
-#include "Controllers/PhysicalFeedback.hpp"
+#include "Controllers/Awareness.hpp"
 #include "Controllers/Lifetime.hpp"
 #include "Controllers/Motor.hpp"
-#include "Controllers/Awareness.hpp"
+#include "Controllers/PhysicalFeedback.hpp"
 
 #include "Interfaces/Logger.hpp"
 
@@ -28,15 +28,15 @@ public:
     ~Sandbox();
     bool Driver(const e_side side, const e_drive_action action);
     bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
-	bool DriverIsReady();
-	bool DriverIsMoving();
-	bool DriverIsAccelerating();
-	bool DriverIsDecelerating();
-	void DriverHalt();
-	void DriverSlowHalt();
+    bool DriverIsReady();
+    bool DriverIsMoving();
+    bool DriverIsAccelerating();
+    bool DriverIsDecelerating();
+    void DriverHalt();
+    void DriverSlowHalt();
 
-	uint8_t DriverGetThrottle();
-	void DriverSetThrottle(const e_side side, const uint8_t throttle);
+    uint8_t DriverGetThrottle();
+    void DriverSetThrottle(const e_side side, const uint8_t throttle);
 
     int16_t IMUGetNavigationAngle();
     Vec3 IMUGetMagnetoData();
@@ -50,7 +50,7 @@ public:
     int16_t GPSGetCourse();
     int8_t TEMPGetTemperature();
 
-	void SIGBeep(const e_siglevel siglevel, const uint8_t count);
+    void SIGBeep(const e_siglevel siglevel, const uint8_t count);
 
     int16_t RAMGetFree();
 
@@ -61,12 +61,12 @@ public:
 
 private:
     unsigned long _glob_millis;
-	InterfaceLogger _interface_logger;
+    InterfaceLogger _interface_logger;
     ControllerMotor _controller_motor;
     ControllerLifetime _controller_lifetime;
-	ControllerPhysicalFeedback _controller_physical_feedback;
+    ControllerPhysicalFeedback _controller_physical_feedback;
     ControllerAnomaly _controller_anomaly;
-	ControllerAwareness _controller_awareness;
+    ControllerAwareness _controller_awareness;
     SensorIMU _sensor_imu;
     SensorGPS _sensor_gps;
 

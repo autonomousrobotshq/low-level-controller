@@ -7,10 +7,11 @@ class TimedUpdate {
 public:
     TimedUpdate(const uint16_t sampling_interval);
     ~TimedUpdate();
-	uint16_t GetTimeSinceLastExecution();
-	bool IsTimeToExecute();
+    uint16_t GetTimeSinceLastExecution();
+    bool IsTimeToExecute();
+
 private:
-	unsigned long _previous_millis;
-	const uint16_t _sampling_interval;
+    unsigned long _previous_millis;
+    const uint16_t _sampling_interval;
 };
 #endif

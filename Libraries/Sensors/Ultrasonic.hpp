@@ -1,8 +1,8 @@
 #ifndef SENSOR_ULTRASONIC_HPP
 #define SENSOR_ULTRASONIC_HPP
 
-#include <Arduino.h>
 #include "Sensors/Sensor.hpp"
+#include <Arduino.h>
 
 /*!
 **	@brief The max measurement value of the module is 520cm.

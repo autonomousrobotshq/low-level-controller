@@ -1,5 +1,5 @@
-#include <Arduino.h>
 #include "Interfaces/ROS.hpp"
+#include <Arduino.h>
 
 //ROS& ROS::GetInstance()
 //{
@@ -8,20 +8,21 @@
 //    return (instance);
 //}
 
-
 // needed for Ros libraries which follow std11 (not std14)
-void operator delete(void * ptr, size_t size){
- free (ptr);
- (void) size;
+void operator delete(void* ptr, size_t size)
+{
+    free(ptr);
+    (void)size;
 }
 
-void operator delete[](void * ptr, size_t size){
- free (ptr);
- (void) size;
-}         
+void operator delete[](void* ptr, size_t size)
+{
+    free(ptr);
+    (void)size;
+}
 
 InterfaceROS::InterfaceROS(const uint16_t exec_interval)
-	: Interface(exec_interval)
+    : Interface(exec_interval)
 {
     // Init ROS node
     _nh.initNode();

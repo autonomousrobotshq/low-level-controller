@@ -1,11 +1,11 @@
 #ifndef CONTROLLER_LIFETIME_HPP
 #define CONTROLLER_LIFETIME_HPP
 
-#include "Common/State.hpp"
+#include "Actuators/Relay.hpp"
 #include "Common/Datatypes.hpp"
 #include "Common/Platform.hpp"
+#include "Common/State.hpp"
 #include "Controllers/Controller.hpp"
-#include "Actuators/Relay.hpp"
 
 class ControllerLifetime : public Controller {
 public:

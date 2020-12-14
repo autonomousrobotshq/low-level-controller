@@ -16,6 +16,7 @@ public:
     ~SensorTemp();
     int8_t GetTemp();
     bool Update();
+
 private:
     OneWire _wire;
     DallasTemperature _sensors;

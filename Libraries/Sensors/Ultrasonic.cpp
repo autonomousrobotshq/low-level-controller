@@ -1,8 +1,8 @@
 #include "Sensors/Ultrasonic.hpp"
 
 SensorUltrasonic::SensorUltrasonic(const uint8_t pin, const uint16_t exec_interval)
-	: Sensor(exec_interval)
-   	, _analog_pin(pin)
+    : Sensor(exec_interval)
+    , _analog_pin(pin)
 {
     pinMode(pin, INPUT);
 }
@@ -11,8 +11,8 @@ SensorUltrasonic::~SensorUltrasonic() { }
 
 bool SensorUltrasonic::Update()
 {
-	if (!this->IsTimeToExecute())
-		return (true);
+    if (!this->IsTimeToExecute())
+        return (true);
 
     _sensity_t = analogRead(_analog_pin);
 

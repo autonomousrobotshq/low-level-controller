@@ -3,10 +3,10 @@
 
 #include <LSM303.h>
 
-#include "Sensors/Sensor.hpp"
 #include "Common/Datatypes.hpp"
 #include "Common/SigFilter.hpp"
 #include "Common/Vec3.hpp"
+#include "Sensors/Sensor.hpp"
 
 class SensorIMU : public Sensor {
 public:

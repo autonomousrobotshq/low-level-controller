@@ -1,10 +1,10 @@
 #ifndef INTERFACE_ROS_HPP
 #define INTERFACE_ROS_HPP
 
+#include "Interfaces/Interface.hpp"
+#include <ros.h>
 #include <std_msgs/String.h>
 #include <std_msgs/UInt16.h>
-#include <ros.h>
-#include "Interfaces/Interface.hpp"
 
 enum ROS_TOPIC {
     GPS,

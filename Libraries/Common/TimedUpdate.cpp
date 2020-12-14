@@ -1,28 +1,27 @@
-#include <Arduino.h>
 #include "Common/TimedUpdate.hpp"
+#include <Arduino.h>
 
 uint16_t TimedUpdate::GetTimeSinceLastExecution()
 {
-	unsigned long current_millis = millis();
+    unsigned long current_millis = millis();
 
-	return (current_millis - _previous_millis);
+    return (current_millis - _previous_millis);
 }
 
 bool TimedUpdate::IsTimeToExecute()
 {
-	unsigned long current_millis = millis();
+    unsigned long current_millis = millis();
 
-	if (current_millis - _previous_millis > _sampling_interval)
-	{
-		_previous_millis += _sampling_interval;
-		return (true);
-	}
-	return (false);
+    if (current_millis - _previous_millis > _sampling_interval) {
+        _previous_millis += _sampling_interval;
+        return (true);
+    }
+    return (false);
 }
 
 TimedUpdate::TimedUpdate(const uint16_t sampling_interval)
-	: _previous_millis(millis())
-	, _sampling_interval(sampling_interval)
+    : _previous_millis(millis())
+    , _sampling_interval(sampling_interval)
 {
 }
 

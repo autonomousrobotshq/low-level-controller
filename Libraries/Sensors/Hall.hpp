@@ -14,6 +14,7 @@ public:
     int GetRPM();
     int GetRevolutions();
     bool Update();
+
 private:
     const uint8_t _interrupt_index, _interrupt_pin;
     unsigned int _rpm;
