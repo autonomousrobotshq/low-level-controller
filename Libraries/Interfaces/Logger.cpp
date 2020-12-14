@@ -17,7 +17,9 @@ bool	InterfaceLogger::Update()
 	return (true);
 }
 
-InterfaceLogger::InterfaceLogger()
+InterfaceLogger::InterfaceLogger(const uint16_t exec_interval_ros)
+	: Interface(0)
+	, _interface_ros(exec_interval_ros)
 {
 
 }

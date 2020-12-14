@@ -1,10 +1,10 @@
 #ifndef INTERFACE_ROS_HPP
 #define INTERFACE_ROS_HPP
 
-#include "Interfaces/Interface.hpp"
-#include "ros.h"
 #include <std_msgs/String.h>
 #include <std_msgs/UInt16.h>
+#include <ros.h>
+#include "Interfaces/Interface.hpp"
 
 enum ROS_TOPIC {
     GPS,
@@ -20,18 +20,20 @@ enum ROS_LOG_LEVEL {
     ROS_FATAL
 };
 
-/*
-    Singleton class for everything ROS related
-*/
-class ROS : public Interface {
+///*
+//    Singleton class for everything InterfaceROS related
+//*/
+class InterfaceROS : public Interface {
 public:
-    static ROS& GetInstance();
+    //static InterfaceROS& GetInstance();
 
-    ROS(ROS const&) = delete; // Don't Implement
-    void operator=(ROS const&) = delete; // Don't implement
+    //InterfaceROS(InterfaceROS const&) = delete; // Don't Implement
+    //void operator=(InterfaceROS const&) = delete; // Don't implement
 
-    ROS();
-    ~ROS();
+    //InterfaceROS();
+    //~InterfaceROS();
+    InterfaceROS(const uint16_t exec_interval);
+    ~InterfaceROS();
 
     void Send(const ros::Msg* msg, ROS_TOPIC topic);
     void Log(const char* msg, ROS_LOG_LEVEL level);

@@ -10,7 +10,7 @@
 #include "Controllers/Motor.hpp"
 #include "Controllers/Awareness.hpp"
 
-#include "Interfaces/ROS.hpp"
+#include "Interfaces/Logger.hpp"
 
 #include "Sensors/GPS.hpp"
 #include "Sensors/IMU.hpp"
@@ -61,6 +61,7 @@ public:
 
 private:
     unsigned long _glob_millis;
+	InterfaceLogger _interface_logger;
     ControllerMotor _controller_motor;
     ControllerLifetime _controller_lifetime;
 	ControllerPhysicalFeedback _controller_physical_feedback;

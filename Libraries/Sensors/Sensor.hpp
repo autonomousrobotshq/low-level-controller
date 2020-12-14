@@ -1,16 +1,13 @@
-#ifndef SENSOR_HPP
-#define SENSOR_HPP
+#ifndef SENSOR_SENSOR_HPP
+#define SENSOR_SENSOR_HPP
 
 #include <stdint.h>
+#include "Common/TimedUpdate.hpp"
 
-class Sensor {
+class Sensor : public TimedUpdate {
 public:
     Sensor(const uint16_t sampling_interval);
     ~Sensor();
-	uint16_t GetTimeSinceLastExecution();
-	bool IsTimeToExecute();
 private:
-	unsigned long _previous_millis;
-	const uint16_t _sampling_interval;
 };
 #endif

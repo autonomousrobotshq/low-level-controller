@@ -20,11 +20,12 @@ enum class e_topic {
 class InterfaceLogger : public Interface
 {
 	public:
-		InterfaceLogger();
+		InterfaceLogger(const uint16_t exec_interval_ros);
 		~InterfaceLogger();
 		void Commit(const e_loglevel loglevel, auto &msg);
 		bool Update();
 	private:
+		InterfaceROS _interface_ros;
 };
 
 #endif

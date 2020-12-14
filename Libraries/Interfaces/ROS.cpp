@@ -1,13 +1,27 @@
+#include <Arduino.h>
 #include "Interfaces/ROS.hpp"
 
-ROS& ROS::GetInstance()
-{
-    static ROS instance;
+//ROS& ROS::GetInstance()
+//{
+//    static ROS instance;
+//
+//    return (instance);
+//}
 
-    return instance;
+
+// needed for Ros libraries which follow std11 (not std14)
+void operator delete(void * ptr, size_t size){
+ free (ptr);
+ (void) size;
 }
 
-ROS::ROS()
+void operator delete[](void * ptr, size_t size){
+ free (ptr);
+ (void) size;
+}         
+
+InterfaceROS::InterfaceROS(const uint16_t exec_interval)
+	: Interface(exec_interval)
 {
     // Init ROS node
     _nh.initNode();
@@ -23,13 +37,13 @@ ROS::ROS()
     _nh.advertise(*_pub_IMU);
 }
 
-ROS::~ROS()
+InterfaceROS::~InterfaceROS()
 {
-    delete _pub_GPS;
-    delete _pub_IMU;
+    delete (_pub_GPS);
+    delete (_pub_IMU);
 }
 
-void ROS::Send(const ros::Msg* msg, ROS_TOPIC topic)
+void InterfaceROS::Send(const ros::Msg* msg, ROS_TOPIC topic)
 {
     switch (topic) {
     case GPS:
@@ -44,17 +58,17 @@ void ROS::Send(const ros::Msg* msg, ROS_TOPIC topic)
     }
 }
 
-bool ROS::Connected()
+bool InterfaceROS::Connected()
 {
-    return _nh.connected();
+    return (_nh.connected());
 }
 
-void ROS::SpinOnce()
+void InterfaceROS::SpinOnce()
 {
     _nh.spinOnce();
 }
 
-void ROS::Log(const char* msg, ROS_LOG_LEVEL level)
+void InterfaceROS::Log(const char* msg, ROS_LOG_LEVEL level)
 {
     switch (level) {
     case ROS_DEBUG:
