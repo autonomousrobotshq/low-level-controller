@@ -8,6 +8,8 @@ static unsigned int pulses[NUM_MOTORS];
 
 bool SensorHall::Update()
 {
+	if (!this->IsTimeToExecute())
+		return (true);
     uint16_t millisDev = this->GetTimeSinceLastExecution();
     this->_rpm = millisDev == 0 ? 0 : (pulses[this->_interrupt_index] / HALL_CPR) / (millisDev / 60000);
     pulses[this->_interrupt_index] = 0;

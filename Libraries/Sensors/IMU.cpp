@@ -25,6 +25,8 @@ SensorIMU::~SensorIMU() { }
 
 bool SensorIMU::Update()
 {
+	if (!this->IsTimeToExecute())
+		return (true);
     _filter.Reset();
     for (uint8_t i = 0; i < IMU_SAMPLE_COUNT; i++) {
         _compass.read();

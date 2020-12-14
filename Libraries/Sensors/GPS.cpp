@@ -27,6 +27,8 @@ void SensorGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* 
 
 bool SensorGPS::Update()
 {
+	if (!this->IsTimeToExecute())
+		return (true);
 	bool newData = false;
 	for (unsigned long start = millis(); millis() - start < GPS_TIMEOUT;)
 	{

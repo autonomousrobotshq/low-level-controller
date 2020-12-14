@@ -11,6 +11,9 @@ SensorUltrasonic::~SensorUltrasonic() { }
 
 bool SensorUltrasonic::Update()
 {
+	if (!this->IsTimeToExecute())
+		return (true);
+
     _sensity_t = analogRead(_analog_pin);
 
     _dist_t = _sensity_t * SON_MAX_RANGE / ADC_RESOLUTION;

@@ -61,6 +61,8 @@ long SensorCurrent::_readVref()
 
 bool SensorCurrent::Update()
 {
+	if (!this->IsTimeToExecute())
+		return (true);
     this->_DCCurrent = this->_readDCCurrent();
     // check for out of range updates and restore old value if necessary
     return (true);
