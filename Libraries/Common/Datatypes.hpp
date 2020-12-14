@@ -35,10 +35,7 @@ typedef struct s_exec_intervals {
 	const uint16_t current;
 	const uint16_t temperature;
 	const uint16_t ultrasonic;
-	const uint16_t controller_motor;
-	const uint16_t controller_awareness;
-	const uint16_t controller_anomaly;
-	const uint16_t controller_logging;
+	const uint16_t interface_ros;
 } t_exec_intervals;
 
 typedef struct s_pins_motor {
