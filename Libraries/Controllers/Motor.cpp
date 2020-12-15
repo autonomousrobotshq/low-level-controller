@@ -7,8 +7,6 @@ ControllerMotor::ControllerMotor()
         _current_throttle[i] = 0;
         _desired_throttle[i] = 0;
         _action[i] = HALT;
-		_acceleration_step[i] = 0;
-		_acceleration_time[i] = 0;
         _is_side[i] = false;
     }
     for (int i = 0; i < NUM_MOTORS; i++) {
@@ -53,7 +51,7 @@ uint8_t ControllerMotor::DriverGetThrottle() {
 
 bool ControllerMotor::SlowHalt() {
 	if (_current_throttle[BOTH_SIDES] > 20)
-		_current_throttle[BOTH_SIDES] -= 1;
+		SetThrottle(BOTH_SIDES, true);
 	else
 	{
 		_actuators_motor[FRONT_LEFT]->halt();
@@ -66,8 +64,6 @@ bool ControllerMotor::SlowHalt() {
 
 bool ControllerMotor::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
 {
-	_acceleration_time[side] = millis() + TIME_TO_ACCELERATE;
-	_acceleration_step[side] = TIME_TO_ACCELERATE / 100;
     _is_side[side] = true;
     _action[side] = action;
     _desired_throttle[side] = throttle;
@@ -76,8 +72,6 @@ bool ControllerMotor::Driver(const e_side side, const e_drive_action action, con
 
 bool ControllerMotor::Driver(const e_side side, const e_drive_action action)
 {
-	_acceleration_time[side] = millis();
-	_acceleration_step[side] = TIME_TO_ACCELERATE / 255;
     _is_side[side] = true;
     _action[side] = action;
     _desired_throttle[side] = 255;
@@ -86,40 +80,29 @@ bool ControllerMotor::Driver(const e_side side, const e_drive_action action)
 
 void ControllerMotor::DriverSetThrottle(const e_side side, const uint8_t throttle)
 {
-	(void) side;
-	(void) throttle;
+    _is_side[side] = true;
+    _desired_throttle[side] = throttle;
 }
 
-bool ControllerMotor::SetThrottle(const e_side side)
+// current time / desired time * 255
+bool ControllerMotor::SetThrottle(const e_side side, bool halt)
 {
 	uint8_t throttle_increase = 0;
-	uint16_t curr_throttle = _current_throttle[side];
-	Serial.println("_acceleration_time[side]: ");
-	Serial.println(_acceleration_time[side]);
-	Serial.println("_acceleration_step[side]: ");
-	Serial.println(_acceleration_step[side]);
-	Serial.println("millis(): ");
-	Serial.println(millis());
-	if (_acceleration_time[side] + _acceleration_step[side] > millis())
-		throttle_increase = ((_acceleration_time[side] - millis()) / (_acceleration_step[side]));
-	else
-		throttle_increase = 1;
-	Serial.println("throttle_increase: ");
-	Serial.println(throttle_increase);
-    if (_current_throttle[side] < _desired_throttle[side]) {
+	int16_t curr_throttle = _current_throttle[side];
+
+	throttle_increase = (millis() / TIME_TO_ACCELERATE) * 255;
+    if (curr_throttle < _desired_throttle[side]) {
         curr_throttle += throttle_increase;
 	}
-    else if (_current_throttle[side] > _desired_throttle[side]) {
+    else if (curr_throttle > _desired_throttle[side] || halt == true) {
         curr_throttle -= throttle_increase;
 	}
 
 	if (curr_throttle > 255)
-		_current_throttle[side] = 255;
-	else
-		_current_throttle[side] += 1;
-	Serial.println("_current_throttle[side]: ");
-	Serial.println(_current_throttle[side]);
-	//_acceleration_time[side] = millis();
+		curr_throttle = 255;
+	else if (curr_throttle < 0)
+		curr_throttle = 0;
+	_current_throttle[side] = curr_throttle;
     return (true);
 }
 
@@ -132,14 +115,16 @@ bool ControllerMotor::Update()
     if (_is_side[BOTH_SIDES] == true) {
         switch (_action[BOTH_SIDES]) {
 			case FORWARD:
-				SetThrottle(BOTH_SIDES);
+				if (_current_throttle[BOTH_SIDES] != _desired_throttle[BOTH_SIDES])
+					SetThrottle(BOTH_SIDES);
 				_actuators_motor[FRONT_LEFT]->forward(_current_throttle[BOTH_SIDES]);
 				_actuators_motor[FRONT_RIGHT]->forward(_current_throttle[BOTH_SIDES]);
 				_actuators_motor[BACK_LEFT]->forward(_current_throttle[BOTH_SIDES]);
 				_actuators_motor[BACK_RIGHT]->forward(_current_throttle[BOTH_SIDES]);
 				break;
 			case BACKWARD:
-				SetThrottle(BOTH_SIDES);
+				if (_current_throttle[BOTH_SIDES] != _desired_throttle[BOTH_SIDES])
+					SetThrottle(BOTH_SIDES);
 				_actuators_motor[FRONT_LEFT]->reverse(_current_throttle[BOTH_SIDES]);
 				_actuators_motor[FRONT_RIGHT]->reverse(_current_throttle[BOTH_SIDES]);
 				_actuators_motor[BACK_LEFT]->reverse(_current_throttle[BOTH_SIDES]);
@@ -158,12 +143,14 @@ bool ControllerMotor::Update()
         if (_is_side[LEFT_SIDE] == true) {
             switch (_action[LEFT_SIDE]) {
 				case FORWARD:
-					SetThrottle(LEFT_SIDE);
+					if (_current_throttle[LEFT_SIDE] != _desired_throttle[LEFT_SIDE])
+						SetThrottle(LEFT_SIDE);
 					_actuators_motor[FRONT_LEFT]->forward(_current_throttle[LEFT_SIDE]);
 					_actuators_motor[BACK_LEFT]->forward(_current_throttle[LEFT_SIDE]);
 					break;
 				case BACKWARD:
-					SetThrottle(LEFT_SIDE);
+					if (_current_throttle[LEFT_SIDE] != _desired_throttle[LEFT_SIDE])
+						SetThrottle(LEFT_SIDE);
 					_actuators_motor[FRONT_LEFT]->reverse(_current_throttle[LEFT_SIDE]);
 					_actuators_motor[BACK_LEFT]->reverse(_current_throttle[LEFT_SIDE]);
 					break;
@@ -178,12 +165,14 @@ bool ControllerMotor::Update()
         if (_is_side[RIGHT_SIDE] == true) {
             switch (_action[RIGHT_SIDE]) {
 				case FORWARD:
-					SetThrottle(RIGHT_SIDE);
+					if (_current_throttle[RIGHT_SIDE] != _desired_throttle[RIGHT_SIDE])
+						SetThrottle(RIGHT_SIDE);
 					_actuators_motor[FRONT_RIGHT]->forward(_current_throttle[RIGHT_SIDE]);
 					_actuators_motor[BACK_RIGHT]->forward(_current_throttle[RIGHT_SIDE]);
 					break;
 				case BACKWARD:
-					SetThrottle(RIGHT_SIDE);
+					if (_current_throttle[RIGHT_SIDE] != _desired_throttle[RIGHT_SIDE])
+						SetThrottle(RIGHT_SIDE);
 					_actuators_motor[FRONT_RIGHT]->reverse(_current_throttle[RIGHT_SIDE]);
 					_actuators_motor[BACK_RIGHT]->reverse(_current_throttle[RIGHT_SIDE]);
 					break;
@@ -196,6 +185,8 @@ bool ControllerMotor::Update()
             }
         }
     }
+	for (uint8_t i = 0; i < 3; i++)
+		_is_side[i] = false;
     return (true);
 }
 

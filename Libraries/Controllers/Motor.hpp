@@ -16,7 +16,7 @@ enum e_drive_action { // SHOULDN'T THIS BE IN Datatpes.hpp???
 
 class ControllerMotor : public Controller {
 public:
-    bool SetThrottle(const e_side side);
+    bool SetThrottle(const e_side side, bool halt = false);
     bool DriverIsReady();
 	bool DriverIsMoving();
 	bool DriverIsAccelerating();
