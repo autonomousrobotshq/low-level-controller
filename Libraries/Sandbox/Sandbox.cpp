@@ -1,8 +1,8 @@
 #include "MemoryFree.h"
 
-#include "Common/State.hpp"
 #include "Common/Deployment.hpp"
 #include "Common/Platform.hpp"
+#include "Common/State.hpp"
 #include "Sandbox/Sandbox.hpp"
 
 namespace sb {
@@ -10,11 +10,12 @@ namespace sb {
 static Sandbox* g_sb;
 
 Sandbox::Sandbox()
-    : _controller_lifetime(LLC::pins_relay)
+    : _interface_logger(LLC::exec_intervals.interface_ros)
+    , _controller_lifetime(LLC::pins_relay)
     , _controller_physical_feedback(LLC::pins_physicalfeedback)
     , _controller_anomaly(this, &_controller_lifetime)
-    , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer)
-    , _sensor_gps(LLC::pins_gps)
+    , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer, LLC::exec_intervals.imu)
+    , _sensor_gps(LLC::pins_gps, LLC::exec_intervals.gps)
 {
     if (g_sb) {
         // crit: "Second initialisation of Sandbox!"
@@ -30,18 +31,18 @@ Sandbox::~Sandbox()
 void Sandbox::Setup()
 {
     _controller_lifetime.Lifephase(S_STARTUP);
-	_controller_physical_feedback.SignalState(S_STARTUP);
+    _controller_physical_feedback.SignalState(S_STARTUP);
 }
 
 void Sandbox::Shutdown()
 {
-	_controller_physical_feedback.SignalState(S_SHUTDOWN);
+    _controller_physical_feedback.SignalState(S_SHUTDOWN);
     _controller_lifetime.Lifephase(S_SHUTDOWN);
 }
 
-void Sandbox::SetDriverLogicUpdate(bool (*f)(void))
+void Sandbox::SetLogicDriverUpdate(bool (*f)(void))
 {
-    this->_DriverLogicUpdate = f;
+    this->_LogicDriverUpdate = f;
 }
 
 void Sandbox::SpinOnce()
@@ -49,21 +50,23 @@ void Sandbox::SpinOnce()
     // todo update all modules with timing (+ priority queued)
     // anything that could bring about delays must be timeregulated and executed
     // in this function
-	while (!_controller_awareness.Update())
+    if (!_sensor_imu.Update())
         _controller_anomaly.HandleError(g_state);
-    while (!_sensor_imu.Update())
-        _controller_anomaly.HandleError(g_state);
-    while (!_sensor_gps.Update())
+    if (!_sensor_gps.Update())
         _controller_anomaly.HandleError(g_state);
 
 #if VERBOSITY & DEBUG
-        // if (!this->_DriverLogicUpdate)
-        // DEBUG: Hook _DriverLogicUpdate is not set
+        // if (!this->_LogicDriverUpdate)
+        // DEBUG: Hook _LogicDriverUpdate is not set
 #endif
 
-    while (!_DriverLogicUpdate())
+    if (!_LogicDriverUpdate())
         _controller_anomaly.HandleError(g_state);
-    while (!_controller_motor.Update())
+
+    // this definitely needs more love
+    while (!_controller_awareness.Update())
+        _controller_anomaly.HandleError(g_state);
+    if (!_controller_motor.Update())
         _controller_anomaly.HandleError(g_state);
 }
 
@@ -88,14 +91,14 @@ bool Sandbox::Driver(const e_side side, const e_drive_action action)
 
 bool Sandbox::DriverIsReady() // -> MOTORCONTROLLER
 {
-	return (_controller_motor.DriverIsReady()); // check if motorcontroller has reached desired state
+    return (_controller_motor.DriverIsReady()); // check if motorcontroller has reached desired state
 }
 
 // SLOWHALT
 
 bool Sandbox::DriverIsMoving() // -> MOTORCONTROLLER
 {
-	return (_controller_motor.DriverIsMoving());
+    return (_controller_motor.DriverIsMoving());
 }
 
 bool Sandbox::DriverIsAccelerating() // -> MOTORCONTROLLER
@@ -110,7 +113,21 @@ bool Sandbox::DriverIsDecelerating() // -> MOTORCONTROLLER
 
 uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
 {
-	return (0); // get current average speed of motors
+    return (0); // get current average speed of motors
+}
+
+void Sandbox::DriverHalt() // -> MOTORCONTROLLER
+{
+    Driver(LEFT_SIDE, HALT); // needs to use Motorcontroller HALT/SLOWHALT
+    Driver(RIGHT_SIDE, HALT);
+    _controller_motor.Update();
+}
+
+void Sandbox::DriverSlowHalt() // -> MOTORCONTROLLER
+{
+    Driver(LEFT_SIDE, HALT); // needs to use Motorcontroller HALT/SLOWHALT
+    Driver(RIGHT_SIDE, HALT);
+    _controller_motor.Update();
 }
 
 void Sandbox::DriverSetThrottle(const e_side side, const uint8_t throttle) // -> MOTORCONTROLLER
@@ -145,7 +162,7 @@ Vec3 Sandbox::IMUGetAcceleroData()
 
 int16_t Sandbox::USGetDistance(e_corner corner)
 {
-	return (this->_controller_awareness.GetDistance(corner));
+    return (this->_controller_awareness.GetDistance(corner));
 }
 
 void Sandbox::GPSGetLocation(float* flat, float* flon)
@@ -175,7 +192,7 @@ int8_t Sandbox::TEMPGetTemperature()
 
 void Sandbox::SIGBeep(const e_siglevel siglevel, const uint8_t count)
 {
-	_controller_physical_feedback.Beep(siglevel, count);
+    _controller_physical_feedback.Beep(siglevel, count);
 }
 
 int16_t Sandbox::RAMGetFree()
@@ -191,6 +208,8 @@ bool DriverIsAccelerating() { return g_sb->DriverIsAccelerating(); }
 bool DriverIsDecelerating() { return g_sb->DriverIsDecelerating(); }
 uint8_t DriverGetThrottle() { return g_sb->DriverGetThrottle(); }
 void DriverSetThrottle(const e_side side, const uint8_t throttle) { g_sb->DriverSetThrottle(side, throttle); }
+void DriverHalt() { g_sb->DriverHalt(); }
+void DriverSlowHalt() { g_sb->DriverSlowHalt(); }
 int IMUGetNavigationAngle() { return (g_sb->IMUGetNavigationAngle()); }
 Vec3 IMUGetMagnetoData() { return (g_sb->IMUGetMagnetoData()); }
 Vec3 IMUGetAcceleroData() { return (g_sb->IMUGetAcceleroData()); }

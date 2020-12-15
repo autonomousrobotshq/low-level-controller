@@ -23,10 +23,20 @@ enum e_corner {
 };
 
 enum e_siglevel {
-	SIG_INFO,
-	SIG_WARN,
-	SIG_CRIT
+    SIG_INFO,
+    SIG_WARN,
+    SIG_CRIT
 };
+
+typedef struct s_exec_intervals {
+    const uint16_t gps;
+    const uint16_t imu;
+    const uint16_t hall;
+    const uint16_t current;
+    const uint16_t temperature;
+    const uint16_t ultrasonic;
+    const uint16_t interface_ros;
+} t_exec_intervals;
 
 typedef struct s_pins_motor {
     const uint8_t pin_pwm;
@@ -50,8 +60,8 @@ typedef struct s_pins_hall {
 } t_pins_hall;
 
 typedef struct s_pins_physicalfeedback {
-	const uint8_t pin_beeper;
-}	t_pins_physicalfeedback;
+    const uint8_t pin_beeper;
+} t_pins_physicalfeedback;
 
 typedef struct s_imu_calibration {
     const int16_t x_min;

@@ -2,8 +2,9 @@
 #include "Common/Platform.hpp"
 #include <Wire.h>
 
-SensorIMU::SensorIMU(const t_pins_imu pins_imu, t_imu_calibration acc_cal, t_imu_calibration mag_cal)
-    : _pin_sda(pins_imu.pin_sda)
+SensorIMU::SensorIMU(const t_pins_imu pins_imu, const t_imu_calibration acc_cal, const t_imu_calibration mag_cal, const uint16_t exec_interval)
+    : Sensor(exec_interval)
+    , _pin_sda(pins_imu.pin_sda)
     , _pin_scl(pins_imu.pin_scl)
     , _filter(IMU_SAMPLE_COUNT)
 {
@@ -24,6 +25,8 @@ SensorIMU::~SensorIMU() { }
 
 bool SensorIMU::Update()
 {
+    if (!this->IsTimeToExecute())
+        return (true);
     _filter.Reset();
     for (uint8_t i = 0; i < IMU_SAMPLE_COUNT; i++) {
         _compass.read();

@@ -11,8 +11,8 @@ ControllerMotor::ControllerMotor()
     }
     for (int i = 0; i < NUM_MOTORS; i++) {
         _actuators_motor[i] = new ActuatorMotor(LLC::pins_motors[i]);
-        _sensors_current[i] = new SensorCurrent(LLC::pins_current[i]);
-        _sensors_hall[i] = new SensorHall(LLC::pins_hall[i]); // use glob millis?
+        _sensors_current[i] = new SensorCurrent(LLC::pins_current[i], LLC::exec_intervals.current);
+        _sensors_hall[i] = new SensorHall(LLC::pins_hall[i], LLC::exec_intervals.hall);
     }
 }
 
@@ -84,7 +84,6 @@ void ControllerMotor::DriverSetThrottle(const e_side side, const uint8_t throttl
     _desired_throttle[side] = throttle;
 }
 
-// current time / desired time * 255
 bool ControllerMotor::SetThrottle(const e_side side, bool halt)
 {
 	uint8_t throttle_increase = 0;

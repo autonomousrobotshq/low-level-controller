@@ -7,6 +7,7 @@
 #include "Sensors/Current.hpp"
 #include "Sensors/Hall.hpp"
 #include "Sensors/Sensor.hpp"
+#include <Arduino.h>
 
 enum e_drive_action { // SHOULDN'T THIS BE IN Datatpes.hpp???
     FORWARD = 0,
