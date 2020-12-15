@@ -22,8 +22,6 @@ namespace LLC1 {
 #define MOTOR_THROTTLE_HIGH 100
 #define MOTOR_THROTTLE_LOW 0
 
-#define TIME_TO_ACCELERATE 3000
-
 /* FACTS */
 #define NUM_MOTORS 4
 #define NUM_ULTRASONIC 4

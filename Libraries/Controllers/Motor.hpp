@@ -9,6 +9,8 @@
 #include "Sensors/Sensor.hpp"
 #include <Arduino.h>
 
+#define TIME_TO_ACCELERATE 3000
+
 enum e_drive_action { // SHOULDN'T THIS BE IN Datatpes.hpp???
     FORWARD = 0,
     BACKWARD = 1,
