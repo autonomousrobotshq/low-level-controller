@@ -11,6 +11,7 @@
 #include <Sensors/Sensor.hpp>
 
 #define GPS_TIMEOUT 50
+#define GPS_EXEC_INTERVAL 1000
 
 class SensorGPS : public Sensor {
 public:
@@ -19,7 +20,7 @@ public:
     float GetSpeed();
     float GetCourse();
     bool Update();
-    SensorGPS(const t_pins_gps pins_gps);
+    SensorGPS(const t_pins_gps pins_gps, const uint16_t exec_interval);
     ~SensorGPS();
 
 private:

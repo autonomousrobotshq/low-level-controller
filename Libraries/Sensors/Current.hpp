@@ -1,13 +1,13 @@
 #ifndef SENSOR_CURRENT_HPP
 #define SENSOR_CURRENT_HPP
 
-#include <Arduino.h>
+#include "Sensors/Sensor.hpp"
 
-class SensorCurrent {
+class SensorCurrent : public Sensor {
 public:
     float GetCurrent();
     bool Update();
-    SensorCurrent(const uint8_t analogPin);
+    SensorCurrent(const uint8_t analogPin, const uint16_t exec_interval);
     ~SensorCurrent();
 
 private:

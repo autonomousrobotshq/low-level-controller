@@ -8,19 +8,19 @@
 #include <stdint.h>
 
 enum e_state {
-	S_STARTUP,
-	S_SHUTDOWN,
+    S_STARTUP,
+    S_SHUTDOWN,
     S_TEMP_WARN,
     S_TEMP_CRIT,
     S_TEMP_ERROR,
-	S_COOLDOWN,
+    S_COOLDOWN,
     S_PROXIMITY_WARN,
     S_PROXIMITY_CRIT,
     S_PROXIMITY_ERROR,
     S_BATTERY_WARN,
     S_BATTERY_CRIT,
     S_CURRENT_CRIT,
-	S_OK
+    S_OK
 };
 
 extern e_state* __getstate(void);

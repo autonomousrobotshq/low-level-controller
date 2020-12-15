@@ -28,6 +28,10 @@ namespace LLC1 {
 #define NUM_RELAYS 6
 #define NUM_TEMP 1
 
+/* EXECUTION INTERVALS */
+// GPS, IMU, HALL, CURRENT, TEMPERATURE, ULTRASONIC, INTERFACE_ROS
+const t_exec_intervals exec_intervals = { 1000, 20, 20, 20, 1000, 20, 50 };
+
 /* IMU CALIBRATION */
 
 // X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX

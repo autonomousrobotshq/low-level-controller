@@ -1,6 +1,7 @@
 #ifndef SENSOR_ULTRASONIC_HPP
 #define SENSOR_ULTRASONIC_HPP
 
+#include "Sensors/Sensor.hpp"
 #include <Arduino.h>
 
 /*!
@@ -14,9 +15,9 @@
 */
 #define ADC_RESOLUTION (1023.0)
 
-class SensorUltrasonic {
+class SensorUltrasonic : public Sensor {
 public:
-    SensorUltrasonic(const uint8_t pin);
+    SensorUltrasonic(const uint8_t pin, const uint16_t exec_interval);
     ~SensorUltrasonic();
 
     bool Update();

@@ -1,20 +1,14 @@
-#ifndef SENSOR_HPP
-#define SENSOR_HPP
+#ifndef SENSOR_SENSOR_HPP
+#define SENSOR_SENSOR_HPP
 
-#include <stddef.h>
+#include "Common/TimedUpdate.hpp"
+#include <stdint.h>
 
-class Sensor {
+class Sensor : public TimedUpdate {
 public:
-    unsigned long GetDuration();
-    bool IsWaiting();
-    void SetWaitTime(const unsigned long wait_millis);
-    Sensor(const unsigned long glob_millis);
-    Sensor();
+    Sensor(const uint16_t sampling_interval);
     ~Sensor();
 
 private:
-    const unsigned long _glob_millis;
-    unsigned long _last_millis;
-    unsigned long _end_millis;
 };
 #endif
