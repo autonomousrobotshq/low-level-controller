@@ -19,11 +19,12 @@
 namespace LLC1 {
 
 /* RANGES */
-#define MOTOR_THROTTLE_HIGH 100
+#define MOTOR_THROTTLE_HIGH 255
 #define MOTOR_THROTTLE_LOW 0
 
 /* FACTS */
 #define NUM_MOTORS 4
+#define NUM_MOTOR_CONTROLLERS 2
 #define NUM_ULTRASONIC 4
 #define NUM_RELAYS 6
 #define NUM_TEMP 1
