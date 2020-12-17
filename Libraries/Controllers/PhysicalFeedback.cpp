@@ -8,13 +8,13 @@ void ControllerPhysicalFeedback::SignalState(const e_state state)
 
     switch (state) {
     case S_STARTUP:
-        siglevel = SIG_INFO;
+        siglevel = e_siglevel::INFO;
         break;
     case S_SHUTDOWN:
-        siglevel = SIG_INFO;
+        siglevel = e_siglevel::INFO;
         break;
     default:
-        siglevel = SIG_WARN;
+        siglevel = e_siglevel::WARN;
         break;
     }
     count = state;
@@ -26,13 +26,13 @@ void ControllerPhysicalFeedback::Beep(const e_siglevel siglevel, const uint8_t c
     t_physical_signal_format signal_format;
 
     switch (siglevel) {
-    case SIG_INFO:
+    case e_siglevel::INFO:
         signal_format = physsig_format_info;
         break;
-    case SIG_WARN:
+    case e_siglevel::WARN:
         signal_format = physsig_format_warn;
         break;
-    case SIG_CRIT:
+    case e_siglevel::CRIT:
         signal_format = physsig_format_crit;
     default:
         signal_format = physsig_format_warn;

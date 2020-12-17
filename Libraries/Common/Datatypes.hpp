@@ -8,20 +8,20 @@
 #include <HardwareSerial.h>
 #include <stdint.h>
 
-enum class e_side {
+enum e_side {
     LEFT,
     RIGHT,
 	FRONT,
 	BACK,
-	ALL
+	ALL_SIDES
 };
 
-enum class e_corner {
+enum e_corner {
     FRONT_LEFT,
     FRONT_RIGHT,
     BACK_LEFT,
     BACK_RIGHT,
-    ALL
+    ALL_CORNERS
 };
 
 enum class e_siglevel {

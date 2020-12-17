@@ -7,6 +7,9 @@
 #include "Sensors/Current.hpp"
 #include "Sensors/Hall.hpp"
 #include "Sensors/Sensor.hpp"
+#include <Arduino.h>
+
+#define TIME_TO_ACCELERATE 3000
 
 enum e_drive_action { // SHOULDN'T THIS BE IN Datatpes.hpp???
     FORWARD = 0,
@@ -16,9 +19,16 @@ enum e_drive_action { // SHOULDN'T THIS BE IN Datatpes.hpp???
 
 class ControllerMotor : public Controller {
 public:
-    bool Driver(const e_side side, const e_drive_action action);
-    bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
-    bool SetThrottle(const e_side side);
+    bool SetThrottle(const e_side side, bool halt = false);
+    bool DriverIsReady();
+	bool DriverIsMoving();
+	bool DriverIsAccelerating();
+	bool DriverIsDecelerating();
+	bool SlowHalt();
+	uint8_t DriverGetThrottle();
+	void DriverSetThrottle(const e_side side, const uint8_t throttle);
+	bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
+	bool Driver(const e_side side, const e_drive_action action);
     int8_t GetRPM(const e_corner);
     int8_t GetRevolutions(const e_corner);
     bool Driver();
@@ -36,6 +46,8 @@ private:
     e_drive_action _action[3];
     uint8_t _desired_throttle[3];
     uint8_t _current_throttle[3];
+	uint16_t _acceleration_step[3];
+	unsigned long _acceleration_time[3];
 };
 
 #endif
