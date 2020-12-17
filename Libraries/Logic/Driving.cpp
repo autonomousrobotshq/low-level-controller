@@ -38,9 +38,9 @@ bool LogicDriving::HeadTo(const uint16_t desired_heading, const uint8_t desired_
 			_actions.push_back(e_action::HALT);
 
 		e_side direction = GetSpinDirection(current_heading, desired_heading);
-		if (direction == LEFT_SIDE)
+		if (direction == LEFT)
 			_actions.push_back(e_action::SPINLEFT);
-		else if (direction == RIGHT_SIDE)
+		else if (direction == RIGHT)
 			_actions.push_back(e_action::SPINRIGHT);
 	}
 
@@ -58,7 +58,7 @@ void LogicDriving::MeasureSpin()
 		|| abs((current_heading + 360) - _desired_heading) < ANGULAR_TARGET_RANGE
 		|| abs(current_heading - (_desired_heading + 360)) < ANGULAR_TARGET_RANGE)
 	{
-		_sandbox->Driver(BOTH_SIDES, HALT);
+		_sandbox->Driver(ALL_SIDES, HALT);
 	}
 	else if (abs(current_heading - _desired_heading) < SPIN_SLOWDOWN_THRESHOLD
 		|| abs((current_heading + 360) - _desired_heading) < SPIN_SLOWDOWN_THRESHOLD
@@ -95,32 +95,32 @@ void LogicDriving::Perform(const e_action action)
 	switch (action)
 	{
 		case e_action::FORWARD:
-			_sandbox->Driver(BOTH_SIDES, FORWARD, _desired_throttle);
+			_sandbox->Driver(ALL_SIDES, FORWARD, _desired_throttle);
 		break;
 		case e_action::BACKWARD:
-			_sandbox->Driver(BOTH_SIDES, BACKWARD, _desired_throttle);
+			_sandbox->Driver(ALL_SIDES, BACKWARD, _desired_throttle);
 		break;
 		case e_action::HALT:
-			_sandbox->Driver(BOTH_SIDES, HALT);
+			_sandbox->Driver(ALL_SIDES, HALT);
 		break;
 		case e_action::SLOWHALT:
-			//Driver(BOTH_SIDES, SLOWHALT); -> NOT IMPLEMENTED
+			//Driver(ALL_SIDES, SLOWHALT); -> NOT IMPLEMENTED
 		break;
 		case e_action::SPINLEFT:
-			_sandbox->Driver(LEFT_SIDE, BACKWARD, _desired_throttle);
-			_sandbox->Driver(RIGHT_SIDE, FORWARD, _desired_throttle);
+			_sandbox->Driver(LEFT, BACKWARD, _desired_throttle);
+			_sandbox->Driver(RIGHT, FORWARD, _desired_throttle);
 		break;
 		case e_action::SPINRIGHT:
-			_sandbox->Driver(LEFT_SIDE, FORWARD, _desired_throttle);
-			_sandbox->Driver(RIGHT_SIDE, BACKWARD, _desired_throttle);
+			_sandbox->Driver(LEFT, FORWARD, _desired_throttle);
+			_sandbox->Driver(RIGHT, BACKWARD, _desired_throttle);
 		break;
 		case e_action::DRAGLEFT:
-			_sandbox->Driver(LEFT_SIDE, FORWARD, GetThrottleForDragSteering(action, LEFT_SIDE));
-			_sandbox->Driver(RIGHT_SIDE, FORWARD, GetThrottleForDragSteering(action, RIGHT_SIDE));
+			_sandbox->Driver(LEFT, FORWARD, GetThrottleForDragSteering(action, LEFT));
+			_sandbox->Driver(RIGHT, FORWARD, GetThrottleForDragSteering(action, RIGHT));
 		break;
 		case e_action::DRAGRIGHT:
-			_sandbox->Driver(LEFT_SIDE, FORWARD, GetThrottleForDragSteering(action, LEFT_SIDE)); // FORWARD ? BACKWARD
-			_sandbox->Driver(RIGHT_SIDE, FORWARD, GetThrottleForDragSteering(action, RIGHT_SIDE)); // FORWARD ? BACKWARD
+			_sandbox->Driver(LEFT, FORWARD, GetThrottleForDragSteering(action, LEFT)); // FORWARD ? BACKWARD
+			_sandbox->Driver(RIGHT, FORWARD, GetThrottleForDragSteering(action, RIGHT)); // FORWARD ? BACKWARD
 		break;
 		case e_action::ADJUST:
 			HeadTo(_desired_heading, _desired_throttle);
