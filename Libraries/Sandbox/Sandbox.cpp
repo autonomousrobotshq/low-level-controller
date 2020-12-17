@@ -72,26 +72,20 @@ void Sandbox::SpinOnce()
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle) // NEEDS TO BE REWORKED
 {
-#if VERBOSITY & DEBUG
-    if (throttle >= MOTOR_THROTTLE_LOW && throttle <= MOTOR_THROTTLE_HIGH)
-        _controller_motor.Driver(side, action, throttle);
-    else {
-        // DEBUG: FALSE DRIVER CALL
-        ;
-    }
-#endif
-    _controller_motor.Driver(side, action, throttle);
+    _controller_motor.SetAction(side, action, throttle);
     return (true);
 }
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action)
 {
-    return (_controller_motor.Driver(side, action));
+	// should have error logic
+    _controller_motor.SetAction(side, action);
+	return (true);
 }
 
-bool Sandbox::DriverIsReady() // -> MOTORCONTROLLER
+bool Sandbox::DriverIsReady()
 {
-    return (true); // check if motorcontroller has reached desired state
+    return (_controller_motor.IsReady());
 }
 
 // SLOWHALT
@@ -116,24 +110,27 @@ uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
     return (0); // get current average speed of motors
 }
 
-void Sandbox::DriverHalt() // -> MOTORCONTROLLER
+void Sandbox::DriverHalt()
 {
-    Driver(LEFT_SIDE, HALT); // needs to use Motorcontroller HALT/SLOWHALT
-    Driver(RIGHT_SIDE, HALT);
+    Driver(LEFT, HALT);
+    Driver(RIGHT, HALT);
     _controller_motor.Update();
 }
 
-void Sandbox::DriverSlowHalt() // -> MOTORCONTROLLER
+void Sandbox::DriverSlowHalt(const e_side side)
 {
-    Driver(LEFT_SIDE, HALT); // needs to use Motorcontroller HALT/SLOWHALT
-    Driver(RIGHT_SIDE, HALT);
-    _controller_motor.Update();
+    Driver(side, SLOWHALT);
+}
+
+void Sandbox::DriverSlowHalt()
+{
+    Driver(LEFT, SLOWHALT);
+    Driver(RIGHT, SLOWHALT);
 }
 
 void Sandbox::DriverSetThrottle(const e_side side, const uint8_t throttle) // -> MOTORCONTROLLER
 {
-    (void)side;
-    (void)throttle;
+	_controller_motor.SetThrottle(side, throttle);
 }
 
 int8_t Sandbox::GetRPM(const e_corner corner) // -> DOESNT FOLLOW NAMING STYLE
