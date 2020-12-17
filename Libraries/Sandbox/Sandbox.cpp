@@ -1,7 +1,6 @@
-#include "MemoryFree.h"
-
 #include "Common/Deployment.hpp"
 #include "Common/Platform.hpp"
+#include "Common/Debugging.hpp"
 #include "Common/State.hpp"
 #include "Sandbox/Sandbox.hpp"
 
@@ -193,11 +192,6 @@ void Sandbox::SIGBeep(const e_siglevel siglevel, const uint8_t count)
     _controller_physical_feedback.Beep(siglevel, count);
 }
 
-int16_t Sandbox::RAMGetFree()
-{
-    return (freeMemory());
-}
-
 bool Driver(const e_side side, const e_drive_action action) { return (g_sb->Driver(side, action)); }
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(side, action, throttle)); }
 bool DriverIsReady() { return g_sb->DriverIsReady(); }
@@ -218,7 +212,4 @@ int16_t GPSGetSpeed() { return (g_sb->GPSGetSpeed()); }
 int16_t GPSGetCourse() { return (g_sb->GPSGetCourse()); }
 int8_t TEMPGetTemperature() { return (g_sb->TEMPGetTemperature()); }
 void SIGBeep(const e_siglevel siglevel, const uint8_t count) { g_sb->SIGBeep(siglevel, count); }
-
-int16_t RAMGetFree() { return (g_sb->RAMGetFree()); }
-
 }

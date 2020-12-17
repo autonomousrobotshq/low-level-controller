@@ -53,8 +53,6 @@ public:
 
     void SIGBeep(const e_siglevel siglevel, const uint8_t count);
 
-    int16_t RAMGetFree();
-
     int8_t GetRPM(const e_corner corner);
     int8_t GetRevolutions(const e_corner corner);
 
@@ -102,7 +100,5 @@ int16_t GPSGetCourse();
 int8_t TEMPGetTemperature();
 
 void SIGBeep(const e_siglevel siglevel, const uint8_t count);
-
-int16_t RAMGetFree();
 } // namespace sb
 #endif
