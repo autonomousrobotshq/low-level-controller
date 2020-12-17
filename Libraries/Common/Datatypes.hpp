@@ -9,23 +9,25 @@
 #include <stdint.h>
 
 enum e_side {
-    LEFT_SIDE = 0,
-    RIGHT_SIDE = 1,
-    BOTH_SIDES = 2
+    LEFT,
+    RIGHT,
+	FRONT,
+	BACK,
+	ALL_SIDES
 };
 
 enum e_corner {
-    FRONT_LEFT = 0,
-    FRONT_RIGHT = 1,
-    BACK_LEFT = 2,
-    BACK_RIGHT = 3,
-    ALL = 4
+    FRONT_LEFT,
+    FRONT_RIGHT,
+    BACK_LEFT,
+    BACK_RIGHT,
+    ALL_CORNERS
 };
 
-enum e_siglevel {
-    SIG_INFO,
-    SIG_WARN,
-    SIG_CRIT
+enum class e_siglevel {
+    INFO,
+    WARN,
+    CRIT
 };
 
 typedef struct s_exec_intervals {

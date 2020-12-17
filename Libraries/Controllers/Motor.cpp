@@ -2,132 +2,174 @@
 #include "Common/Platform.hpp"
 
 ControllerMotor::ControllerMotor()
+	: _acceleration_factor(50) // this should have it's own setter
 {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < NUM_MOTOR_CONTROLLERS; i++) {
+        _actuators_motor[i] = new ActuatorMotor(LLC::pins_motors[i]);
         _current_throttle[i] = 0;
+        _starting_throttle[i] = 0;
         _desired_throttle[i] = 0;
         _action[i] = HALT;
-        _is_side[i] = false;
-    }
+		_motorstate[i] = READY;
+	}
     for (int i = 0; i < NUM_MOTORS; i++) {
-        _actuators_motor[i] = new ActuatorMotor(LLC::pins_motors[i]);
-		TUAN READ THIS BEFORE YOU MERGE
-        _sensors_current[i] = new SensorCurrent(LLC::pins_current[i], LLC::exec_intervals.current); // TUAN SEE THIS BEFORE YOU MERGE
-        _sensors_hall[i] = new SensorHall(LLC::pins_hall[i], LLC::exec_intervals.hall); // TUAN SEE THIS BEFORE YOU MERGE
+        _sensors_current[i] = new SensorCurrent(LLC::pins_current[i], LLC::exec_intervals.current);
+        _sensors_hall[i] = new SensorHall(LLC::pins_hall[i], LLC::exec_intervals.hall);
     }
 }
 
 ControllerMotor::~ControllerMotor()
 {
+    for (int i = 0; i < NUM_MOTOR_CONTROLLERS; i++) {
+        delete (_actuators_motor[i]);
+	}
     for (int i = 0; i < NUM_MOTORS; i++) {
-        delete _actuators_motor[i];
-        delete _sensors_current[i];
-        delete _sensors_hall[i];
+        delete (_sensors_current[i]);
+        delete (_sensors_hall[i]);
     }
 }
 
-bool ControllerMotor::IsReady(const e_side side)
+bool ControllerMotor::IsReady()
 {
-    return (_current_throttle[side] == _desired_throttle[side]);
+	return (_motorstate[LEFT] == READY && _motorstate[RIGHT] == READY);
 }
 
-bool ControllerMotor::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
+bool ControllerMotor::IsMoving()
 {
-    _is_side[side] = true;
-    _action[side] = action;
-    _desired_throttle[side] = throttle;
-    return (true);
+    return (_current_throttle[LEFT] > 0 || _current_throttle[RIGHT] > 0);
 }
 
-bool ControllerMotor::Driver(const e_side side, const e_drive_action action)
+bool ControllerMotor::IsAccelerating()
 {
-    _is_side[side] = true;
-    _action[side] = action;
-    _desired_throttle[side] = 255;
-    return (true);
+	return (_motorstate[LEFT] == ACCELERATING || _motorstate[RIGHT] == ACCELERATING);
 }
 
-bool ControllerMotor::SetThrottle(const e_side side)
+bool ControllerMotor::IsDecelerating()
 {
-    if (_current_throttle[side] < _desired_throttle[side])
-        _current_throttle[side] += 1;
-    if (_current_throttle[side] > _desired_throttle[side])
-        _current_throttle[side] -= 1;
-    return (true);
+	return (_motorstate[LEFT] == DECELERATING || _motorstate[RIGHT] == DECELERATING);
+}
+
+uint8_t ControllerMotor::GetThrottle(const e_side side)
+{
+	return (_current_throttle[side]);
+}
+
+void ControllerMotor::SetThrottle(const e_side side, const uint8_t throttle)
+{
+	this->SetAction(side, _action[side], throttle);
+}
+
+ControllerMotor::e_motorstate ControllerMotor::GetMotorstate(const e_side side, const uint8_t desired_throttle)
+{
+	if (desired_throttle > _current_throttle[side])
+		return (ACCELERATING);
+	else if (desired_throttle < _current_throttle[side])
+		return(DECELERATING);
+	else
+		return (READY);
+}
+
+void ControllerMotor::SetActionParameters(const e_side side, const e_drive_action action, const uint8_t desired_throttle)
+{
+	if (_desired_throttle[side] != desired_throttle || _action[side] != action)
+	{
+		_motorstate[side] = GetMotorstate(side, desired_throttle);
+    	_action[side] = action;
+		_starting_throttle[side] = _current_throttle[side];
+    	_desired_throttle[side] = desired_throttle;
+		_acceleration_start_time[side] = millis();
+	}
+}
+
+void ControllerMotor::SetAction(const e_side side, const e_drive_action action, const uint8_t desired_throttle)
+{
+	if (side == ALL_SIDES)
+	{
+		SetActionParameters(LEFT, action, desired_throttle);
+		SetActionParameters(RIGHT, action, desired_throttle);
+	}
+	else
+	{
+		SetActionParameters(side, action, desired_throttle);
+	}
+}
+
+void ControllerMotor::SetAction(const e_side side, const e_drive_action action)
+{
+	this->SetAction(side, action, (action == HALT || action == SLOWHALT) ? MOTOR_THROTTLE_LOW : MOTOR_THROTTLE_HIGH);
+}
+
+bool ControllerMotor::IsAtDesiredState(const e_side side)
+{
+	return (_current_throttle[side] == _desired_throttle[side]);
+}
+
+uint8_t ControllerMotor::NormalizeThrottle(int16_t throttle)
+{
+	if (throttle > MOTOR_THROTTLE_HIGH)		throttle = MOTOR_THROTTLE_HIGH;
+	else if (throttle < MOTOR_THROTTLE_LOW)	throttle = MOTOR_THROTTLE_LOW;
+
+	return (throttle);
+}
+
+void ControllerMotor::UpdateAcceleration(const e_side side, const int8_t acceleration)
+{
+	const unsigned long dev_millis = millis() - _acceleration_start_time[side];
+	int16_t acceleration_coef = (dev_millis * acceleration) / 1000;
+	int16_t throttle = (dev_millis * acceleration_coef) / 1000;
+
+	if (_motorstate[side] == DECELERATING)
+		throttle = _starting_throttle[side] - throttle;
+
+	_current_throttle[side] = NormalizeThrottle(throttle);
+}
+
+void ControllerMotor::UpdateMotorActuator(const e_side side)
+{
+	switch(_action[side])
+	{
+		case FORWARD:
+			_actuators_motor[side]->Forward(_current_throttle[side]);
+			break;
+		case BACKWARD:
+			_actuators_motor[side]->Reverse(_current_throttle[side]);
+			break;
+		case HALT:
+			_actuators_motor[side]->Halt();
+			break;
+		case SLOWHALT:
+			_actuators_motor[side]->SetThrottle(_current_throttle[side]);
+			break;
+		default:
+				// throw error ?
+			break;
+	}
+}
+
+
+void ControllerMotor::UpdateMotor(const e_side side)
+{
+	if (_action[side] == HALT)
+	{
+		_desired_throttle[side] = 0;
+		_current_throttle[side] = 0;
+	}
+	else
+	{
+		this->UpdateAcceleration(side, _acceleration_factor);
+	}
+
+	this->UpdateMotorActuator(side);
 }
 
 bool ControllerMotor::Update()
 {
-    // motor logic here
-    //if (_sensors_current[_corner]->getCurrent()) // is overcurrent
-    //    return false; // error: overcurrent
+	if (!this->IsAtDesiredState(LEFT))		this->UpdateMotor(LEFT);
+	else									_motorstate[LEFT] = READY;
 
-    if (_is_side[BOTH_SIDES] == true) {
-        switch (_action[BOTH_SIDES]) {
-        case FORWARD:
-            SetThrottle(BOTH_SIDES);
-            _actuators_motor[FRONT_LEFT]->forward(_current_throttle[BOTH_SIDES]);
-            _actuators_motor[FRONT_RIGHT]->forward(_current_throttle[BOTH_SIDES]);
-            _actuators_motor[BACK_LEFT]->forward(_current_throttle[BOTH_SIDES]);
-            _actuators_motor[BACK_RIGHT]->forward(_current_throttle[BOTH_SIDES]);
-            break;
-        case BACKWARD:
-            SetThrottle(BOTH_SIDES);
-            _actuators_motor[FRONT_LEFT]->reverse(_current_throttle[BOTH_SIDES]);
-            _actuators_motor[FRONT_RIGHT]->reverse(_current_throttle[BOTH_SIDES]);
-            _actuators_motor[BACK_LEFT]->reverse(_current_throttle[BOTH_SIDES]);
-            _actuators_motor[BACK_RIGHT]->reverse(_current_throttle[BOTH_SIDES]);
-            break;
-        case HALT:
-            _actuators_motor[FRONT_LEFT]->halt();
-            _actuators_motor[FRONT_RIGHT]->halt();
-            _actuators_motor[BACK_LEFT]->halt();
-            _actuators_motor[BACK_RIGHT]->halt();
-            break;
-        default:
-            break;
-        }
-    } else {
-        if (_is_side[LEFT_SIDE] == true)
-            switch (_action[LEFT_SIDE]) {
-            case FORWARD:
-                SetThrottle(LEFT_SIDE);
-                _actuators_motor[FRONT_LEFT]->forward(_current_throttle[LEFT_SIDE]);
-                _actuators_motor[BACK_LEFT]->forward(_current_throttle[LEFT_SIDE]);
-                break;
-            case BACKWARD:
-                SetThrottle(LEFT_SIDE);
-                _actuators_motor[FRONT_LEFT]->reverse(_current_throttle[LEFT_SIDE]);
-                _actuators_motor[BACK_LEFT]->reverse(_current_throttle[LEFT_SIDE]);
-                break;
-            case HALT:
-                _actuators_motor[FRONT_LEFT]->halt();
-                _actuators_motor[BACK_LEFT]->halt();
-                break;
-            default:
-                break;
-            }
-        if (_is_side[RIGHT_SIDE] == true) {
-            switch (_action[RIGHT_SIDE]) {
-            case FORWARD:
-                SetThrottle(RIGHT_SIDE);
-                _actuators_motor[FRONT_RIGHT]->forward(_current_throttle[RIGHT_SIDE]);
-                _actuators_motor[BACK_RIGHT]->forward(_current_throttle[RIGHT_SIDE]);
-                break;
-            case BACKWARD:
-                SetThrottle(RIGHT_SIDE);
-                _actuators_motor[FRONT_RIGHT]->reverse(_current_throttle[RIGHT_SIDE]);
-                _actuators_motor[BACK_RIGHT]->reverse(_current_throttle[RIGHT_SIDE]);
-                break;
-            case HALT:
-                _actuators_motor[FRONT_RIGHT]->halt();
-                _actuators_motor[BACK_RIGHT]->halt();
-                break;
-            default:
-                break;
-            }
-        }
-    }
+	if (!this->IsAtDesiredState(RIGHT))		this->UpdateMotor(RIGHT);
+	else									_motorstate[RIGHT] = READY;
+
     return (true);
 }
 

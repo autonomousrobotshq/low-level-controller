@@ -34,6 +34,7 @@ public:
     bool DriverIsDecelerating();
     void DriverHalt();
     void DriverSlowHalt();
+	void DriverSlowHalt(const e_side side);
 
     uint8_t DriverGetThrottle();
     void DriverSetThrottle(const e_side side, const uint8_t throttle);

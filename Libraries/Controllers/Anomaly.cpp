@@ -15,11 +15,11 @@ bool ControllerAnomaly::HandleError(const e_state state)
     switch (state) {
     case S_PROXIMITY_CRIT:
         ((sb::Sandbox*)_sandbox)->DriverHalt();
-        ((sb::Sandbox*)_sandbox)->SIGBeep(SIG_CRIT, 5);
+        ((sb::Sandbox*)_sandbox)->SIGBeep(e_siglevel::CRIT, 5);
         break;
     case S_PROXIMITY_WARN:
         ((sb::Sandbox*)_sandbox)->DriverSlowHalt();
-        ((sb::Sandbox*)_sandbox)->SIGBeep(SIG_CRIT, 5);
+        ((sb::Sandbox*)_sandbox)->SIGBeep(e_siglevel::CRIT, 5);
         break;
 
     default:

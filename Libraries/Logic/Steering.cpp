@@ -42,12 +42,12 @@ void LogicSteering::driveLogic(int distance, int angle)
 void LogicSteering::_pivot(int angle)
 {
     if (angle < 0) {
-        _sandbox.Driver(LEFT_SIDE, FORWARD, _power);
-        _sandbox.Driver(RIGHT_SIDE, BACKWARD, _power);
+        _sandbox.Driver(LEFT, FORWARD, _power);
+        _sandbox.Driver(RIGHT, BACKWARD, _power);
     }
     if (angle > 0) {
-        _sandbox.Driver(LEFT_SIDE, BACKWARD, _power);
-        _sandbox.Driver(RIGHT_SIDE, FORWARD, _power);
+        _sandbox.Driver(LEFT, BACKWARD, _power);
+        _sandbox.Driver(RIGHT, FORWARD, _power);
     }
 }
 
@@ -55,25 +55,25 @@ void LogicSteering::_turnAngle(int angle)
 {
 
     if (angle > 0) {
-        _sandbox.Driver(RIGHT_SIDE, HALT, _power);
-        _sandbox.Driver(LEFT_SIDE, FORWARD, _power);
+        _sandbox.Driver(RIGHT, HALT, _power);
+        _sandbox.Driver(LEFT, FORWARD, _power);
     } else {
-        _sandbox.Driver(RIGHT_SIDE, FORWARD, _power);
-        _sandbox.Driver(LEFT_SIDE, HALT, _power);
+        _sandbox.Driver(RIGHT, FORWARD, _power);
+        _sandbox.Driver(LEFT, HALT, _power);
     }
 }
 
 void LogicSteering::_driveDistance()
 {
     _target_count_distance = _numRev_distance * _countsPerRev;
-    _sandbox.Driver(RIGHT_SIDE, FORWARD, _right_power);
-    _sandbox.Driver(LEFT_SIDE, FORWARD, _left_power);
+    _sandbox.Driver(RIGHT, FORWARD, _right_power);
+    _sandbox.Driver(LEFT, FORWARD, _left_power);
 }
 
 void LogicSteering::_stop()
 {
-    _sandbox.Driver(LEFT_SIDE, HALT, _power);
-    _sandbox.Driver(RIGHT_SIDE, HALT, _power);
+    _sandbox.Driver(LEFT, HALT, _power);
+    _sandbox.Driver(RIGHT, HALT, _power);
 }
 
 void LogicSteering::_update_turn()
@@ -103,8 +103,8 @@ void LogicSteering::_update_distance()
             _left_power = _left_power + _offset;
             _right_power = _right_power - _offset;
         }
-        _sandbox.Driver(RIGHT_SIDE, FORWARD, _right_power);
-        _sandbox.Driver(LEFT_SIDE, FORWARD, _left_power);
+        _sandbox.Driver(RIGHT, FORWARD, _right_power);
+        _sandbox.Driver(LEFT, FORWARD, _left_power);
         _leftcount += _sandbox.GetRevolutions(FRONT_LEFT);
         _rightcount += _sandbox.GetRevolutions(BACK_RIGHT);
     } else

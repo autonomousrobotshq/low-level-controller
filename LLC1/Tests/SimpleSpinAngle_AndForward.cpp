@@ -4,10 +4,6 @@
 #include "Sandbox/Sandbox.hpp"
 #include "Sensors/IMU.hpp"
 
-/*
-** SAMPLE CODE
-*/
-
 using namespace sb;
 
 Sandbox* sandbox;
@@ -25,30 +21,41 @@ void setup() //runs on startup
 
     Serial.begin(115200);
 
-    Serial.println("Test_SimpleSpinAngle.cpp");
+    Serial.println("Test_SimpleSpinAngle_AndForward.cpp");
 }
 
+#define _TARGET 175
+#define _SPEED 50
 void loop() // loops indefinitely
 {
     int16_t angle = IMUGetNavigationAngle();
-    const int16_t target = 175;
 
     Serial.print("Angle : "); Serial.println(angle);
 
-    if (abs(target - angle) > 1) {
-        if (angle > target) {
+	static bool drive_forward;
+	if (!drive_forward)
+	{
+    if (abs(_TARGET - angle) > 2) {
+        if (angle > _TARGET) {
             Serial.println("RIGHT");
-            Driver(LEFT, BACKWARD, 50);
-            Driver(RIGHT, FORWARD, 50);
+            Driver(RIGHT, BACKWARD, _SPEED);
+            Driver(LEFT, FORWARD, _SPEED);
         } else {
             Serial.println("LEFT");
-            Driver(LEFT, FORWARD, 50);
-            Driver(RIGHT, BACKWARD, 50);
+            Driver(RIGHT, FORWARD, _SPEED);
+            Driver(LEFT, BACKWARD, _SPEED);
         }
     } else {
         Serial.println("HALTING");
         Driver(ALL_SIDES, HALT);
+		drive_forward = true;
     }
+	}
+	else
+	{
+        Serial.println("FORWARD");
+        Driver(ALL_SIDES, FORWARD);
+	}
 	sandbox->SpinOnce();
 }
 
