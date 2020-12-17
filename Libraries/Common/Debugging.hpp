@@ -1,6 +1,8 @@
 #ifndef COMMON_DEBUGGING
 #define COMMON_DEBUGGING
 
+#include <stdint.h>
+
 namespace DBG {
 
 void TimerSet();
