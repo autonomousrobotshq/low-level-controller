@@ -71,11 +71,14 @@ ControllerMotor::e_motorstate ControllerMotor::GetMotorstate(const e_side side, 
 
 void ControllerMotor::SetActionParameters(const e_side side, const e_drive_action action, const uint8_t desired_throttle)
 {
-	_motorstate[side] = GetMotorstate(side, desired_throttle);
-    _action[side] = action;
-	_starting_throttle[side] = _current_throttle[side];
-    _desired_throttle[side] = desired_throttle;
-	_acceleration_start_time[side] = millis();
+	if (_desired_throttle[side] != desired_throttle || _action[side] != action)
+	{
+		_motorstate[side] = GetMotorstate(side, desired_throttle);
+    	_action[side] = action;
+		_starting_throttle[side] = _current_throttle[side];
+    	_desired_throttle[side] = desired_throttle;
+		_acceleration_start_time[side] = millis();
+	}
 }
 
 void ControllerMotor::SetAction(const e_side side, const e_drive_action action, const uint8_t desired_throttle)
@@ -149,6 +152,7 @@ void ControllerMotor::UpdateMotor(const e_side side)
 	if (_action[side] == HALT)
 	{
 		_desired_throttle[side] = 0;
+		_current_throttle[side] = 0;
 	}
 	else
 	{
