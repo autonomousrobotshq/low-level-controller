@@ -25,8 +25,10 @@ enum e_corner {
 };
 
 enum class e_siglevel {
+	DEBUG,
     INFO,
     WARN,
+	ERROR,
     CRIT
 };
 

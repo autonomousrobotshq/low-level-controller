@@ -1,54 +1,36 @@
 #ifndef INTERFACE_ROS_HPP
 #define INTERFACE_ROS_HPP
 
-#include "Interfaces/Interface.hpp"
 #include <ros.h>
 #include <std_msgs/String.h>
 #include <std_msgs/UInt16.h>
 
-enum ROS_TOPIC {
-    GPS,
-    IMU,
-    TEST
+#include "Common/Datatypes.hpp"
+#include "Interfaces/Interface.hpp"
+
+enum e_rostopic {
+    T_GPS,
+    T_IMU,
+	T_DRIVER,
+	__T_END
 };
 
-enum ROS_LOG_LEVEL {
-    ROS_DEBUG,
-    ROS_INFO,
-    ROS_WARN,
-    ROS_ERROR,
-    ROS_FATAL
-};
-
-///*
-//    Singleton class for everything InterfaceROS related
-//*/
 class InterfaceROS : public Interface {
 public:
-    //static InterfaceROS& GetInstance();
-
-    //InterfaceROS(InterfaceROS const&) = delete; // Don't Implement
-    //void operator=(InterfaceROS const&) = delete; // Don't implement
-
-    //InterfaceROS();
-    //~InterfaceROS();
     InterfaceROS(const uint16_t exec_interval);
     ~InterfaceROS();
 
-    void Send(const ros::Msg* msg, ROS_TOPIC topic);
-    void Log(const char* msg, ROS_LOG_LEVEL level);
-    void SpinOnce();
-    bool Connected();
+	void HookSubscriber(auto &msg_store, void (*f)(auto &msg));
+	void HookPublisher(const char *topic_name, auto &msg_store);
 
+    void Send(const e_rostopic topic, const ros::Msg* msg);
+    void Log(const e_siglevel level, const char* msg);
+    bool Update();
+    bool IsConnected();
 private:
+	ros::Publisher *_publishers[__T_END];
+	//ros::Subscriber *_subscribers[__T_END];
     ros::NodeHandle _nh;
-    ros::Publisher* _pub_GPS;
-    ros::Publisher* _pub_IMU;
-    std_msgs::UInt16 _uint16_msg;
-
-    // Testing purposes only
-    ros::Publisher* _pub_test;
-    std_msgs::String _str_msg;
 };
 
 #endif

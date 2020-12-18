@@ -1,12 +1,7 @@
-#include "Interfaces/ROS.hpp"
 #include <Arduino.h>
-
-//ROS& ROS::GetInstance()
-//{
-//    static ROS instance;
-//
-//    return (instance);
-//}
+#include "Common/Datatypes.hpp"
+#include "Common/State.hpp"
+#include "Interfaces/ROS.hpp"
 
 // needed for Ros libraries which follow std11 (not std14)
 void operator delete(void* ptr, size_t size)
@@ -26,65 +21,65 @@ InterfaceROS::InterfaceROS(const uint16_t exec_interval)
 {
     // Init ROS node
     _nh.initNode();
-
-    // Init ROS topics
-    _pub_test = new ros::Publisher("chatter", &_str_msg); // Left this in for testing purposes
-    _nh.advertise(*_pub_test);
-
-    // Init ROS topics GPS and IMU
-    _pub_GPS = new ros::Publisher("GPS", &_uint16_msg); // TODO change to custom msg type
-    _nh.advertise(*_pub_GPS);
-    _pub_IMU = new ros::Publisher("IMU", &_uint16_msg); // TODO change to custom msg type
-    _nh.advertise(*_pub_IMU);
 }
 
 InterfaceROS::~InterfaceROS()
 {
-    delete (_pub_GPS);
-    delete (_pub_IMU);
 }
 
-void InterfaceROS::Send(const ros::Msg* msg, ROS_TOPIC topic)
+void InterfaceROS::HookSubscriber(auto &msg_store, void (*f)(auto &msg))
 {
-    switch (topic) {
-    case GPS:
-        _pub_GPS->publish(msg); // cast msg
-        break;
-    case IMU:
-        _pub_IMU->publish(msg); // cast msg
-        break;
-    case TEST:
-        _pub_test->publish(msg); // cast msg
-        break;
-    }
+	(void)msg_store;
+	(void)f;
 }
 
-bool InterfaceROS::Connected()
+void InterfaceROS::HookPublisher(const char *topic_name, auto &msg_store)
+{
+	(void)topic_name;
+	(void)msg_store;
+}
+
+void InterfaceROS::Send(const e_rostopic topic, const ros::Msg* msg)
+{
+	(void)topic;
+	(void)msg;
+}
+
+bool InterfaceROS::IsConnected()
 {
     return (_nh.connected());
 }
 
-void InterfaceROS::SpinOnce()
+bool InterfaceROS::Update()
 {
-    _nh.spinOnce();
+	if (!IsTimeToExecute())
+		return (true);
+
+	if (!this->IsConnected())
+	{
+		g_state = S_ROS_DISCONNECTED;
+		return (false);
+	}
+
+    return (_nh.spinOnce() == 0);
 }
 
-void InterfaceROS::Log(const char* msg, ROS_LOG_LEVEL level)
+void InterfaceROS::Log(const e_siglevel level, const char* msg)
 {
     switch (level) {
-    case ROS_DEBUG:
+    case e_siglevel::DEBUG:
         _nh.logdebug(msg);
         break;
-    case ROS_INFO:
+    case e_siglevel::INFO:
         _nh.loginfo(msg);
         break;
-    case ROS_WARN:
+    case e_siglevel::WARN:
         _nh.logwarn(msg);
         break;
-    case ROS_ERROR:
+    case e_siglevel::ERROR:
         _nh.logerror(msg);
         break;
-    case ROS_FATAL:
+	case e_siglevel::CRIT:
         _nh.logfatal(msg);
         break;
     }
