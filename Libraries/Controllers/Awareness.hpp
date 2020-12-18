@@ -7,11 +7,13 @@
 #include "Controllers/Controller.hpp"
 #include "Sensors/Temp.hpp"
 #include "Sensors/Ultrasonic.hpp"
+#include "Sensors/Current.hpp"
 
 #define DANGEROUS_DISTANCE 20
 #define DANGEROUS_TEMPERATURE 60
 #define CRITICAL_DISTANCE 10
 #define CRITICAL_TEMPERATURE 80
+#define CRITICAL_CURRENT 5
 
 class ControllerAwareness : public Controller {
 public:
@@ -19,11 +21,13 @@ public:
     ~ControllerAwareness();
     uint8_t GetDistance(const e_corner corner);
     uint8_t GetTemperature(const uint8_t temp_sensor);
+    uint8_t GetCurrent(const e_corner corner);
     bool Update();
 
 private:
     SensorUltrasonic* _ultrasonic_sensors[NUM_ULTRASONIC];
     SensorTemp* _temperature_sensors[NUM_TEMP];
+    SensorCurrent* _current_sensors[NUM_MOTORS];
 };
 
 #endif

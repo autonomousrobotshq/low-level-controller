@@ -20,6 +20,7 @@ enum e_state {
     S_BATTERY_WARN,
     S_BATTERY_CRIT,
     S_CURRENT_CRIT,
+    S_CURRENT_ERROR,
     S_OK
 };
 
