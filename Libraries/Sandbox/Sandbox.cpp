@@ -9,8 +9,7 @@ namespace sb {
 static Sandbox* g_sb;
 
 Sandbox::Sandbox()
-    : _interface_logger(LLC::exec_intervals.interface_ros)
-    , _controller_lifetime(LLC::pins_relay)
+    : _controller_lifetime(LLC::pins_relay)
     , _controller_physical_feedback(LLC::pins_physicalfeedback)
     , _controller_anomaly(this, &_controller_lifetime)
     , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer, LLC::exec_intervals.imu)
