@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 enum e_state {
+    S_OK,
     S_STARTUP,
     S_SHUTDOWN,
     S_TEMP_WARN,
@@ -19,10 +20,11 @@ enum e_state {
     S_PROXIMITY_ERROR,
     S_BATTERY_WARN,
     S_BATTERY_CRIT,
-    S_CURRENT_OVERLOAD,
+    S_CURRENT_CRIT,
     S_CURRENT_ERROR,
-	S_ROS_DISCONNECTED,
-    S_OK
+	S_GPS_ERROR,
+	S_IMU_ERROR,
+	S_ROS_DISCONNECTED
 };
 
 extern e_state* __getstate(void);

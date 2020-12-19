@@ -63,8 +63,6 @@ private:
     ControllerPhysicalFeedback _controller_physical_feedback;
     ControllerAnomaly _controller_anomaly;
     ControllerAwareness _controller_awareness;
-    SensorIMU _sensor_imu;
-    SensorGPS _sensor_gps;
 
     bool (*_LogicDriverUpdate)(void);
 };

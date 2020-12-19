@@ -1,6 +1,8 @@
 #include "Controllers/Awareness.hpp"
 
 ControllerAwareness::ControllerAwareness()
+	: _sensor_gps(LLC::pins_gps, LLC::exec_intervals.gps)
+	, _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer, LLC::exec_intervals.imu)
 {
     for (int i = 0; i < NUM_ULTRASONIC; i++)
         _ultrasonic_sensors[i] = new SensorUltrasonic(LLC::pins_ultrasonic[i], LLC::exec_intervals.ultrasonic);
@@ -35,8 +37,26 @@ uint8_t ControllerAwareness::GetCurrent(const e_corner corner)
 	return (_current_sensors[corner]->GetCurrent());
 }
 
+void ControllerAwareness::PublishData()
+{
+
+}
+
 bool ControllerAwareness::Update()
 {
+    for (int i = 0; i < NUM_MOTORS; i++) {
+	if (_current_sensors[i]->Update()) {
+		if (_current_sensors[i]->GetCurrent() > CRITICAL_CURRENT) {
+			g_state = S_CURRENT_CRIT;
+			return (false);
+		}
+	} 
+	else {
+		g_state = S_CURRENT_ERROR;
+		return (false);
+	}
+    }
+
     for (int i = 0; i < NUM_ULTRASONIC; i++) {
         if (_ultrasonic_sensors[i]->Update()) {
             if (_ultrasonic_sensors[i]->GetDistance() < CRITICAL_DISTANCE) {
@@ -48,34 +68,37 @@ bool ControllerAwareness::Update()
             }
         } else {
             g_state = S_PROXIMITY_ERROR;
-            //return (false);
+            return (false);
         }
     }
+
     for (int i = 0; i < NUM_TEMP; i++) {
         if (_temperature_sensors[i]->Update()) {
             if (_temperature_sensors[i]->GetTemp() > CRITICAL_TEMPERATURE) {
                 g_state = S_TEMP_CRIT;
-                //return (false);
+                return (false);
             } else if (_temperature_sensors[i]->GetTemp() > DANGEROUS_TEMPERATURE) {
                 g_state = S_TEMP_WARN;
-                //return (false);
+                return (false);
             }
         } else {
             g_state = S_TEMP_ERROR;
-            //return (false);
+            return (false);
         }
     }
-    for (int i = 0; i < NUM_MOTORS; i++) {
-	if (_current_sensors[i]->Update()) {
-		if (_current_sensors[i]->GetCurrent() < CRITICAL_CURRENT) {
-			g_state = S_CURRENT_CRIT;
-			//return (false);
-		}
-	} 
-	else {
-		g_state = S_CURRENT_ERROR;
-		//return (false);
+
+	if (!_sensor_gps.Update())
+	{
+		g_state = S_GPS_ERROR;
+		return (false);
 	}
-    }
-    return true;
+
+	if (!_sensor_imu.Update())
+	{
+		g_state = S_IMU_ERROR;
+		return (false);
+	}
+
+	PublishData();
+    return (true);
 }

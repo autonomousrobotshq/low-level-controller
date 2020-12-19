@@ -5,6 +5,8 @@
 #include "Common/Platform.hpp"
 #include "Common/State.hpp"
 #include "Controllers/Controller.hpp"
+#include "Sensors/GPS.hpp"
+#include "Sensors/IMU.hpp"
 #include "Sensors/Temp.hpp"
 #include "Sensors/Ultrasonic.hpp"
 #include "Sensors/Current.hpp"
@@ -24,10 +26,15 @@ public:
     uint8_t GetCurrent(const e_corner corner);
     bool Update();
 
+	SensorGPS _sensor_gps;
+	SensorIMU _sensor_imu;
 private:
+	// ROS stuff here too
     SensorUltrasonic* _ultrasonic_sensors[NUM_ULTRASONIC];
     SensorTemp* _temperature_sensors[NUM_TEMP];
     SensorCurrent* _current_sensors[NUM_MOTORS];
+private:
+	void PublishData();
 };
 
 #endif

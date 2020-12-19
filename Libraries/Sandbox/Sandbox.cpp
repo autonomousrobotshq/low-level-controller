@@ -12,8 +12,6 @@ Sandbox::Sandbox()
     : _controller_lifetime(LLC::pins_relay)
     , _controller_physical_feedback(LLC::pins_physicalfeedback)
     , _controller_anomaly(this, &_controller_lifetime)
-    , _sensor_imu(LLC::pins_imu, LLC::imu_calibration_accelerometer, LLC::imu_calibration_magnetometer, LLC::exec_intervals.imu)
-    , _sensor_gps(LLC::pins_gps, LLC::exec_intervals.gps)
 {
     if (g_sb) {
         // crit: "Second initialisation of Sandbox!"
@@ -45,23 +43,8 @@ void Sandbox::SetLogicDriverUpdate(bool (*f)(void))
 
 void Sandbox::SpinOnce()
 {
-    // todo update all modules with timing (+ priority queued)
-    // anything that could bring about delays must be timeregulated and executed
-    // in this function
-    if (!_sensor_imu.Update())
-        _controller_anomaly.HandleError(g_state);
-    if (!_sensor_gps.Update())
-        _controller_anomaly.HandleError(g_state);
-
-#if VERBOSITY & DEBUG
-        // if (!this->_LogicDriverUpdate)
-        // DEBUG: Hook _LogicDriverUpdate is not set
-#endif
-
     if (!_LogicDriverUpdate())
         _controller_anomaly.HandleError(g_state);
-
-    // this definitely needs more love
     while (!_controller_awareness.Update())
         _controller_anomaly.HandleError(g_state);
     if (!_controller_motor.Update())
@@ -143,17 +126,17 @@ int8_t Sandbox::GetRevolutions(const e_corner corner) // -> DOESNT FOLLOW NAMING
 
 int16_t Sandbox::IMUGetNavigationAngle()
 {
-    return (this->_sensor_imu.GetNavigationAngle());
+    return (this->_controller_awareness._sensor_imu.GetNavigationAngle());
 }
 
 Vec3 Sandbox::IMUGetMagnetoData()
 {
-    return (this->_sensor_imu.GetMagnetometerData());
+    return (this->_controller_awareness._sensor_imu.GetMagnetometerData());
 }
 
 Vec3 Sandbox::IMUGetAcceleroData()
 {
-    return (this->_sensor_imu.GetAccelerometerData());
+    return (this->_controller_awareness._sensor_imu.GetAccelerometerData());
 }
 
 int16_t Sandbox::USGetDistance(e_corner corner)
@@ -163,22 +146,22 @@ int16_t Sandbox::USGetDistance(e_corner corner)
 
 void Sandbox::GPSGetLocation(float* flat, float* flon)
 {
-    this->_sensor_gps.GetLocation(flat, flon);
+    this->_controller_awareness._sensor_gps.GetLocation(flat, flon);
 }
 
 void Sandbox::GPSGetTime(unsigned long* age, unsigned long* date, unsigned long* time)
 {
-    this->_sensor_gps.GetTime(age, date, time);
+    this->_controller_awareness._sensor_gps.GetTime(age, date, time);
 }
 
 int16_t Sandbox::GPSGetSpeed()
 {
-    return (this->_sensor_gps.GetSpeed());
+    return (this->_controller_awareness._sensor_gps.GetSpeed());
 }
 
 int16_t Sandbox::GPSGetCourse()
 {
-    return (this->_sensor_gps.GetCourse());
+    return (this->_controller_awareness._sensor_gps.GetCourse());
 }
 
 int8_t Sandbox::TEMPGetTemperature()
