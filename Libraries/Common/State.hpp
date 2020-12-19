@@ -21,6 +21,7 @@ enum e_state {
     S_BATTERY_CRIT,
     S_CURRENT_CRIT,
 	S_ROS_DISCONNECTED,
+    S_CURRENT_OVERLOAD,
     S_OK
 };
 

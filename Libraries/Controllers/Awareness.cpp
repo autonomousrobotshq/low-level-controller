@@ -6,6 +6,8 @@ ControllerAwareness::ControllerAwareness()
         _ultrasonic_sensors[i] = new SensorUltrasonic(LLC::pins_ultrasonic[i], LLC::exec_intervals.ultrasonic);
     for (int i = 0; i < NUM_TEMP; i++)
         _temperature_sensors[i] = new SensorTemp(LLC::pins_temp[i], LLC::exec_intervals.temperature);
+    for (int i = 0; i < NUM_MOTORS; i++)
+        _current_sensors[i] = new SensorCurrent(LLC::pins_current[i], LLC::exec_intervals.current);
 }
 
 ControllerAwareness::~ControllerAwareness()
@@ -14,6 +16,8 @@ ControllerAwareness::~ControllerAwareness()
         delete (_ultrasonic_sensors[i]);
     for (int i = 0; i < NUM_TEMP; i++)
         delete (_temperature_sensors[i]);
+    for (int i = 0; i < NUM_MOTORS; i++)
+        delete (_current_sensors[i]);
 }
 
 uint8_t ControllerAwareness::GetDistance(const e_corner corner)
@@ -24,6 +28,11 @@ uint8_t ControllerAwareness::GetDistance(const e_corner corner)
 uint8_t ControllerAwareness::GetTemperature(const uint8_t temp_sensor)
 {
     return (_temperature_sensors[temp_sensor]->GetTemp());
+}
+
+uint8_t ControllerAwareness::GetCurrent(const e_corner corner)
+{
+	return (_current_sensors[corner]->GetCurrent());
 }
 
 bool ControllerAwareness::Update()
@@ -55,6 +64,18 @@ bool ControllerAwareness::Update()
             g_state = S_TEMP_ERROR;
             //return (false);
         }
+    }
+    for (int i = 0; i < NUM_MOTORS; i++) {
+	if (_current_sensors[i]->Update()) {
+		if (_current_sensors[i]->GetCurrent() < CRITICAL_CURRENT) {
+			g_state = S_CURRENT_CRIT;
+			//return (false);
+		}
+	} 
+	else {
+		g_state = S_CURRENT_OVERLOAD;
+		//return (false);
+	}
     }
     return true;
 }
