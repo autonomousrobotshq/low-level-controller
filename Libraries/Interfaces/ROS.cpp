@@ -3,7 +3,9 @@
 #include "Common/State.hpp"
 #include "Interfaces/ROS.hpp"
 
-// needed for Ros libraries which follow std11 (not std14)
+static ros::NodeHandle *g_nodehandle;
+
+// needed for Ros libraries which follow std11
 void operator delete(void* ptr, size_t size)
 {
     free(ptr);
@@ -19,35 +21,30 @@ void operator delete[](void* ptr, size_t size)
 InterfaceROS::InterfaceROS(const uint16_t exec_interval)
     : Interface(exec_interval)
 {
-    // Init ROS node
-    _nh.initNode();
+	if (!g_nodehandle)
+	{
+		g_nodehandle = new ros::NodeHandle;
+    	g_nodehandle->initNode();
+	}
 }
 
 InterfaceROS::~InterfaceROS()
 {
 }
 
-void InterfaceROS::HookSubscriber(auto &msg_store, void (*f)(auto &msg))
+void InterfaceROS::AddSubscriber(ros::Subscriber<auto> &s)
 {
-	(void)msg_store;
-	(void)f;
+	g_nodehandle->subscribe(s);
 }
 
-void InterfaceROS::HookPublisher(const char *topic_name, auto &msg_store)
+void InterfaceROS::AddPublisher(ros::Publisher &p)
 {
-	(void)topic_name;
-	(void)msg_store;
-}
-
-void InterfaceROS::Send(const e_rostopic topic, const ros::Msg* msg)
-{
-	(void)topic;
-	(void)msg;
+	g_nodehandle->advertise(p);
 }
 
 bool InterfaceROS::IsConnected()
 {
-    return (_nh.connected());
+    return (g_nodehandle->connected());
 }
 
 bool InterfaceROS::Update()
@@ -61,26 +58,26 @@ bool InterfaceROS::Update()
 		return (false);
 	}
 
-    return (_nh.spinOnce() == 0);
+    return (g_nodehandle->spinOnce() == 0);
 }
 
 void InterfaceROS::Log(const e_siglevel level, const char* msg)
 {
     switch (level) {
     case e_siglevel::DEBUG:
-        _nh.logdebug(msg);
+        g_nodehandle->logdebug(msg);
         break;
     case e_siglevel::INFO:
-        _nh.loginfo(msg);
+        g_nodehandle->loginfo(msg);
         break;
     case e_siglevel::WARN:
-        _nh.logwarn(msg);
+        g_nodehandle->logwarn(msg);
         break;
     case e_siglevel::ERROR:
-        _nh.logerror(msg);
+        g_nodehandle->logerror(msg);
         break;
 	case e_siglevel::CRIT:
-        _nh.logfatal(msg);
+        g_nodehandle->logfatal(msg);
         break;
     }
 }
