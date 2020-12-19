@@ -51,7 +51,21 @@ Vec3 SensorIMU::GetAccelerometerData()
     return (Vec3(_compass.a.x, _compass.a.y, _compass.a.z));
 }
 
+void SensorIMU::GetAccelerometerData(int16_t *x, int16_t *y, int16_t *z)
+{
+	*x = _compass.a.x;
+	*y = _compass.a.y;
+	*z = _compass.a.z;
+}
+
 Vec3 SensorIMU::GetMagnetometerData()
 {
     return (Vec3(_compass.m.x, _compass.m.y, _compass.m.z));
+}
+
+void SensorIMU::GetMagnetometerData(int16_t *x, int16_t *y, int16_t *z)
+{
+	*x = _compass.m.x;
+	*y = _compass.m.y;
+	*z = _compass.m.z;
 }
