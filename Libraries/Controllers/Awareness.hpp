@@ -1,10 +1,16 @@
 #ifndef CONTROLLER_AWARENESS_HPP
 #define CONTROLLER_AWARENESS_HPP
 
+#include "ros.h"
+#include "Interfaces/ROS.hpp"
+#include "Messages/gps.h"
+#include "Messages/imu.h"
+
 #include "Common/Datatypes.hpp"
 #include "Common/Platform.hpp"
 #include "Common/State.hpp"
 #include "Controllers/Controller.hpp"
+
 #include "Sensors/GPS.hpp"
 #include "Sensors/IMU.hpp"
 #include "Sensors/Temp.hpp"
@@ -19,7 +25,7 @@
 
 class ControllerAwareness : public Controller {
 public:
-    ControllerAwareness();
+    ControllerAwareness(InterfaceROS *interface_ros);
     ~ControllerAwareness();
     uint8_t GetDistance(const e_corner corner);
     uint8_t GetTemperature(const uint8_t temp_sensor);
@@ -29,11 +35,16 @@ public:
 	SensorGPS _sensor_gps;
 	SensorIMU _sensor_imu;
 private:
-	// ROS stuff here too
     SensorUltrasonic* _ultrasonic_sensors[NUM_ULTRASONIC];
     SensorTemp* _temperature_sensors[NUM_TEMP];
     SensorCurrent* _current_sensors[NUM_MOTORS];
 private:
+	InterfaceROS *_interface_ros;
+	llc_messages::gps _msg_gps;
+	llc_messages::imu _msg_imu;
+
+	ros::Publisher _pub_gps;
+	ros::Publisher _pub_imu;
 	void PublishData();
 };
 
