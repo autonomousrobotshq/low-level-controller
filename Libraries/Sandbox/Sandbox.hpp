@@ -4,6 +4,7 @@
 #include "Common/Datatypes.hpp"
 #include "Common/Vec3.hpp"
 
+#include "Interfaces/ROS.hpp"
 #include "Controllers/Anomaly.hpp"
 #include "Controllers/Awareness.hpp"
 #include "Controllers/Lifetime.hpp"
@@ -58,6 +59,7 @@ public:
 
 private:
     unsigned long _glob_millis;
+	InterfaceROS _interface_ros;
     ControllerMotor _controller_motor;
     ControllerLifetime _controller_lifetime;
     ControllerPhysicalFeedback _controller_physical_feedback;

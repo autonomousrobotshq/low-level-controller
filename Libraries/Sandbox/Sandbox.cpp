@@ -9,9 +9,11 @@ namespace sb {
 static Sandbox* g_sb;
 
 Sandbox::Sandbox()
-    : _controller_lifetime(LLC::pins_relay)
+	: _interface_ros(LLC::exec_intervals.interface_ros)
+    , _controller_lifetime(LLC::pins_relay)
     , _controller_physical_feedback(LLC::pins_physicalfeedback)
     , _controller_anomaly(this, &_controller_lifetime)
+	, _controller_awareness(&_interface_ros)
 {
     if (g_sb) {
         // crit: "Second initialisation of Sandbox!"
