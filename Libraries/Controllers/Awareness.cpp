@@ -73,7 +73,7 @@ bool ControllerAwareness::Update()
 		}
 	} 
 	else {
-		g_state = S_CURRENT_OVERLOAD;
+		g_state = S_CURRENT_ERROR;
 		//return (false);
 	}
     }
