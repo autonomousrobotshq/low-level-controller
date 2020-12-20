@@ -121,6 +121,10 @@ void ControllerMotor::UpdateAcceleration(const e_side side, const int8_t acceler
 	if (_motorstate[side] == DECELERATING)
 		throttle = _starting_throttle[side] - throttle;
 
+	// overshoot
+	if (_motorstate[side] == ACCELERATING && throttle > _desired_throttle[side]) throttle = _desired_throttle[side];
+	else if (_motorstate[side] == DECELERATING && throttle < _desired_throttle[side]) throttle = _desired_throttle[side];
+
 	_current_throttle[side] = NormalizeThrottle(throttle);
 }
 
