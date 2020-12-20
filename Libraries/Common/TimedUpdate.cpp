@@ -3,14 +3,14 @@
 
 uint16_t TimedUpdate::GetTimeSinceLastExecution()
 {
-    unsigned long current_millis = millis();
+    const unsigned long current_millis = millis();
 
     return (current_millis - _previous_millis);
 }
 
 bool TimedUpdate::IsTimeToExecute()
 {
-    unsigned long current_millis = millis();
+    const unsigned long current_millis = millis();
 
     if (current_millis - _previous_millis > _sampling_interval) {
         _previous_millis += _sampling_interval;
