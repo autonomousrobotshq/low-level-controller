@@ -11,9 +11,9 @@
 enum e_side {
     LEFT,
     RIGHT,
-	FRONT,
-	BACK,
-	ALL_SIDES
+    FRONT,
+    BACK,
+    ALL_SIDES
 };
 
 enum e_corner {
@@ -25,10 +25,10 @@ enum e_corner {
 };
 
 enum class e_siglevel {
-	DEBUG,
+    DEBUG,
     INFO,
     WARN,
-	ERROR,
+    ERROR,
     CRIT
 };
 
