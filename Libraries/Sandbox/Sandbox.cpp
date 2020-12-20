@@ -45,12 +45,16 @@ void Sandbox::SetLogicDriverUpdate(bool (*f)(void))
 
 void Sandbox::SpinOnce()
 {
-    if (!_LogicDriverUpdate())
-        _controller_anomaly.HandleError(g_state);
-    while (!_controller_awareness.Update())
-        _controller_anomaly.HandleError(g_state);
-    if (!_controller_motor.Update())
-        _controller_anomaly.HandleError(g_state);
+//    if (!_LogicDriverUpdate())
+//        _controller_anomaly.HandleError(g_state);
+//    while (!_controller_awareness.Update())
+//        _controller_anomaly.HandleError(g_state);
+//    if (!_controller_motor.Update())
+//		_controller_anomaly.HandleError(g_state);
+	_controller_awareness.Update();
+	Serial.print("SPIN");
+	if (!_interface_ros.Update())
+		_controller_anomaly.HandleError(g_state);
 }
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle) // NEEDS TO BE REWORKED

@@ -2,9 +2,10 @@
 #define CONTROLLER_AWARENESS_HPP
 
 #include "ros.h"
+#include "llc_messages/Gps.h"
+#include "llc_messages/Imu.h"
+
 #include "Interfaces/ROS.hpp"
-#include "Messages/gps.h"
-#include "Messages/imu.h"
 
 #include "Common/Datatypes.hpp"
 #include "Common/Platform.hpp"
@@ -40,8 +41,8 @@ private:
     SensorCurrent* _current_sensors[NUM_MOTORS];
 private:
 	InterfaceROS *_interface_ros;
-	llc_messages::gps _msg_gps;
-	llc_messages::imu _msg_imu;
+	llc_messages::Gps _msg_gps;
+	llc_messages::Imu _msg_imu;
 
 	ros::Publisher _pub_gps;
 	ros::Publisher _pub_imu;

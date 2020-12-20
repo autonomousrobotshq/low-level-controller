@@ -49,15 +49,15 @@ bool InterfaceROS::IsConnected()
 
 bool InterfaceROS::Update()
 {
-	if (!IsTimeToExecute())
-		return (true);
+	//if (!IsTimeToExecute())
+	//	return (true);
 
-	if (!this->IsConnected())
-	{
-		g_state = S_ROS_DISCONNECTED;
-		return (false);
-	}
-
+	//if (!this->IsConnected())
+	//{
+	//	g_state = S_ROS_DISCONNECTED;
+	//	return (false);
+	//}
+	//Serial.println("ROS UPDATE");
     return (g_nodehandle->spinOnce() == 0);
 }
 

@@ -1,28 +1,28 @@
-#!/bin/sh
+#!/bin/zsh
 
 BASEDIR=$(realpath $(dirname "$0"))
 
-MSG_DST_DIR=$BASEDIR/../Libraries/External/Messages/
+MSG_DST_DIR=$BASEDIR/../Libraries/External/Roslib-Generated
 GIT_REPO="git@github.com:autonomousrobotshq/ros_packages.git"
-GIT_TARGET_DIR="llc_messages"
+GIT_REPO_NAME="ros_packages"
+
+ROS_SERIAL_VERSION=0.9.1
+ROS_SERIAL="https://github.com/ros-drivers/rosserial/archive/$ROS_SERIAL_VERSION.zip"
+ROS_SERIAL_NAME="rosserial-$ROS_SERIAL_VERSION"
 
 TMP_DIR=`mktemp -d`
-cd $TMP_DIR
+cd $TMP_DIR && pwd
 
-# source: https://stackoverflow.com/questions/600079/how-do-i-clone-a-subdirectory-only-of-a-git-repository/52269934
-git clone \
-  --depth 1 \
-  --filter=blob:none \
-  --no-checkout \
-  $GIT_REPO \
-  $TMP_DIR \
-;
-cd $TMP_DIR
-git checkout master -- $GIT_TARGET_DIR || { echo "Failed to checkout $GIT_TARGET_DIR" && exit 1; }
-mkdir src && cd src && catkin_init_workspace && cd ..
-mv $GIT_TARGET_DIR ./src
+git clone $GIT_REPO $GIT_REPO_NAME || exit 1
+wget $ROS_SERIAL && unzip $ROS_SERIAL_VERSION.zip || exit 1
 
-mkdir messages && catkin_make && rosrun rosserial_client make_libraries ./messages || { echo "Are you sure you sourced the rosserial setup.zsh in your catkin_ws?" && exit 1; }
+mkdir src && cd src && catkin_init_workspace && cd .. || exit 1
+mv $GIT_REPO_NAME ./src && mv $ROS_SERIAL_NAME ./src || exit 1
 
-pwd
-mv ./messages/ros_lib/llc_messages/* $MSG_DST_DIR && rm -rf $TMP_DIR
+catkin_make && source ./devel/setup.zsh &&  rosrun rosserial_arduino make_libraries.py .  || exit 1
+
+rm -rf $MSG_DST_DIR && mkdir $MSG_DST_DIR || exit 1
+mv ./ros_lib/* $MSG_DST_DIR && rm -rf $TMP_DIR
+
+find $MSG_DST_DIR \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i 's/cstring/string\.h/g'
+find $MSG_DST_DIR \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i 's/std::memcpy/memcpy/g'
