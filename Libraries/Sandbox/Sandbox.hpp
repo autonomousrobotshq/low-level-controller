@@ -1,6 +1,8 @@
 #ifndef SANDBOX_HPP
 #define SANDBOX_HPP
 
+#include "ros.h"
+
 #include "Common/Datatypes.hpp"
 #include "Common/Vec3.hpp"
 
@@ -25,6 +27,9 @@ public:
     void SpinOnce();
     Sandbox();
     ~Sandbox();
+
+	void ROSAddSubscriber(ros::Subscriber_ &s);
+	void ROSAddPublisher(ros::Publisher &p);
     bool Driver(const e_side side, const e_drive_action action);
     bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
     bool DriverIsReady();
@@ -35,7 +40,7 @@ public:
     void DriverSlowHalt();
 	void DriverSlowHalt(const e_side side);
 
-    uint8_t DriverGetThrottle();
+    uint8_t DriverGetThrottle(const e_side side);
     void DriverSetThrottle(const e_side side, const uint8_t throttle);
 
     int16_t IMUGetNavigationAngle();
@@ -70,6 +75,9 @@ private:
 };
 
 // public functions
+void ROSAddSubscriber(ros::Subscriber_ &s);
+void ROSAddPublisher(ros::Publisher &p);
+
 bool Driver(const e_side side, const e_drive_action action);
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle);
 bool DriverIsReady();
@@ -78,7 +86,7 @@ bool DriverIsAccelerating();
 bool DriverIsDecelerating();
 void DriverHalt();
 void DriverSlowHalt();
-uint8_t DriverGetThrottle();
+uint8_t DriverGetThrottle(const e_side side);
 void DriverSetThrottle(const e_side side, const uint8_t throttle);
 
 int8_t GetRPM(const e_corner corner);
