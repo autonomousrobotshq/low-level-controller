@@ -4,13 +4,12 @@
 #include "Common/Datatypes.hpp"
 #include "Common/Vec3.hpp"
 
+#include "Interfaces/ROS.hpp"
 #include "Controllers/Anomaly.hpp"
 #include "Controllers/Awareness.hpp"
 #include "Controllers/Lifetime.hpp"
 #include "Controllers/Motor.hpp"
 #include "Controllers/PhysicalFeedback.hpp"
-
-#include "Interfaces/Logger.hpp"
 
 #include "Sensors/GPS.hpp"
 #include "Sensors/IMU.hpp"
@@ -53,8 +52,6 @@ public:
 
     void SIGBeep(const e_siglevel siglevel, const uint8_t count);
 
-    int16_t RAMGetFree();
-
     int8_t GetRPM(const e_corner corner);
     int8_t GetRevolutions(const e_corner corner);
 
@@ -62,14 +59,12 @@ public:
 
 private:
     unsigned long _glob_millis;
-    InterfaceLogger _interface_logger;
+	InterfaceROS _interface_ros;
     ControllerMotor _controller_motor;
     ControllerLifetime _controller_lifetime;
     ControllerPhysicalFeedback _controller_physical_feedback;
     ControllerAnomaly _controller_anomaly;
     ControllerAwareness _controller_awareness;
-    SensorIMU _sensor_imu;
-    SensorGPS _sensor_gps;
 
     bool (*_LogicDriverUpdate)(void);
 };
@@ -102,7 +97,5 @@ int16_t GPSGetCourse();
 int8_t TEMPGetTemperature();
 
 void SIGBeep(const e_siglevel siglevel, const uint8_t count);
-
-int16_t RAMGetFree();
 } // namespace sb
 #endif

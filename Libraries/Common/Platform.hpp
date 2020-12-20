@@ -18,6 +18,11 @@
 */
 namespace LLC1 {
 
+/* ROS TOPIC NAMES */
+
+enum e_rostopics { GPS, IMU };
+const char * const str_rostopics[] = { "gps", "imu" };
+
 /* RANGES */
 #define MOTOR_THROTTLE_HIGH 255
 #define MOTOR_THROTTLE_LOW 0

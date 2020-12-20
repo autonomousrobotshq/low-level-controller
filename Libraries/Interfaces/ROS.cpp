@@ -1,14 +1,11 @@
-#include "Interfaces/ROS.hpp"
 #include <Arduino.h>
+#include "Common/Datatypes.hpp"
+#include "Common/State.hpp"
+#include "Interfaces/ROS.hpp"
 
-//ROS& ROS::GetInstance()
-//{
-//    static ROS instance;
-//
-//    return (instance);
-//}
+static ros::NodeHandle *g_nodehandle;
 
-// needed for Ros libraries which follow std11 (not std14)
+// needed for Ros libraries which follow std11
 void operator delete(void* ptr, size_t size)
 {
     free(ptr);
@@ -24,68 +21,63 @@ void operator delete[](void* ptr, size_t size)
 InterfaceROS::InterfaceROS(const uint16_t exec_interval)
     : Interface(exec_interval)
 {
-    // Init ROS node
-    _nh.initNode();
-
-    // Init ROS topics
-    _pub_test = new ros::Publisher("chatter", &_str_msg); // Left this in for testing purposes
-    _nh.advertise(*_pub_test);
-
-    // Init ROS topics GPS and IMU
-    _pub_GPS = new ros::Publisher("GPS", &_uint16_msg); // TODO change to custom msg type
-    _nh.advertise(*_pub_GPS);
-    _pub_IMU = new ros::Publisher("IMU", &_uint16_msg); // TODO change to custom msg type
-    _nh.advertise(*_pub_IMU);
+	if (!g_nodehandle)
+	{
+		g_nodehandle = new ros::NodeHandle;
+    	g_nodehandle->initNode();
+	}
 }
 
 InterfaceROS::~InterfaceROS()
 {
-    delete (_pub_GPS);
-    delete (_pub_IMU);
 }
 
-void InterfaceROS::Send(const ros::Msg* msg, ROS_TOPIC topic)
+void InterfaceROS::AddSubscriber(ros::Subscriber<auto> &s)
 {
-    switch (topic) {
-    case GPS:
-        _pub_GPS->publish(msg); // cast msg
-        break;
-    case IMU:
-        _pub_IMU->publish(msg); // cast msg
-        break;
-    case TEST:
-        _pub_test->publish(msg); // cast msg
-        break;
-    }
+	g_nodehandle->subscribe(s);
 }
 
-bool InterfaceROS::Connected()
+void InterfaceROS::AddPublisher(ros::Publisher &p)
 {
-    return (_nh.connected());
+	g_nodehandle->advertise(p);
 }
 
-void InterfaceROS::SpinOnce()
+bool InterfaceROS::IsConnected()
 {
-    _nh.spinOnce();
+    return (g_nodehandle->connected());
 }
 
-void InterfaceROS::Log(const char* msg, ROS_LOG_LEVEL level)
+bool InterfaceROS::Update()
+{
+	//if (!IsTimeToExecute())
+	//	return (true);
+
+	//if (!this->IsConnected())
+	//{
+	//	g_state = S_ROS_DISCONNECTED;
+	//	return (false);
+	//}
+	//Serial.println("ROS UPDATE");
+    return (g_nodehandle->spinOnce() == 0);
+}
+
+void InterfaceROS::Log(const e_siglevel level, const char* msg)
 {
     switch (level) {
-    case ROS_DEBUG:
-        _nh.logdebug(msg);
+    case e_siglevel::DEBUG:
+        g_nodehandle->logdebug(msg);
         break;
-    case ROS_INFO:
-        _nh.loginfo(msg);
+    case e_siglevel::INFO:
+        g_nodehandle->loginfo(msg);
         break;
-    case ROS_WARN:
-        _nh.logwarn(msg);
+    case e_siglevel::WARN:
+        g_nodehandle->logwarn(msg);
         break;
-    case ROS_ERROR:
-        _nh.logerror(msg);
+    case e_siglevel::ERROR:
+        g_nodehandle->logerror(msg);
         break;
-    case ROS_FATAL:
-        _nh.logfatal(msg);
+	case e_siglevel::CRIT:
+        g_nodehandle->logfatal(msg);
         break;
     }
 }
