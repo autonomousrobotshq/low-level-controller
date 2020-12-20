@@ -32,7 +32,7 @@ InterfaceROS::~InterfaceROS()
 {
 }
 
-void InterfaceROS::AddSubscriber(ros::Subscriber<auto> &s)
+void InterfaceROS::AddSubscriber(ros::Subscriber_ &s)
 {
 	g_nodehandle->subscribe(s);
 }
@@ -49,15 +49,18 @@ bool InterfaceROS::IsConnected()
 
 bool InterfaceROS::Update()
 {
-	//if (!IsTimeToExecute())
-	//	return (true);
+	if (!IsTimeToExecute())
+		return (true);
 
-	//if (!this->IsConnected())
-	//{
-	//	g_state = S_ROS_DISCONNECTED;
-	//	return (false);
-	//}
-	//Serial.println("ROS UPDATE");
+	if (!this->IsConnected())
+	{
+		g_nodehandle->spinOnce();
+		if (!this->IsConnected())
+		{
+			g_state = S_ROS_DISCONNECTED;
+			return (false);
+		}
+	}
     return (g_nodehandle->spinOnce() == 0);
 }
 

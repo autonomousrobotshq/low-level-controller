@@ -2,7 +2,11 @@
 #define INTERFACE_ROS_HPP
 
 #include <stdint.h>
+
 #include <ros.h>
+#include "ros/subscriber.h"
+#include "ros/publisher.h"
+
 #include "Common/Datatypes.hpp"
 #include "Interfaces/Interface.hpp"
 
@@ -12,7 +16,7 @@ public:
     ~InterfaceROS();
 
 	void AddPublisher(ros::Publisher &p);
-	void AddSubscriber(ros::Subscriber<auto> &s);
+	void AddSubscriber(ros::Subscriber_ &s);
 
     void Log(const e_siglevel level, const char* msg);
     bool Update();
