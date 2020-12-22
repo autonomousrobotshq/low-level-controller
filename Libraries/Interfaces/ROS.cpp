@@ -1,3 +1,4 @@
+#include "ros.h"
 #include "Interfaces/ROS.hpp"
 #include "Common/Datatypes.hpp"
 #include "Common/State.hpp"
