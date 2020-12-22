@@ -11,9 +11,10 @@ ROS_SERIAL="https://github.com/ros-drivers/rosserial/archive/$ROS_SERIAL_VERSION
 ROS_SERIAL_NAME="rosserial-$ROS_SERIAL_VERSION"
 
 TMP_DIR=`mktemp -d`
-cd $TMP_DIR && pwd
+cd $TMP_DIR && pwd || exit 1
 
 git clone $GIT_REPO $GIT_REPO_NAME || exit 1
+cd $GIT_REPO_NAME && git submodule update --init --recursive && cd $TMP_DIR || exit 1
 wget $ROS_SERIAL && unzip $ROS_SERIAL_VERSION.zip || exit 1
 
 mkdir src && cd src && catkin_init_workspace && cd .. || exit 1

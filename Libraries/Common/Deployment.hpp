@@ -21,9 +21,9 @@ enum e_runtime { LAUNCH,
 #define RUNTIME NOINIT
 
 enum e_verbosity {
-    PRODUCTION = 1<<0,
-    DEBUG = 1<<1,
-    SERIAL_DEBUG = 1<<2
+    PRODUCTION = 1 << 0,
+    DEBUG = 1 << 1,
+    SERIAL_DEBUG = 1 << 2
 };
 /*
 * VERBOSITY defined as:

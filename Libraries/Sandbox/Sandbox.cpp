@@ -1,19 +1,19 @@
+#include "Sandbox/Sandbox.hpp"
+#include "Common/Debugging.hpp"
 #include "Common/Deployment.hpp"
 #include "Common/Platform.hpp"
-#include "Common/Debugging.hpp"
 #include "Common/State.hpp"
-#include "Sandbox/Sandbox.hpp"
 
 namespace sb {
 
 static Sandbox* g_sb;
 
 Sandbox::Sandbox()
-	: _interface_ros(LLC::exec_intervals.interface_ros)
+    : _interface_ros(LLC::exec_intervals.interface_ros)
     , _controller_lifetime(LLC::pins_relay)
     , _controller_physical_feedback(LLC::pins_physicalfeedback)
     , _controller_anomaly(this, &_controller_lifetime)
-	, _controller_awareness(&_interface_ros)
+    , _controller_awareness(&_interface_ros)
 {
     if (g_sb) {
         // crit: "Second initialisation of Sandbox!"
@@ -45,19 +45,27 @@ void Sandbox::SetLogicDriverUpdate(bool (*f)(void))
 
 void Sandbox::SpinOnce()
 {
-//    if (!_LogicDriverUpdate())
-//        _controller_anomaly.HandleError(g_state);
-//    while (!_controller_awareness.Update())
-//        _controller_anomaly.HandleError(g_state);
-//    if (!_controller_motor.Update())
-//		_controller_anomaly.HandleError(g_state);
-	_controller_awareness.Update();
-	Serial.print("SPIN");
-	if (!_interface_ros.Update())
-		_controller_anomaly.HandleError(g_state);
+    if (!_interface_ros.Update())
+        _controller_anomaly.HandleError(g_state);
+    if (!_controller_awareness.Update())
+        _controller_anomaly.HandleError(g_state);
+    if (!_LogicDriverUpdate())
+        _controller_anomaly.HandleError(g_state);
+    if (!_controller_motor.Update())
+        _controller_anomaly.HandleError(g_state);
 }
 
-bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle) // NEEDS TO BE REWORKED
+void Sandbox::ROSAddSubscriber(ros::Subscriber_& s)
+{
+    _interface_ros.AddSubscriber(s);
+}
+
+void Sandbox::ROSAddPublisher(ros::Publisher& p)
+{
+    _interface_ros.AddPublisher(p);
+}
+
+bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8_t throttle)
 {
     _controller_motor.SetAction(side, action, throttle);
     return (true);
@@ -65,9 +73,8 @@ bool Sandbox::Driver(const e_side side, const e_drive_action action, const uint8
 
 bool Sandbox::Driver(const e_side side, const e_drive_action action)
 {
-	// should have error logic
     _controller_motor.SetAction(side, action);
-	return (true);
+    return (true);
 }
 
 bool Sandbox::DriverIsReady()
@@ -75,26 +82,24 @@ bool Sandbox::DriverIsReady()
     return (_controller_motor.IsReady());
 }
 
-// SLOWHALT
-
-bool Sandbox::DriverIsMoving() // -> MOTORCONTROLLER
+bool Sandbox::DriverIsMoving()
 {
-    return (true);
+    return (_controller_motor.IsMoving());
 }
 
-bool Sandbox::DriverIsAccelerating() // -> MOTORCONTROLLER
+bool Sandbox::DriverIsAccelerating()
 {
-    return (true);
+    return (_controller_motor.IsAccelerating());
 }
 
-bool Sandbox::DriverIsDecelerating() // -> MOTORCONTROLLER
+bool Sandbox::DriverIsDecelerating()
 {
-    return (true);
+    return (_controller_motor.IsDecelerating());
 }
 
-uint8_t Sandbox::DriverGetThrottle() // -> MOTORCONTROLLER
+uint8_t Sandbox::DriverGetThrottle(const e_side side)
 {
-    return (0); // get current average speed of motors
+    return (_controller_motor.GetThrottle(side));
 }
 
 void Sandbox::DriverHalt()
@@ -115,9 +120,9 @@ void Sandbox::DriverSlowHalt()
     Driver(RIGHT, SLOWHALT);
 }
 
-void Sandbox::DriverSetThrottle(const e_side side, const uint8_t throttle) // -> MOTORCONTROLLER
+void Sandbox::DriverSetThrottle(const e_side side, const uint8_t throttle)
 {
-	_controller_motor.SetThrottle(side, throttle);
+    _controller_motor.SetThrottle(side, throttle);
 }
 
 int8_t Sandbox::GetRPM(const e_corner corner) // -> DOESNT FOLLOW NAMING STYLE
@@ -179,6 +184,8 @@ void Sandbox::SIGBeep(const e_siglevel siglevel, const uint8_t count)
 {
     _controller_physical_feedback.Beep(siglevel, count);
 }
+void ROSAddSubscriber(ros::Subscriber_& s) { g_sb->ROSAddSubscriber(s); }
+void ROSAddPublisher(ros::Publisher& p) { g_sb->ROSAddPublisher(p); }
 
 bool Driver(const e_side side, const e_drive_action action) { return (g_sb->Driver(side, action)); }
 bool Driver(const e_side side, const e_drive_action action, const uint8_t throttle) { return (g_sb->Driver(side, action, throttle)); }
@@ -186,7 +193,7 @@ bool DriverIsReady() { return g_sb->DriverIsReady(); }
 bool DriverIsMoving() { return g_sb->DriverIsMoving(); }
 bool DriverIsAccelerating() { return g_sb->DriverIsAccelerating(); }
 bool DriverIsDecelerating() { return g_sb->DriverIsDecelerating(); }
-uint8_t DriverGetThrottle() { return g_sb->DriverGetThrottle(); }
+uint8_t DriverGetThrottle(const e_side side) { return g_sb->DriverGetThrottle(side); }
 void DriverSetThrottle(const e_side side, const uint8_t throttle) { g_sb->DriverSetThrottle(side, throttle); }
 void DriverHalt() { g_sb->DriverHalt(); }
 void DriverSlowHalt() { g_sb->DriverSlowHalt(); }
