@@ -45,14 +45,10 @@ void Sandbox::SetLogicDriverUpdate(bool (*f)(void))
 
 void Sandbox::SpinOnce()
 {
-    if (!_interface_ros.Update())
-        _controller_anomaly.HandleError(g_state);
-    if (!_controller_awareness.Update())
-        _controller_anomaly.HandleError(g_state);
-    if (!_LogicDriverUpdate())
-        _controller_anomaly.HandleError(g_state);
-    if (!_controller_motor.Update())
-        _controller_anomaly.HandleError(g_state);
+    if (!_controller_awareness.Update())	_controller_anomaly.HandleError(g_state);
+    if (!_interface_ros.Update())			_controller_anomaly.HandleError(g_state);
+    if (!_LogicDriverUpdate())				_controller_anomaly.HandleError(g_state);
+    if (!_controller_motor.Update())		_controller_anomaly.HandleError(g_state);
 }
 
 void Sandbox::ROSAddSubscriber(ros::Subscriber_& s)

@@ -56,6 +56,7 @@ void ControllerAwareness::PublishData()
 
 bool ControllerAwareness::Update()
 {
+	// these functions need to be parametrized
     for (int i = 0; i < NUM_MOTORS; i++) {
         if (_current_sensors[i]->Update()) {
             if (_current_sensors[i]->GetCurrent() > CRITICAL_CURRENT) {
@@ -98,16 +99,17 @@ bool ControllerAwareness::Update()
         }
     }
 
-    if (!_sensor_gps.Update()) {
-        g_state = S_GPS_ERROR;
-        return (false);
-    }
+	// FLOATING POINT EXCEPTION: somewhere in gps / imu !
+    //if (!_sensor_gps.Update()) {
+    //    g_state = S_GPS_ERROR;
+    //    return (false);
+    //}
 
-    if (!_sensor_imu.Update()) {
-        g_state = S_IMU_ERROR;
-        return (false);
-    }
+    //if (!_sensor_imu.Update()) {
+    //    g_state = S_IMU_ERROR;
+    //    return (false);
+    //}
 
-    PublishData();
+    //PublishData();
     return (true);
 }

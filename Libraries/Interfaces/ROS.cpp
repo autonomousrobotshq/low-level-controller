@@ -1,5 +1,7 @@
+#include "ros.h"
 #include "Interfaces/ROS.hpp"
 #include "Common/Datatypes.hpp"
+#include "Common/Platform.hpp"
 #include "Common/State.hpp"
 #include <Arduino.h>
 
@@ -23,6 +25,7 @@ InterfaceROS::InterfaceROS(const uint16_t exec_interval)
 {
     if (!g_nodehandle) {
         g_nodehandle = new ros::NodeHandle;
+		g_nodehandle->getHardware()->setBaud(ROS_BAUDRATE);
         g_nodehandle->initNode();
     }
 }
