@@ -23,6 +23,7 @@ namespace LLC1 {
 enum e_rostopics { GPS,
     IMU };
 const char* const str_rostopics[] = { "gps", "imu" };
+#define ROS_BAUDRATE 115200
 
 /* RANGES */
 #define MOTOR_THROTTLE_HIGH 255
