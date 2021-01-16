@@ -34,6 +34,16 @@ void keydown_callback(const keyboard::Key &key_msg)
 			Driver(RIGHT, BACKWARD, _SPEED);
 			SIGBeep(e_siglevel::INFO, 1);
 		break;
+		case (keyboard::Key::KEY_q):
+			DriverSetThrottle(LEFT, _SPEED / 2);
+			DriverSetThrottle(RIGHT, _SPEED);
+			SIGBeep(e_siglevel::INFO, 1);
+		break;
+		case (keyboard::Key::KEY_e):
+			DriverSetThrottle(LEFT, _SPEED);
+			DriverSetThrottle(RIGHT, _SPEED / 2);
+			SIGBeep(e_siglevel::INFO, 1);
+		break;
 		case (keyboard::Key::KEY_b):
 			Driver(ALL_SIDES, HALT);
 			SIGBeep(e_siglevel::INFO, 1);
@@ -47,7 +57,7 @@ void keydown_callback(const keyboard::Key &key_msg)
 
 void keyup_callback(const keyboard::Key &key_msg)
 {
-	Driver(ALL_SIDES, SLOWHALT);
+	//Driver(ALL_SIDES, SLOWHALT);
 	(void)key_msg;
 }
 
@@ -73,7 +83,7 @@ void loop() // loops indefinitely
 	// all your code here
 	sandbox->SpinOnce();
 
-	delay(20);
+	delay(100); // mimic background activity
 }
 
 void post() // runs when loop() breaks
