@@ -18,9 +18,9 @@
 #include "Sensors/Temp.hpp"
 #include "Sensors/Ultrasonic.hpp"
 
-#define DANGEROUS_DISTANCE 20
+#define DANGEROUS_DISTANCE 10
+#define CRITICAL_DISTANCE 5
 #define DANGEROUS_TEMPERATURE 60
-#define CRITICAL_DISTANCE 10
 #define CRITICAL_TEMPERATURE 80
 #define CRITICAL_CURRENT 5
 
