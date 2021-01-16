@@ -19,7 +19,7 @@ bool ControllerAnomaly::HandleError(const e_state state)
         break;
     case S_PROXIMITY_WARN:
         ((sb::Sandbox*)_sandbox)->DriverSlowHalt();
-        ((sb::Sandbox*)_sandbox)->SIGBeep(e_siglevel::CRIT, 5);
+        ((sb::Sandbox*)_sandbox)->SIGBeep(e_siglevel::CRIT, 2);
         break;
 
     default:
