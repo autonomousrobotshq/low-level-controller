@@ -1,5 +1,4 @@
 #include "Common/Datatypes.hpp"
-#include "Interfaces/Logger.hpp"
 #include "Logic/Driving.hpp"
 
 namespace DR {
@@ -14,7 +13,7 @@ bool LogicDriving::HeadTo(const uint16_t desired_heading, const uint8_t desired_
 	_desired_throttle = desired_throttle;
 
 	uint16_t current_heading = IMUGetNavigationAngle();
-	uint8_t current_speed = DriverGetThrottle();
+	uint8_t current_speed = (DriverGetThrottle(LEFT) + DriverGetThrottle(LEFT))/ 2;
 
 	if (current_speed > DRAG_SPEED_THRESHOLD
 		&& (abs(current_heading - desired_heading) < DRAG_ANGULAR_THRESHOLD
