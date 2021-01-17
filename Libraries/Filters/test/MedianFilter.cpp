@@ -23,6 +23,9 @@ unittest(PeakFilter)
 	int nums[] = {1, 1, 1, 5};
 	assertTrue(TestForArray(nums, sizeof(nums)/sizeof(int), 1));
 
+	int nums0[] = {}; 
+	assertTrue(TestForArray(nums0, sizeof(nums0)/sizeof(int), 0));
+
 	int nums1[] = {1};
 	assertTrue(TestForArray(nums1, sizeof(nums1)/sizeof(int), 1));
 

@@ -12,6 +12,8 @@ MedianFilter::~MedianFilter()
 
 int16_t MedianFilter::GetFilteredSignal()
 {
+	if (_index == 0)
+		return (0);
     for (int j = 0; j < _index; j++) {
         for (int i = 0; i < _index - 1 - j; i++) {
             if (_readings[i] > _readings[i + 1]) {

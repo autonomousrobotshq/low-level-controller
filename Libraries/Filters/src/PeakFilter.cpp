@@ -12,6 +12,8 @@ PeakFilter::~PeakFilter()
 
 int16_t PeakFilter::GetFilteredSignal()
 {
+	if (_index == 0)
+		return (0);
     int16_t _avg = 0;
     int16_t dev[_index + 1];
     int16_t _dev_avg = 0;
