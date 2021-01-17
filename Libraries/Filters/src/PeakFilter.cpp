@@ -1,27 +1,13 @@
-#include "PeakFilter.hpp"
 #include <stdlib.h>
+#include "PeakFilter.hpp"
 
 PeakFilter::PeakFilter(const uint8_t sample_count)
-    : _index(0)
-    , _size(sample_count)
+	: Filter(sample_count)
 {
-    _readings = new int16_t[sample_count];
 }
 
 PeakFilter::~PeakFilter()
 {
-    delete[](_readings);
-}
-
-void PeakFilter::Reset()
-{
-    _index = 0;
-}
-
-void PeakFilter::NewReading(const int16_t reading)
-{
-	if (_index < _size)
-    	_readings[_index++] = reading;
 }
 
 int16_t PeakFilter::GetFilteredSignal()

@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <ArduinoUnitTests.h>
 
-#include "PeakFilter.hpp"
+#include "MedianFilter.hpp"
 
 bool	TestForArray(int nums[], int samplecount, int expected)
 {
-	PeakFilter filter(samplecount);
+	MedianFilter filter(samplecount);
 	
 	filter.Reset();
 	
@@ -26,8 +26,8 @@ unittest(PeakFilter)
 	int nums1[] = {1};
 	assertTrue(TestForArray(nums1, sizeof(nums1)/sizeof(int), 1));
 
-	int nums2[] = {-1, 0, 1, 5};
-	assertTrue(TestForArray(nums2, sizeof(nums2)/sizeof(int), 0));
+	int nums2[] = {1, 5, 3, 2};
+	assertTrue(TestForArray(nums2, sizeof(nums2)/sizeof(int), 3));
 
 	int nums3[] = {-500, 100, 500, 100, 100};
 	assertTrue(TestForArray(nums3, sizeof(nums3)/sizeof(int), 100));
