@@ -2,9 +2,7 @@
 #define ACTUATOR_MOTOR_HPP
 
 #include <stdint.h>
-
-#include "Actuators/Actuator.hpp"
-#include "Common/Datatypes.hpp"
+#include "Actuator.hpp"
 
 class ActuatorMotor : public Actuator {
 public:
@@ -12,7 +10,7 @@ public:
     void Reverse(const uint8_t pulse_width);
     void Halt();
     void SetThrottle(const uint8_t pulse_width);
-    ActuatorMotor(const t_pins_motor pins_motor);
+    ActuatorMotor(const uint8_t pin_pwm, const uint8_t pin_a, const uint8_t pin_b);
     ~ActuatorMotor();
 
 private:

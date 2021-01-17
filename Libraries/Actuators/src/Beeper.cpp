@@ -1,4 +1,4 @@
-#include "Actuators/Beeper.hpp"
+#include "Beeper.hpp"
 #include <Arduino.h>
 
 ActuatorBeeper::ActuatorBeeper(const uint8_t pin)

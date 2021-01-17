@@ -2,8 +2,7 @@
 #define ACTUATOR_RELAY_HPP
 
 #include "stdint.h"
-
-#include "Actuators/Actuator.hpp"
+#include "Actuator.hpp"
 
 class ActuatorRelay : public Actuator {
 public:

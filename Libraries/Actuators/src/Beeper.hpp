@@ -3,7 +3,7 @@
 
 #include "stdint.h"
 
-#include "Actuators/Actuator.hpp"
+#include "Actuator.hpp"
 
 class ActuatorBeeper : public Actuator {
 public:

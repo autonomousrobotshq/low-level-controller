@@ -1,5 +1,5 @@
-#include "Actuators/Relay.hpp"
 #include <Arduino.h>
+#include "Relay.hpp"
 
 ActuatorRelay::ActuatorRelay(const uint8_t pin)
     : _pin(pin)
