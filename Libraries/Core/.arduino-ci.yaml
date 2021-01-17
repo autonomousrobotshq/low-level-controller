@@ -1,0 +1,25 @@
+compile:
+  libraries:
+    - "OneWire"
+    - "ArduinoPIDLibrary-1.2.0"
+    - "DallasTemperature-3.9.0"
+    - "LSM303-arduino-3.0.1"
+    - "MemoryFree-a2d60bd"
+    - "Roslib-Generated"
+    - "TinyGPS-13.0.0"
+    - "Vector-1.2.0"
+  platforms:
+    - mega2560
+
+unittest:
+  libraries:
+    - "OneWire"
+    - "ArduinoPIDLibrary-1.2.0"
+    - "DallasTemperature-3.9.0"
+    - "LSM303-arduino-3.0.1"
+    - "MemoryFree-a2d60bd"
+    - "Roslib-Generated"
+    - "TinyGPS-13.0.0"
+    - "Vector-1.2.0"
+  platforms:
+    - mega2560
