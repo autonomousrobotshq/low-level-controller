@@ -23,6 +23,5 @@ int16_t MedianFilter::GetFilteredSignal()
             }
         }
     }
-
     return (_readings[_index / 2]);
 }

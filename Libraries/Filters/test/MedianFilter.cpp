@@ -17,7 +17,7 @@ bool	TestForArray(int nums[], int samplecount, int expected)
 	return (f_avg == expected);
 }
 
-unittest(PeakFilter)
+unittest(MedianFilter)
 {
 	// how to turn -std=c++0x on?
 	int nums[] = {1, 1, 1, 5};
@@ -29,11 +29,14 @@ unittest(PeakFilter)
 	int nums1[] = {1};
 	assertTrue(TestForArray(nums1, sizeof(nums1)/sizeof(int), 1));
 
-	int nums2[] = {1, 5, 3, 2};
+	int nums2[] = {3, 5, 1, 2};
 	assertTrue(TestForArray(nums2, sizeof(nums2)/sizeof(int), 3));
 
 	int nums3[] = {-500, 100, 500, 100, 100};
 	assertTrue(TestForArray(nums3, sizeof(nums3)/sizeof(int), 100));
+
+	int nums4[] = {5, 3, 0, 0, 0};
+	assertTrue(TestForArray(nums4, sizeof(nums4)/sizeof(int), 0));
 }
 
 unittest_main()

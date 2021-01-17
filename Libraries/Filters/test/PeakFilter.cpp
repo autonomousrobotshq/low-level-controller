@@ -34,6 +34,15 @@ unittest(PeakFilter)
 
 	int nums3[] = {-500, 100, 500, 100, 100};
 	assertTrue(TestForArray(nums3, sizeof(nums3)/sizeof(int), 100));
+
+	int nums4[] = {0, 500, 500};
+	assertTrue(TestForArray(nums4, sizeof(nums4)/sizeof(int), 500));
+
+	int nums5[] = {100, 2, 2, 0, 0, 0};
+	assertTrue(TestForArray(nums5, sizeof(nums5)/sizeof(int), 1));
+
+	int nums6[] = {500, 0};
+	assertTrue(TestForArray(nums6, sizeof(nums6)/sizeof(int), 250));
 }
 
 unittest_main()
