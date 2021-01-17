@@ -19,8 +19,15 @@ bool	TestForArray(int nums[], int samplecount, int expected)
 
 unittest(PeakFilter)
 {
+	// how to turn -std=c++0x on?
 	int nums[] = {1, 1, 1, 5};
-	assertTrue(TestForArray(nums, 4, 1));
+	assertTrue(TestForArray(nums, sizeof(nums)/sizeof(int), 1));
+
+	int nums2[] = {-1, 0, 1, 5};
+	assertTrue(TestForArray(nums2, sizeof(nums2)/sizeof(int), 0));
+
+	int nums3[] = {-500, 100, 500, 100, 100};
+	assertTrue(TestForArray(nums3, sizeof(nums3)/sizeof(int), 100));
 }
 
 unittest_main()
