@@ -1,4 +1,4 @@
-#include "Sensors/Temp.hpp"
+#include "Temp.hpp"
 
 SensorTemp::SensorTemp(const uint8_t pin, const uint16_t exec_interval)
     : Sensor(exec_interval)

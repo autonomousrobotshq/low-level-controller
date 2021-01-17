@@ -7,8 +7,7 @@
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
 
-#include "Common/Datatypes.hpp"
-#include <Sensors/Sensor.hpp>
+#include <Sensor.hpp>
 
 #define GPS_TIMEOUT 50
 #define GPS_EXEC_INTERVAL 1000
@@ -20,7 +19,7 @@ public:
     float GetSpeed();
     float GetCourse();
     bool Update();
-    SensorGPS(const t_pins_gps pins_gps, const uint16_t exec_interval);
+    SensorGPS((const HardwareSerial& serial, const unsigned uint16_t baudrate, const uint16_t exec_interval);
     ~SensorGPS();
 
 private:

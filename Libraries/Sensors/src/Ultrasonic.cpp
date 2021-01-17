@@ -1,4 +1,4 @@
-#include "Sensors/Ultrasonic.hpp"
+#include "Ultrasonic.hpp"
 
 SensorUltrasonic::SensorUltrasonic(const uint8_t pin, const uint16_t exec_interval)
     : Sensor(exec_interval)

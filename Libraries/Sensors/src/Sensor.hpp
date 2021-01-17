@@ -1,8 +1,8 @@
 #ifndef SENSOR_SENSOR_HPP
 #define SENSOR_SENSOR_HPP
 
-#include "Common/TimedUpdate.hpp"
 #include <stdint.h>
+#include "TimedUpdate.hpp"
 
 class Sensor : public TimedUpdate {
 public:

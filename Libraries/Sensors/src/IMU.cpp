@@ -1,14 +1,19 @@
-#include "Sensors/IMU.hpp"
-#include "Common/Platform.hpp"
 #include <Wire.h>
+#include "IMU.hpp"
 
-SensorIMU::SensorIMU(const t_pins_imu pins_imu, const t_imu_calibration acc_cal, const t_imu_calibration mag_cal, const uint16_t exec_interval)
+SensorIMU::SensorIMU(const uint8_t pid_sda,
+					const uint8_t pin_scl,
+					const IMU::cal_t acc_cal,
+					const IMU::cal_t mag_cal,
+					const uint16_t sample_count,
+					const uint16_t exec_interval)
     : Sensor(exec_interval)
-    , _pin_sda(pins_imu.pin_sda)
-    , _pin_scl(pins_imu.pin_scl)
-    , _filter(IMU_SAMPLE_COUNT)
+    , _pin_sda(pin_sda)
+    , _pin_scl(pin_scl)
+    , _filter(sample_count)
+	, _sample_count(sample_count)
 {
-    Wire.begin();
+    Wire.begin(); // should never be called from constructor ? .begin kills clock
     if (!_compass.init()) {
         // handle ungraceful init
     }
@@ -28,7 +33,7 @@ bool SensorIMU::Update()
     if (!this->IsTimeToExecute())
         return (true);
     _filter.Reset();
-    for (uint8_t i = 0; i < IMU_SAMPLE_COUNT; i++) {
+    for (uint8_t i = 0; i < _sample_count; i++) {
         _compass.read();
         _filter.NewReading(_compass.heading());
     }

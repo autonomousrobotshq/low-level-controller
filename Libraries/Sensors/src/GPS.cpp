@@ -1,6 +1,5 @@
-#include "Sensors/GPS.hpp"
-
-#include "Arduino.h"
+#include <Arduino.h>
+#include "GPS.hpp"
 
 void SensorGPS::GetLocation(float* flat, float* flon)
 {
@@ -30,7 +29,7 @@ bool SensorGPS::Update()
     if (!this->IsTimeToExecute())
         return (true);
     bool newData = false;
-    for (unsigned long start = millis(); millis() - start < GPS_TIMEOUT;) {
+    for (unsigned long start = millis(); millis() - start < _timeout;) {
         while (_ss.available()) {
             char c = _ss.read();
             if (_gps.encode(c))
@@ -57,16 +56,14 @@ bool SensorGPS::Update()
             // handle invalid course info
         }
     }
-    //if (newData)
-    //	return (true);
     return (true);
 }
 
-SensorGPS::SensorGPS(const t_pins_gps pins_gps, const uint16_t exec_interval)
+SensorGPS::SensorGPS(const HardwareSerial& serial, const unsigned uint16_t baudrate, const uint16_t exec_interval)
     : Sensor(exec_interval)
-    , _ss((HardwareSerial&)pins_gps.serial)
+    , _ss(serial)
 {
-    _ss.begin(pins_gps.baudrate);
+    _ss.begin(baudrate);
 }
 
 SensorGPS::~SensorGPS()

@@ -1,7 +1,7 @@
 #ifndef SENSOR_CURRENT_HPP
 #define SENSOR_CURRENT_HPP
 
-#include "Sensors/Sensor.hpp"
+#include "Sensor.hpp"
 
 class SensorCurrent : public Sensor {
 public:
@@ -15,7 +15,7 @@ private:
     long _readVref();
     float _readDCCurrent();
     float _Vref = 0;
-    const int _mVperAmp = 100; // use 185 for 5A Module, and 66 for 30A Module -> FIND THIS VARIABLE IN TESTING
+    const static int _mVperAmp = 100; // use 185 for 5A Module, and 66 for 30A Module -> Trial by error testing.
     float _DCCurrent;
 };
 

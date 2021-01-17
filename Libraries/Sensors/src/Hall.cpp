@@ -1,7 +1,6 @@
 #include <Arduino.h>
 
-#include "Common/Platform.hpp"
-#include "Sensors/Hall.hpp"
+#include "Hall.hpp"
 
 // attach interrupt doesnt allow arguments(like a 'this' argument), so hardcoded globs are required
 static unsigned int pulses[NUM_MOTORS];
@@ -37,10 +36,10 @@ static void InterruptCall5() { pulses[5]++; }
 static void InterruptCall6() { pulses[6]++; }
 static void InterruptCall7() { pulses[7]++; }
 
-SensorHall::SensorHall(const t_pins_hall pins_hall, const uint16_t exec_interval)
+SensorHall::SensorHall(const uint8_t pin_interrupt, const uint8_t index_interrupt, const uint16_t exec_interval)
     : Sensor(exec_interval)
-    , _interrupt_index(pins_hall.index_interrupt)
-    , _interrupt_pin(pins_hall.pin_interrupt)
+    , _interrupt_index(index_interrupt)
+    , _interrupt_pin(pin_interrupt)
 
 {
     pinMode(_interrupt_pin, INPUT);

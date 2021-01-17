@@ -4,7 +4,7 @@
 #include <DallasTemperature.h>
 #include <OneWire.h>
 
-#include "Sensors/Sensor.hpp"
+#include "Sensor.hpp"
 
 #define ONE_WIRE_BUS 8
 // OneWire test(ONE_WIRE_BUS);
