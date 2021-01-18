@@ -1,22 +1,36 @@
 #include "Ultrasonic.hpp"
 
-SensorUltrasonic::SensorUltrasonic(const uint8_t pin, const uint16_t exec_interval)
-    : Sensor(exec_interval)
+// should probably check which board this is
+#define ADC_RESOLUTION (1023.0)
+
+SensorUltrasonic::SensorUltrasonic(const uint8_t pin, const uint16_t max_depth, const uint16_t sample_count, const unsigned long sampling_interval)
+    : Sensor(sampling_interval)
     , _analog_pin(pin)
+	, _max_depth(max_depth)
+	, _filter(sample_count)
+	, _sampling_count(sample_count)
 {
-    pinMode(pin, INPUT);
 }
 
 SensorUltrasonic::~SensorUltrasonic() { }
 
+bool SensorUltrasonic::Init()
+{
+    pinMode(_analog_pin, INPUT);
+	return (true);
+}
+
 bool SensorUltrasonic::Update()
 {
-    if (!this->IsTimeToExecute())
-        return (true);
+    if (!IsTimeToExecute())
+		return (true);
 
-    _sensity_t = analogRead(_analog_pin);
+	_filter.Reset();
+	for (uint16_t i = 0; i < _sampling_count; i++)
+    	_filter.NewReading(analogRead(_analog_pin));
 
-    _dist_t = _sensity_t * SON_MAX_RANGE / ADC_RESOLUTION;
+	const uint16_t avg = _filter.GetFilteredSignal();
+    _distance = avg * _max_depth / ADC_RESOLUTION;
 
     /*
 	**	No error handling implemented yet (if at all necessary).
@@ -27,7 +41,7 @@ bool SensorUltrasonic::Update()
     return (true);
 }
 
-float SensorUltrasonic::GetDistance()
+uint16_t SensorUltrasonic::GetDistance()
 {
-    return (_dist_t);
+    return (_distance);
 }

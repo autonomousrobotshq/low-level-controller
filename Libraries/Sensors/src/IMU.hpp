@@ -4,7 +4,7 @@
 #include <LSM303.h>
 
 #include "Sensor.hpp"
-#include "SigFilter.hpp"
+#include "PeakFilter.hpp"
 #include "Vec3.hpp"
 
 namespace IMU {
@@ -20,13 +20,9 @@ namespace IMU {
 
 class SensorIMU : public Sensor {
 public:
-    SensorIMU(	const uint8_t pid_sda,
-				const uint8_t pin_scl,
-				const IMU::cal_t acc_cal,
-				const IMU::cal_t mag_cal,
-				const uint16_t sample_count,
-				const uint16_t exec_interval);
+    SensorIMU(const uint16_t sample_count, const unsigned long sampling_interval);
     ~SensorIMU();
+	bool Init(const IMU::cal_t mag_cal);
     bool Update();
     int16_t GetNavigationAngle();
     Vec3 GetMagnetometerData();
@@ -35,10 +31,9 @@ public:
     void GetAccelerometerData(int16_t* x, int16_t* y, int16_t* z);
 
 private:
-    const uint8_t _pin_sda, _pin_scl;
     LSM303 _compass;
     int16_t _navigation_angle;
-    SigFilter _filter;
+    PeakFilter _filter;
 	const uint16_t _sample_count;
 };
 

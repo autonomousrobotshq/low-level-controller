@@ -1,43 +1,41 @@
 #include <Wire.h>
 #include "IMU.hpp"
 
-SensorIMU::SensorIMU(const uint8_t pid_sda,
-					const uint8_t pin_scl,
-					const IMU::cal_t acc_cal,
-					const IMU::cal_t mag_cal,
-					const uint16_t sample_count,
-					const uint16_t exec_interval)
-    : Sensor(exec_interval)
-    , _pin_sda(pin_sda)
-    , _pin_scl(pin_scl)
+SensorIMU::SensorIMU(const uint16_t sample_count, const unsigned long sampling_interval)
+    : Sensor(sampling_interval)
     , _filter(sample_count)
 	, _sample_count(sample_count)
 {
-    Wire.begin(); // should never be called from constructor ? .begin kills clock
+}
+
+SensorIMU::~SensorIMU() { }
+
+bool SensorIMU::Init(const IMU::cal_t mag_cal)
+{
+    Wire.begin();
     if (!_compass.init()) {
-        // handle ungraceful init
+		return (false);
     }
     _compass.enableDefault();
 
     _compass.m_min = (LSM303::vector<int16_t>) { mag_cal.x_min, mag_cal.y_min, mag_cal.z_min };
     _compass.m_max = (LSM303::vector<int16_t>) { mag_cal.x_max, mag_cal.y_max, mag_cal.z_max };
-
-    (void)acc_cal;
-    (void)mag_cal;
+	return (true);
 }
-
-SensorIMU::~SensorIMU() { }
 
 bool SensorIMU::Update()
 {
-    if (!this->IsTimeToExecute())
+    if (!IsTimeToExecute())
         return (true);
     _filter.Reset();
     for (uint8_t i = 0; i < _sample_count; i++) {
         _compass.read();
         _filter.NewReading(_compass.heading());
     }
-    _navigation_angle = _filter.GetFilteredAverage();
+    _navigation_angle = _filter.GetFilteredSignal();
+
+	// should a filtered Vec3 object also be presented?
+
     /* No error handling as of yet.
 	** This might be implemented here,
 	** but can also be implemented when dissecting the MageticSensorLsm303 code.
@@ -48,7 +46,7 @@ bool SensorIMU::Update()
 
 int16_t SensorIMU::GetNavigationAngle()
 {
-    return (this->_navigation_angle);
+    return (_navigation_angle);
 }
 
 Vec3 SensorIMU::GetAccelerometerData()

@@ -1,27 +1,25 @@
 #include <Arduino.h>
 #include "GPS.hpp"
 
-void SensorGPS::GetLocation(float* flat, float* flon)
+SensorGPS::SensorGPS(	HardwareSerial& serial,
+						const uint16_t baudrate,
+						const uint16_t timeout,
+						const unsigned long sampling_interval)
+    : Sensor(sampling_interval)
+    , _ss(serial)
+	, _baudrate(baudrate)
+	, _timeout(timeout)
 {
-    *flat = this->_flat;
-    *flon = this->_flon;
 }
 
-float SensorGPS::GetSpeed()
+SensorGPS::~SensorGPS()
 {
-    return (this->_kmph);
 }
 
-float SensorGPS::GetCourse()
+bool SensorGPS::Init()
 {
-    return (this->_course);
-}
-
-void SensorGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* time)
-{
-    *age = this->_age;
-    *date = this->_date;
-    *time = this->_time;
+    _ss.begin(_baudrate);
+	return (true);
 }
 
 bool SensorGPS::Update()
@@ -59,13 +57,25 @@ bool SensorGPS::Update()
     return (true);
 }
 
-SensorGPS::SensorGPS(const HardwareSerial& serial, const unsigned uint16_t baudrate, const uint16_t exec_interval)
-    : Sensor(exec_interval)
-    , _ss(serial)
+void SensorGPS::GetLocation(float* flat, float* flon)
 {
-    _ss.begin(baudrate);
+    *flat = this->_flat;
+    *flon = this->_flon;
 }
 
-SensorGPS::~SensorGPS()
+float SensorGPS::GetSpeed()
 {
+    return (this->_kmph);
+}
+
+float SensorGPS::GetCourse()
+{
+    return (this->_course);
+}
+
+void SensorGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* time)
+{
+    *age = this->_age;
+    *date = this->_date;
+    *time = this->_time;
 }

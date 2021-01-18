@@ -9,19 +9,19 @@
 
 #include <Sensor.hpp>
 
-#define GPS_TIMEOUT 50
-#define GPS_EXEC_INTERVAL 1000
-
 class SensorGPS : public Sensor {
 public:
+    SensorGPS(	HardwareSerial& serial,
+				const uint16_t baudrate,
+				const uint16_t timeout,
+				const unsigned long sampling_interval);
+    ~SensorGPS();
+	bool Init();
+    bool Update();
     void GetLocation(float* flat, float* flon);
     void GetTime(unsigned long* age, unsigned long* date, unsigned long* time);
     float GetSpeed();
     float GetCourse();
-    bool Update();
-    SensorGPS((const HardwareSerial& serial, const unsigned uint16_t baudrate, const uint16_t exec_interval);
-    ~SensorGPS();
-
 private:
     HardwareSerial& _ss;
     TinyGPS _gps;
@@ -42,6 +42,7 @@ private:
         _minute,
         _second,
         _hundredths;
+	const uint16_t _baudrate, _timeout;
 };
 
 #endif

@@ -1,11 +1,21 @@
 #include "Sensor.hpp"
 #include <Arduino.h>
 
-Sensor::Sensor(const uint16_t sampling_interval)
-    : TimedUpdate(sampling_interval)
+Sensor::Sensor(const unsigned long sampling_interval)
+    : Timer(sampling_interval)
 {
 }
 
 Sensor::~Sensor()
 {
+}
+
+bool Sensor::Init()
+{
+	return (true);
+}
+
+bool Sensor::Update()
+{
+	return (true);
 }

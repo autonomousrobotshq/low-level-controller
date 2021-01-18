@@ -3,35 +3,27 @@
 
 #include <Arduino.h>
 #include "Sensor.hpp"
-
-/*!
-**	@brief The max measurement value of the module is 520cm.
-*/
-#define SON_MAX_RANGE (520)
-
-/*!
-**	@brief ADC accuracy of Arduino (set default for Arduino UNO -> 10 bit).
-*** RE: if this is a global characteristic of an Arduino, this should be in a global file.
-*/
-#define ADC_RESOLUTION (1023.0)
+#include "MedianFilter.hpp"
 
 class SensorUltrasonic : public Sensor {
 public:
-    SensorUltrasonic(const uint8_t pin, const uint16_t exec_interval);
+    SensorUltrasonic(const uint8_t pin, const uint16_t max_depth, const uint16_t sample_count, const unsigned long sampling_interval);
     ~SensorUltrasonic();
-
+	bool Init();
     bool Update();
-
+	
     /*!
 	**	@brief Gets calculated distance from sensor.
-	**	@return Floating point calculated distance in centimeters.
+	**	@return int16_t calculated distance in centimeters.
 	*/
-    float GetDistance();
+    uint16_t GetDistance();
 
 private:
     const uint8_t _analog_pin;
-    float _dist_t;
-    float _sensity_t;
+	const uint16_t _max_depth;
+	MedianFilter _filter;
+	const uint16_t _sampling_count;
+    uint16_t _distance;
 };
 
 #endif

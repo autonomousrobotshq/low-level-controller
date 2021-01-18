@@ -1,38 +1,65 @@
 #include <Arduino.h>
 #include "Current.hpp"
 
-// SOURCE ?
+// should probably check which board this is                                    
+#define ADC_RESOLUTION (1023.0)
 
-float SensorCurrent::GetCurrent()
+SensorCurrent::SensorCurrent(const uint8_t analogPin, const uint8_t sample_count, const unsigned long sampling_interval)
+    : Sensor(sampling_interval)
+    , _analogPin(analogPin)
+	, _filter(sample_count)
+	, _sample_count(sample_count)
 {
-    return (this->_DCCurrent);
 }
 
-/*read DC Current Value*/
-float SensorCurrent::_readDCCurrent()
+SensorCurrent::~SensorCurrent()
 {
-    int analogValueArray[31];
-    for (int index = 0; index < 31; index++) {
-        analogValueArray[index] = analogRead(this->_analogPin);
-    }
-    int i, j, tempValue;
-    for (j = 0; j < 31 - 1; j++) {
-        for (i = 0; i < 31 - 1 - j; i++) {
-            if (analogValueArray[i] > analogValueArray[i + 1]) {
-                tempValue = analogValueArray[i];
-                analogValueArray[i] = analogValueArray[i + 1];
-                analogValueArray[i + 1] = tempValue;
-            }
-        }
-    }
-    float medianValue = analogValueArray[(31 - 1) / 2];
-    float DCCurrentValue = (medianValue / 1024.0 * this->_Vref - this->_Vref / 2.0)
-        / _mVperAmp; //Sensitivity:100mV/A, 0A @ Vcc/2
-    return DCCurrentValue;
 }
 
-/*read reference voltage*/
-long SensorCurrent::_readVref()
+bool SensorCurrent::Init()
+{
+    _vref = ReadReferenceVoltage();
+	return (true);
+}
+
+bool SensorCurrent::Update()
+{
+    if (!IsTimeToExecute())
+        return (true);
+    _current = ReadDCCurrent();
+    return (true);
+}
+
+uint16_t SensorCurrent::GetCurrentMilliAmps()
+{
+    return (_current);
+}
+
+uint8_t SensorCurrent::GetCurrentAmps()
+{
+    return (_current / 1000);
+}
+
+/*read DC Current Value
+ * https://github.com/nxcosa/20A-CURRENT-SENSOR/blob/master/_20AcurrentSensor.ino
+ */
+uint16_t SensorCurrent::ReadDCCurrent()
+{
+	_filter.Reset();
+    for (int i = 0; i < _sample_count; i++) {
+        _filter.NewReading(analogRead(_analogPin));
+    }
+    const uint16_t median_reading = _filter.GetFilteredSignal();
+	int16_t dc_current = (median_reading / ADC_RESOLUTION * _vref - _vref / 2.0) / _mVperAmp; //Sensitivity:100mV/A, 0A @ Vcc/2
+    return ((dc_current < 0) ? 0 : dc_current);
+}
+
+/* read reference voltage
+ * https://github.com/nxcosa/20A-CURRENT-SENSOR/blob/master/_20AcurrentSensor.ino
+ * If testing with Arduino-CI, don't attempt to use hardware defines (breaks arduino-ci's compilation of targets) 
+ */
+#ifndef ARDUINO_CI
+long SensorCurrent::ReadReferenceVoltage()
 {
     long result;
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
@@ -60,23 +87,9 @@ long SensorCurrent::_readVref()
     return (3300); //Guess that other un-supported architectures will be running a 3.3V!
 #endif
 }
-
-bool SensorCurrent::Update()
+#else
+long SensorCurrent::ReadReferenceVoltage()
 {
-    if (!this->IsTimeToExecute())
-        return (true);
-    this->_DCCurrent = this->_readDCCurrent();
-    // check for out of range updates and restore old value if necessary
-    return (true);
+	return (4500); // assume 4.5V for testing
 }
-
-SensorCurrent::SensorCurrent(const uint8_t analogPin, const uint16_t exec_interval)
-    : Sensor(exec_interval)
-    , _analogPin(analogPin)
-{
-    this->_Vref = _readVref(); //read the reference voltage(default:VCC)
-}
-
-SensorCurrent::~SensorCurrent()
-{
-}
+#endif

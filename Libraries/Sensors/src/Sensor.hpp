@@ -2,12 +2,14 @@
 #define SENSOR_SENSOR_HPP
 
 #include <stdint.h>
-#include "TimedUpdate.hpp"
+#include "Timer.hpp"
 
-class Sensor : public TimedUpdate {
+class Sensor : public Timer {
 public:
-    Sensor(const uint16_t sampling_interval);
-    ~Sensor();
+    Sensor(const unsigned long sampling_interval);
+    virtual ~Sensor();
+	virtual bool Init();
+	virtual bool Update();
 
 private:
 };
