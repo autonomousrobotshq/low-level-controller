@@ -2,7 +2,7 @@
 
 BASEDIR=$(realpath $(dirname "$0"))
 
-MSG_DST_DIR=$BASEDIR/../Libraries/External/Roslib-Generated
+ROSLIB_DST_DIR=$BASEDIR/../Libraries/External/Roslib-Generated
 GIT_REPO="git@github.com:autonomousrobotshq/ros_packages.git"
 GIT_REPO_NAME="ros_packages"
 
@@ -17,8 +17,9 @@ mv $GIT_REPO_NAME ./src || exit 1
 
 catkin_make && source ./devel/setup.zsh && rosrun rosserial_arduino make_libraries.py .  || exit 1
 
-rm -rf $MSG_DST_DIR && mkdir $MSG_DST_DIR || exit 1
-mv ./ros_lib/* $MSG_DST_DIR && rm -rf $TMP_DIR
+mv $ROSLIB_DST_DIR/library.properties ./ros_lib/ || exit 1
+rm -rf $ROSLIB_DST_DIR && mkdir $ROSLIB_DST_DIR || exit 1
+mv ./ros_lib/* $ROSLIB_DST_DIR && rm -rf $TMP_DIR
 
-find $MSG_DST_DIR \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i 's/cstring/string\.h/g'
-find $MSG_DST_DIR \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i 's/std::memcpy/memcpy/g'
+find $ROSLIB_DST_DIR \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i 's/cstring/string\.h/g'
+find $ROSLIB_DST_DIR \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i 's/std::memcpy/memcpy/g'
