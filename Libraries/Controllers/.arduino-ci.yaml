@@ -1,0 +1,11 @@
+compile:
+  libraries:
+    - Actuators
+  platforms:
+    - mega2560
+
+unittest:
+  libraries:
+    - Actuators
+  platforms:
+    - mega2560
