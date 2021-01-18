@@ -1,8 +1,10 @@
 #!/bin/zsh
 
+echo "Don't forget to source setup.zsh or setup.bash first!"
+
 BASEDIR=$(realpath $(dirname "$0"))
 
-ROSLIB_DST_DIR=$BASEDIR/../Libraries/External/Roslib-Generated
+ROSLIB_DST_DIR=$BASEDIR/../Libraries/ROS-Generated
 GIT_REPO="git@github.com:autonomousrobotshq/ros_packages.git"
 GIT_REPO_NAME="ros_packages"
 
