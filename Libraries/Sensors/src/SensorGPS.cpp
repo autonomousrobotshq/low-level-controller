@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "GPS.hpp"
+#include "SensorGPS.hpp"
 
 SensorGPS::SensorGPS(	HardwareSerial& serial,
 						const uint16_t baudrate,

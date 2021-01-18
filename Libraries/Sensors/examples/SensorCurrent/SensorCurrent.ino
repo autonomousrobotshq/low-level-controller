@@ -1,4 +1,4 @@
-#include "Current.hpp"
+#include "SensorCurrent.hpp"
 
 #define PIN 10
 #define SAMPLE_COUNT 10 // get ten samples before taking the median value

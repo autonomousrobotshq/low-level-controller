@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "Hall.hpp"
+#include "SensorHall.hpp"
 
 // attach interrupt doesnt allow arguments(like a 'this' argument), so static globs are required
 # define MAX_INTERRUPTS 8

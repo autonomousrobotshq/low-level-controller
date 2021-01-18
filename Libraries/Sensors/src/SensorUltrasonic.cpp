@@ -1,6 +1,6 @@
-#include "Ultrasonic.hpp"
+#include "SensorUltrasonic.hpp"
 
-// should probably check which board this is
+// https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/
 #define ADC_RESOLUTION (1023.0)
 
 SensorUltrasonic::SensorUltrasonic(const uint8_t pin, const uint16_t max_depth, const uint16_t sample_count, const unsigned long sampling_interval)
@@ -30,7 +30,7 @@ bool SensorUltrasonic::Update()
     	_filter.NewReading(analogRead(_analog_pin));
 
 	const uint16_t avg = _filter.GetFilteredSignal();
-    _distance = avg * _max_depth / ADC_RESOLUTION;
+    _distance = (avg * _max_depth) / ADC_RESOLUTION;
 
     /*
 	**	No error handling implemented yet (if at all necessary).
@@ -43,5 +43,5 @@ bool SensorUltrasonic::Update()
 
 uint16_t SensorUltrasonic::GetDistance()
 {
-    return (_distance);
+    return ((_distance > _max_depth) ? _max_depth : _distance);
 }

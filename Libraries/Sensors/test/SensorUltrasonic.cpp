@@ -1,40 +1,41 @@
 #include <Arduino.h>
 #include <ArduinoUnitTests.h>
 
-#include "Current.hpp"
+#include "SensorUltrasonic.hpp"
 
-unittest(Current_min)
+unittest(Ultrasonic_min)
 {
 	GodmodeState* state = GODMODE();   // get access to the state
 
 	const int pin = 10;
+	const int max_depth = 520;
 	const int sample_count = 10;
 	const int sampling_interval = 0;
 
-	SensorCurrent sensor(pin, sample_count, sampling_interval);
+	SensorUltrasonic sensor(pin, max_depth, sample_count, sampling_interval);
 	assertTrue(sensor.Init());
 
 	analogWrite(pin, 0);
 	assertTrue(sensor.Update());
-	assertEqual(0, sensor.GetCurrentMilliAmps());
-	assertEqual(0, sensor.GetCurrentAmps());
+	assertEqual(0, sensor.GetDistance());
 }
 
-unittest(Current_max)
+unittest(Ultrasonic_max)
 {
 	GodmodeState* state = GODMODE();   // get access to the state
 
 	const int pin = 10;
+	const int max_depth = 520;
 	const int sample_count = 10;
 	const int sampling_interval = 0;
+	const int adc_resolution = 1023;
 
-	SensorCurrent sensor(pin, sample_count, sampling_interval);
+	SensorUltrasonic sensor(pin, max_depth, sample_count, sampling_interval);
 	assertTrue(sensor.Init());
 
-	analogWrite(pin, 200);
+	analogWrite(pin, adc_resolution);
 	assertTrue(sensor.Update());
-	assertMore(sensor.GetCurrentMilliAmps(), 0);
-	assertMore(sensor.GetCurrentAmps(), 0);
+	assertEqual(max_depth, sensor.GetDistance());
 }
 
 unittest_main()

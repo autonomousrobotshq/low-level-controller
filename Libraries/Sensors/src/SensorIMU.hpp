@@ -22,7 +22,7 @@ class SensorIMU : public Sensor {
 public:
     SensorIMU(const uint16_t sample_count, const unsigned long sampling_interval);
     ~SensorIMU();
-	bool Init(const IMU::cal_t mag_cal);
+	bool Init(const IMU::cal_t &mag_cal);
     bool Update();
     int16_t GetNavigationAngle();
     Vec3 GetMagnetometerData();

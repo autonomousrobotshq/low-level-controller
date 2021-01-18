@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include "IMU.hpp"
+#include "SensorIMU.hpp"
 
 SensorIMU::SensorIMU(const uint16_t sample_count, const unsigned long sampling_interval)
     : Sensor(sampling_interval)
@@ -10,7 +10,7 @@ SensorIMU::SensorIMU(const uint16_t sample_count, const unsigned long sampling_i
 
 SensorIMU::~SensorIMU() { }
 
-bool SensorIMU::Init(const IMU::cal_t mag_cal)
+bool SensorIMU::Init(const IMU::cal_t &mag_cal)
 {
     Wire.begin();
     if (!_compass.init()) {

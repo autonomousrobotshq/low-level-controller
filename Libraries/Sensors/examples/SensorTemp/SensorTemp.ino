@@ -1,4 +1,4 @@
-#include "Temperature.hpp"
+#include "SensorTemp.hpp"
 
 #define PIN 10
 #define SAMPLING_INTERVAL 1000 // update every second

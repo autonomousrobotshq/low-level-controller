@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "Current.hpp"
+#include "SensorCurrent.hpp"
 
 // should probably check which board this is                                    
 #define ADC_RESOLUTION (1023.0)

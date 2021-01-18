@@ -1,4 +1,4 @@
-#include "Ultrasonic.hpp"
+#include "SensorUltrasonic.hpp"
 
 #define PIN 10
 #define MAX_DEPTH 520 // 520 cm is the rated maximum distance of the ultrasonic sensor's range

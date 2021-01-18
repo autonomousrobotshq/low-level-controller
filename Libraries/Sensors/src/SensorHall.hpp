@@ -5,8 +5,8 @@
 
 class SensorHall {
 public:
-    SensorHall( const uint8_t pin_interrupt,
-				const uint8_t index_interrupt,
+    SensorHall( const uint8_t interrupt_pin,
+				const uint8_t interrupt_index,
 				const uint16_t counts_per_revolution,
 				const uint16_t distance_per_revolution);
     ~SensorHall();

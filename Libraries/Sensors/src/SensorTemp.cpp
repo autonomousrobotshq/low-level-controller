@@ -1,4 +1,4 @@
-#include "Temperature.hpp"
+#include "SensorTemp.hpp"
 
 SensorTemp::SensorTemp(const uint8_t pin, const unsigned long  sampling_interval)
     : Sensor(sampling_interval)
