@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "ControllerMotor.hpp"
 
 #define MOTOR_THROTTLE_LOW 0
@@ -40,7 +41,7 @@ void ControllerMotor::SetParameters(const uint8_t motor_count, const t_motor_pin
 bool ControllerMotor::Init()
 {
 	uint8_t errors = 0;
-    for (uint8_t i = 0; i < _motor_count; i++) {
+    for (uint8_t i = 0; i < _motor_count; i++)
         errors += !_motors[i]._actuators_motor.Init();
 	return (errors);
 }
