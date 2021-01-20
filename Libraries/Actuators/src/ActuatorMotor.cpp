@@ -28,6 +28,7 @@ bool ActuatorMotor::Init()
     pinMode(_pin_pwm, OUTPUT);
     pinMode(_pin_a, OUTPUT);
     pinMode(_pin_b, OUTPUT);
+	return (true);
 }
 
 void ActuatorMotor::Forward(const uint8_t pulse_width)
