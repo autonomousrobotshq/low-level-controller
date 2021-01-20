@@ -1,12 +1,22 @@
 compile:
   libraries:
     - Actuators
+    - Sensors
+    - Vector
   platforms:
     - mega2560
 
 unittest:
   libraries:
     - Actuators
+    - Sensors
+    - Vector
+
+    - Timers
+    - Containers
+    - Filters
+    - LSM303
+    - TinyGPS
   platforms:
     - mega2560
 platforms:

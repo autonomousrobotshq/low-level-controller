@@ -2,8 +2,12 @@
 #define CONTROLLER_HPP
 
 class Controller {
-public:
-private:
+	public:
+		Controller();
+		virtual ~Controller();
+		virtual bool Init();
+		virtual bool Update();
+	private:
 };
 
 #endif
