@@ -13,6 +13,7 @@ public:
 	bool Init();
     bool Update();
 	bool AddSensor(Sensor *sensor);
+	SensorData  *GetSensorData(const uint8_t index);
 private:
 	static const uint8_t _sensors_buf_size = 12;
 	Sensor *_sensors_buf[_sensors_buf_size];

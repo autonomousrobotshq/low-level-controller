@@ -11,6 +11,7 @@ ControllerSensors::~ControllerSensors()
 
 bool ControllerSensors::Init()
 {
+	return (true);
 }
 
 bool ControllerSensors::Update()
@@ -30,4 +31,9 @@ bool ControllerSensors::AddSensor(Sensor *sensor)
 	else {
 		return (false);
 	}
+}
+
+SensorData	*ControllerSensors::GetSensorData(const uint8_t index)
+{
+	return ((index >= 0 && index < _sensors.size()) ? &_sensors[index]->RetreiveData() : NULL);
 }
