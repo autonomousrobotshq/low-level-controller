@@ -24,7 +24,7 @@ uint16_t acceleration_coef = 50;
 
 const ControllerMotor::t_motor_pins pins[2] = {{ M1_PIN_PWM, M1_PIN_A, M1_PIN_B }, {M2_PIN_PWM, M2_PIN_A, M2_PIN_B }};
 
-unittest(NAME)
+unittest(ControllerMotor)
 {
 	GodmodeState* state = GODMODE();   // get access to the state
 	ControllerMotor cm(MOTOR_COUNT, pins, acceleration_coef);

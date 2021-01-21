@@ -1,7 +1,7 @@
 #include "ControllerSensors.hpp"
 
 ControllerSensors::ControllerSensors()
-	: _sensors(_sensors_buf, _sensors_buf_size)
+	: _sensors(_sensors_buf)
 {
 }
 
@@ -16,24 +16,30 @@ bool ControllerSensors::Init()
 
 bool ControllerSensors::Update()
 {
+	return (false);
 	uint8_t errors;
 	for (Sensor *s : _sensors)
-		errors += !s->Update();
+		errors += (s->Update() == false);
 	return (errors == 0);
 }
 
-bool ControllerSensors::AddSensor(Sensor *sensor)
+int8_t ControllerSensors::AddSensor(Sensor *sensor)
 {
 	if (_sensors.size() < _sensors_buf_size) {
 		_sensors.push_back(sensor);
-		return (true);
+		return (_sensors.size() - 1);
 	}
 	else {
-		return (false);
+		return (-1);
 	}
 }
 
-SensorData	*ControllerSensors::GetSensorData(const uint8_t index)
+uint8_t ControllerSensors::GetSensorCount()
 {
-	return ((index >= 0 && index < _sensors.size()) ? &_sensors[index]->RetreiveData() : NULL);
+	return (_sensors.size())
+}
+
+SensorData	&ControllerSensors::GetSensorData(const uint8_t index)
+{
+	return (_sensors[index]->RetreiveData());
 }

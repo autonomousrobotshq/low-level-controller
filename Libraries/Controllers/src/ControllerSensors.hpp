@@ -1,8 +1,8 @@
 #ifndef CONTROLLER_SENSORS_HPP
 #define CONTROLLER_SENSORS_HPP
 
+#include <stdint.h>
 #include "Vector.h"
-
 #include "Controller.hpp"
 #include "Sensor.hpp"
 
@@ -12,8 +12,9 @@ public:
     ~ControllerSensors();
 	bool Init();
     bool Update();
-	bool AddSensor(Sensor *sensor);
-	SensorData  *GetSensorData(const uint8_t index);
+	int8_t AddSensor(Sensor *sensor);
+	uint8_t GetSensorCount();
+	SensorData  &GetSensorData(const uint8_t index);
 private:
 	static const uint8_t _sensors_buf_size = 12;
 	Sensor *_sensors_buf[_sensors_buf_size];
