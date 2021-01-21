@@ -26,18 +26,13 @@ bool SensorCurrent::Update()
 {
     if (!IsTimeToExecute())
         return (true);
-    _current = ReadDCCurrent();
+    _data._current = ReadDCCurrent();
     return (true);
 }
 
-uint16_t SensorCurrent::GetCurrentMilliAmps()
+SensorCurrentData &SensorCurrent::RetreiveData()
 {
-    return (_current);
-}
-
-uint8_t SensorCurrent::GetCurrentAmps()
-{
-    return (_current / 1000);
+	return (_data);
 }
 
 /*read DC Current Value
@@ -93,3 +88,21 @@ long SensorCurrent::ReadReferenceVoltage()
 	return (4500); // assume 4.5V for testing
 }
 #endif
+
+uint16_t SensorCurrentData::GetCurrentMilliAmps()
+{
+    return (_current);
+}
+
+uint8_t SensorCurrentData::GetCurrentAmps()
+{
+    return (_current / 1000);
+}
+
+#ifdef ROS
+void SensorCurrentData::Publish()
+{
+	// set _current_msg variables
+}
+#endif
+

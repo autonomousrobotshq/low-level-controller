@@ -35,47 +35,89 @@ bool SensorGPS::Update()
         }
     }
     if (newData) {
-        _gps.f_get_position(&_flat, &_flon, &_age);
-        _gps.stats(&_chars, &_sentences, &_checksum);
-        _gps.crack_datetime(&_year, &_month, &_day, &_hour,
-            &_minute, &_second, &_hundredths, &_age);
-        _kmph = _gps.f_speed_kmph();
-        _course = _gps.f_course();
-        if (_age == TinyGPS::GPS_INVALID_AGE) {
+        _gps.f_get_position(&_data._flat, &_data._flon, &_data._age);
+        _gps.stats(&_data._chars, &_data._sentences, &_data._checksum);
+        _gps.crack_datetime(&_data._year, &_data._month, &_data._day, &_data._hour,
+            &_data._minute, &_data._second, &_data._hundredths, &_data._age);
+        _data._kmph = _gps.f_speed_kmph();
+        _data._course = _gps.f_course();
+        if (_data._age == TinyGPS::GPS_INVALID_AGE) {
             // handle invalid time info
         }
-        if (_flat == TinyGPS::GPS_INVALID_F_ALTITUDE) {
+        if (_data._flat == TinyGPS::GPS_INVALID_F_ALTITUDE) {
             // handle invalid location info
         }
-        if (_kmph == TinyGPS::GPS_INVALID_F_SPEED) {
+        if (_data._kmph == TinyGPS::GPS_INVALID_F_SPEED) {
             // handle invalid speed info
         }
-        if (_course == TinyGPS::GPS_INVALID_F_ANGLE) {
+        if (_data._course == TinyGPS::GPS_INVALID_F_ANGLE) {
             // handle invalid course info
         }
+#ifdef ROS
+		if (_data.IsPublishingEnabled())
+			_data.Publish();
+#endif
     }
+
+
     return (true);
+}
+
+SensorGPSData &SensorGPS::RetreiveData()
+{
+	return (_data);
 }
 
 void SensorGPS::GetLocation(float* flat, float* flon)
 {
-    *flat = this->_flat;
-    *flon = this->_flon;
+    *flat = _data._flat;
+    *flon = _data._flon;
 }
 
 float SensorGPS::GetSpeed()
 {
-    return (this->_kmph);
+    return (_data._kmph);
 }
 
 float SensorGPS::GetCourse()
 {
-    return (this->_course);
+    return (_data._course);
 }
 
 void SensorGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* time)
 {
-    *age = this->_age;
-    *date = this->_date;
-    *time = this->_time;
+    *age = _data._age;
+    *date = _data._date;
+    *time = _data._time;
+}
+
+#ifdef ROS
+void SensorGPSData::Publish()
+{
+	this->GetLocation(&_msg_gps.lat, &_msg_gps.lon);
+    PublishMsg(&_msg_gps);
+}
+#endif
+
+void SensorGPSData::GetLocation(float* flat, float* flon)
+{
+    *flat = _flat;
+    *flon = _flon;
+}
+
+float SensorGPSData::GetSpeed()
+{
+    return (_kmph);
+}
+
+float SensorGPSData::GetCourse()
+{
+    return (_course);
+}
+
+void SensorGPSData::GetTime(unsigned long* age, unsigned long* date, unsigned long* time)
+{
+    *age = _age;
+    *date = _date;
+    *time = _time;
 }

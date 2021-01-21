@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "Timer.hpp"
+#include "SensorData.hpp"
 
 class Sensor : public Timer {
 public:
@@ -10,7 +11,8 @@ public:
     virtual ~Sensor();
 	virtual bool Init();
 	virtual bool Update();
-
+	virtual SensorData &RetreiveData();
 private:
+	SensorData _data;
 };
 #endif

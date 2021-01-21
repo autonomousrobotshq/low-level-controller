@@ -12,8 +12,8 @@ void setup() {
 
 void loop() {
 	sensor.Update();
-	int16_t amps = sensor.GetCurrentAmps();
-	int16_t milli_amps = sensor.GetCurrentMilliAmps();
+	int16_t amps = sensor.RetreiveData().GetCurrentAmps();
+	int16_t milli_amps = sensor.RetreiveData().GetCurrentMilliAmps();
 
 	Serial.print("Current -> milliamps { ");
 	Serial.print(milli_amps);

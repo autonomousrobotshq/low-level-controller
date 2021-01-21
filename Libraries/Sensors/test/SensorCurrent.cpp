@@ -16,8 +16,8 @@ unittest(Current_min)
 
 	analogWrite(pin, 0);
 	assertTrue(sensor.Update());
-	assertEqual(0, sensor.GetCurrentMilliAmps());
-	assertEqual(0, sensor.GetCurrentAmps());
+	assertEqual(0, sensor.RetreiveData().GetCurrentMilliAmps());
+	assertEqual(0, sensor.RetreiveData().GetCurrentAmps());
 }
 
 unittest(Current_max)
@@ -34,8 +34,8 @@ unittest(Current_max)
 
 	analogWrite(pin, adc_resolution);
 	assertTrue(sensor.Update());
-	assertMore(sensor.GetCurrentMilliAmps(), 0);
-	assertMore(sensor.GetCurrentAmps(), 0);
+	assertMore(sensor.RetreiveData().GetCurrentMilliAmps(), 0);
+	assertMore(sensor.RetreiveData().GetCurrentAmps(), 0);
 }
 
 unittest_main()
