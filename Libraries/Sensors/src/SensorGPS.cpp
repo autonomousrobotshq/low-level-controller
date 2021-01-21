@@ -1,6 +1,73 @@
 #include <Arduino.h>
 #include "SensorGPS.hpp"
 
+/*
+** SensorDataGPS
+*/
+
+SensorDataGPS &SensorGPS::RetreiveData()
+{
+	return (_data);
+}
+
+void SensorGPS::GetLocation(float* flat, float* flon)
+{
+    *flat = _data._flat;
+    *flon = _data._flon;
+}
+
+float SensorGPS::GetSpeed()
+{
+    return (_data._kmph);
+}
+
+float SensorGPS::GetCourse()
+{
+    return (_data._course);
+}
+
+void SensorGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* time)
+{
+    *age = _data._age;
+    *date = _data._date;
+    *time = _data._time;
+}
+
+#ifdef ROS
+void SensorDataGPS::Publish()
+{
+	this->GetLocation(&_msg_gps.lat, &_msg_gps.lon);
+    PublishMsg(&_msg_gps);
+}
+#endif
+
+void SensorDataGPS::GetLocation(float* flat, float* flon)
+{
+    *flat = _flat;
+    *flon = _flon;
+}
+
+float SensorDataGPS::GetSpeed()
+{
+    return (_kmph);
+}
+
+float SensorDataGPS::GetCourse()
+{
+    return (_course);
+}
+
+void SensorDataGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* time)
+{
+    *age = _age;
+    *date = _date;
+    *time = _time;
+}
+
+/*
+** SensorGPS
+*/
+
 SensorGPS::SensorGPS(	HardwareSerial& serial,
 						const uint16_t baudrate,
 						const uint16_t timeout,
@@ -58,66 +125,6 @@ bool SensorGPS::Update()
 			_data.Publish();
 #endif
     }
-
-
     return (true);
 }
 
-SensorGPSData &SensorGPS::RetreiveData()
-{
-	return (_data);
-}
-
-void SensorGPS::GetLocation(float* flat, float* flon)
-{
-    *flat = _data._flat;
-    *flon = _data._flon;
-}
-
-float SensorGPS::GetSpeed()
-{
-    return (_data._kmph);
-}
-
-float SensorGPS::GetCourse()
-{
-    return (_data._course);
-}
-
-void SensorGPS::GetTime(unsigned long* age, unsigned long* date, unsigned long* time)
-{
-    *age = _data._age;
-    *date = _data._date;
-    *time = _data._time;
-}
-
-#ifdef ROS
-void SensorGPSData::Publish()
-{
-	this->GetLocation(&_msg_gps.lat, &_msg_gps.lon);
-    PublishMsg(&_msg_gps);
-}
-#endif
-
-void SensorGPSData::GetLocation(float* flat, float* flon)
-{
-    *flat = _flat;
-    *flon = _flon;
-}
-
-float SensorGPSData::GetSpeed()
-{
-    return (_kmph);
-}
-
-float SensorGPSData::GetCourse()
-{
-    return (_course);
-}
-
-void SensorGPSData::GetTime(unsigned long* age, unsigned long* date, unsigned long* time)
-{
-    *age = _age;
-    *date = _date;
-    *time = _time;
-}

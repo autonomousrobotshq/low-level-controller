@@ -7,6 +7,32 @@
 #include "PeakFilter.hpp"
 #include "Vec3.hpp"
 
+#ifdef ROS
+# include "spine_msg/msg_imu.h"
+#endif
+
+#include <Sensor.hpp>
+
+class SensorDataIMU : public SensorData {
+	public:
+    	int16_t GetNavigationAngle();
+    	Vec3 GetMagnetometerData();
+    	void GetMagnetometerData(int16_t* x, int16_t* y, int16_t* z);
+    	Vec3 GetAccelerometerData();
+    	void GetAccelerometerData(int16_t* x, int16_t* y, int16_t* z);
+	private:
+		friend class SensorIMU;
+    	int16_t _navigation_angle;
+		Vec3	_magneto;
+		Vec3	_accelero;
+#ifdef ROS
+	public:
+		void Publish();
+	private:
+		spine_msg::msg_imu _msg_imu;
+#endif
+};
+
 namespace IMU {
 	typedef struct cal_s {
 	    const int16_t x_min;                                                        
@@ -35,6 +61,7 @@ private:
     int16_t _navigation_angle;
     PeakFilter _filter;
 	const uint16_t _sample_count;
+	SensorDataIMU _data;
 };
 
 #endif

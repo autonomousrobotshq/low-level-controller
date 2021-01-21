@@ -13,7 +13,7 @@
 
 #include <Sensor.hpp>
 
-class SensorGPSData : public SensorData {
+class SensorDataGPS : public SensorData {
 	public:
     	void GetLocation(float* flat, float* flon);
     	void GetTime(unsigned long* age, unsigned long* date, unsigned long* time);
@@ -55,7 +55,7 @@ public:
     ~SensorGPS();
 	bool Init();
     bool Update();
-	SensorGPSData &RetreiveData();
+	SensorDataGPS &RetreiveData();
     void GetLocation(float* flat, float* flon);
     void GetTime(unsigned long* age, unsigned long* date, unsigned long* time);
     float GetSpeed();
@@ -65,7 +65,7 @@ private:
     TinyGPS _gps;
 	const uint16_t _baudrate, _timeout;
 
-	SensorGPSData _data;
+	SensorDataGPS _data;
 };
 
 #endif

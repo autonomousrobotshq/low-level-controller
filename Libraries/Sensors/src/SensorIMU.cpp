@@ -1,6 +1,53 @@
 #include <Wire.h>
 #include "SensorIMU.hpp"
 
+/*
+** SensorDataIMU
+*/
+
+int16_t SensorDataIMU::GetNavigationAngle()
+{
+    return (_navigation_angle);
+}
+
+Vec3 SensorDataIMU::GetAccelerometerData()
+{
+    return (Vec3(_accelero.x, _accelero.y, _accelero.z));
+}
+
+void SensorDataIMU::GetAccelerometerData(int16_t* x, int16_t* y, int16_t* z)
+{
+    *x = _accelero.x;
+    *y = _accelero.y;
+    *z = _accelero.z;
+}
+
+Vec3 SensorDataIMU::GetMagnetometerData()
+{
+    return (Vec3(_magneto.x, _magneto.y, _magneto.z));
+}
+
+void SensorDataIMU::GetMagnetometerData(int16_t* x, int16_t* y, int16_t* z)
+{
+    *x = _magneto.x;
+    *y = _magneto.y;
+    *z = _magneto.z;
+}
+
+#ifdef ROS
+void SensorDataIMU::Publish()
+{
+	this->GetMagnetometerData(&_msg_imu.mag_x, &_msg_imu.mag_y, &_msg_imu.mag_z);
+	this->GetAccelerometerData(&_msg_imu.accel_x, &_msg_imu.accel_y, &_msg_imu.accel_z);
+	_msg_imu.angle = this->GetNavigationAngle();
+	PublishMsg(&_msg_imu);
+}
+#endif
+
+/*
+** SensorIMU
+*/
+
 SensorIMU::SensorIMU(const uint16_t sample_count, const unsigned long sampling_interval)
     : Sensor(sampling_interval)
     , _filter(sample_count)
@@ -32,8 +79,9 @@ bool SensorIMU::Update()
         _compass.read();
         _filter.NewReading(_compass.heading());
     }
-    _navigation_angle = _filter.GetFilteredSignal();
-
+    _data._navigation_angle = _filter.GetFilteredSignal();
+	_data._magneto = this->GetMagnetometerData();
+	_data._accelero = this->GetAccelerometerData();
 	// should a filtered Vec3 object also be presented?
 
     /* No error handling as of yet.
@@ -41,12 +89,17 @@ bool SensorIMU::Update()
 	** but can also be implemented when dissecting the MageticSensorLsm303 code.
 	*/
 
+#ifdef ROS
+	if (_data.IsPublishingEnabled())
+		_data.Publish();
+#endif
+
     return (true);
 }
 
 int16_t SensorIMU::GetNavigationAngle()
 {
-    return (_navigation_angle);
+    return (_data._navigation_angle);
 }
 
 Vec3 SensorIMU::GetAccelerometerData()
