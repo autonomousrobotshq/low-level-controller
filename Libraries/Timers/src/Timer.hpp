@@ -7,6 +7,10 @@ public:
     ~Timer();
     unsigned long GetTimeSinceLastExecution();
     bool IsTimeToExecute();
+	bool Unlock();
+	void UpCycle(int count = 1);
+	void DownCycle(int count = 1);
+	void Reset();
 
 private:
     unsigned long _previous_millis;

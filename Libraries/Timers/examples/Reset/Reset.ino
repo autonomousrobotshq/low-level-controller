@@ -9,9 +9,9 @@ class Test : public Timer
 		}
 };
 
-#define INTERVAL 5
+#define INTERVAL 1000
 
-Test t(5);
+Test t(INTERVAL);
 
 void setup() {
 }
@@ -19,9 +19,11 @@ void setup() {
 void loop() {
 	if (t.IsTimeToExecute())
 	{
+		const unsigned int timeSinceLastExecution = t.GetTimeSinceLastExecution();
+		t.Reset(); // set timer to current time so IsTimeToExecute() will not attempt to catch up with missed intervals
+
 		// do something that only runs if the Timer instance has expired more than INTERVAL
-		// if IsTimeToExecute returns true, it will again return falls until it again has expired more than INTERVAL.
 	}
 
-	const unsigned int timeSinceLastExecution = t.GetTimeSinceLastExecution();
+	delay(INTERVAL / 5);
 }
