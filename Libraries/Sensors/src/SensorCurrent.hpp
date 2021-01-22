@@ -28,7 +28,7 @@ public:
 	SensorCurrentData &RetreiveData();
 private:
     const uint8_t _analogPin;
-	MedianFilter _filter;
+	MedianFilter<uint16_t> _filter;
 	const uint8_t _sample_count;
 
     const static int _mVperAmp = 100; // use 185 for 5A Module, and 66 for 30A Module -> Trial by error testing.

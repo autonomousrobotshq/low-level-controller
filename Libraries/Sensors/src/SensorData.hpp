@@ -5,8 +5,6 @@
 # include "ros.h"
 #endif
 
-//class Sensor;
-
 class SensorData {
 	public:
 		SensorData();

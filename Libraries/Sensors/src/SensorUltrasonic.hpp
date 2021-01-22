@@ -21,7 +21,7 @@ public:
 private:
     const uint8_t _analog_pin;
 	const uint16_t _max_depth;
-	MedianFilter _filter;
+	MedianFilter<uint16_t> _filter;
 	const uint16_t _sampling_count;
     uint16_t _distance;
 };

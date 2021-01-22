@@ -16,15 +16,15 @@
 class SensorDataIMU : public SensorData {
 	public:
     	int16_t GetNavigationAngle();
-    	Vec3 GetMagnetometerData();
+    	Vec3<int16_t> GetMagnetometerData();
     	void GetMagnetometerData(int16_t* x, int16_t* y, int16_t* z);
-    	Vec3 GetAccelerometerData();
+    	Vec3<int16_t> GetAccelerometerData();
     	void GetAccelerometerData(int16_t* x, int16_t* y, int16_t* z);
 	private:
 		friend class SensorIMU;
     	int16_t _navigation_angle;
-		Vec3	_magneto;
-		Vec3	_accelero;
+		Vec3<int16_t> _magneto;
+		Vec3<int16_t> _accelero;
 #ifdef ROS
 	public:
 		void Publish();
@@ -51,15 +51,15 @@ public:
 	bool Init(const IMU::cal_t &mag_cal);
     bool Update();
     int16_t GetNavigationAngle();
-    Vec3 GetMagnetometerData();
+    Vec3<int16_t> GetMagnetometerData();
     void GetMagnetometerData(int16_t* x, int16_t* y, int16_t* z);
-    Vec3 GetAccelerometerData();
+    Vec3<int16_t> GetAccelerometerData();
     void GetAccelerometerData(int16_t* x, int16_t* y, int16_t* z);
 
 private:
     LSM303 _compass;
     int16_t _navigation_angle;
-    PeakFilter _filter;
+    PeakFilter<uint16_t> _filter;
 	const uint16_t _sample_count;
 	SensorDataIMU _data;
 };

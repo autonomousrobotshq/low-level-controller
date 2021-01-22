@@ -10,9 +10,9 @@ int16_t SensorDataIMU::GetNavigationAngle()
     return (_navigation_angle);
 }
 
-Vec3 SensorDataIMU::GetAccelerometerData()
+Vec3<int16_t> SensorDataIMU::GetAccelerometerData()
 {
-    return (Vec3(_accelero.x, _accelero.y, _accelero.z));
+    return (Vec3<int16_t>(_accelero.x, _accelero.y, _accelero.z));
 }
 
 void SensorDataIMU::GetAccelerometerData(int16_t* x, int16_t* y, int16_t* z)
@@ -22,9 +22,9 @@ void SensorDataIMU::GetAccelerometerData(int16_t* x, int16_t* y, int16_t* z)
     *z = _accelero.z;
 }
 
-Vec3 SensorDataIMU::GetMagnetometerData()
+Vec3<int16_t> SensorDataIMU::GetMagnetometerData()
 {
-    return (Vec3(_magneto.x, _magneto.y, _magneto.z));
+    return (Vec3<int16_t>(_magneto.x, _magneto.y, _magneto.z));
 }
 
 void SensorDataIMU::GetMagnetometerData(int16_t* x, int16_t* y, int16_t* z)
@@ -82,7 +82,7 @@ bool SensorIMU::Update()
     _data._navigation_angle = _filter.GetFilteredSignal();
 	_data._magneto = this->GetMagnetometerData();
 	_data._accelero = this->GetAccelerometerData();
-	// should a filtered Vec3 object also be presented?
+	// should a filtered Vec3<int16_t> object also be presented?
 
     /* No error handling as of yet.
 	** This might be implemented here,
@@ -102,9 +102,9 @@ int16_t SensorIMU::GetNavigationAngle()
     return (_data._navigation_angle);
 }
 
-Vec3 SensorIMU::GetAccelerometerData()
+Vec3<int16_t> SensorIMU::GetAccelerometerData()
 {
-    return (Vec3(_compass.a.x, _compass.a.y, _compass.a.z));
+    return (Vec3<int16_t>(_compass.a.x, _compass.a.y, _compass.a.z));
 }
 
 void SensorIMU::GetAccelerometerData(int16_t* x, int16_t* y, int16_t* z)
@@ -114,9 +114,9 @@ void SensorIMU::GetAccelerometerData(int16_t* x, int16_t* y, int16_t* z)
     *z = _compass.a.z;
 }
 
-Vec3 SensorIMU::GetMagnetometerData()
+Vec3<int16_t> SensorIMU::GetMagnetometerData()
 {
-    return (Vec3(_compass.m.x, _compass.m.y, _compass.m.z));
+    return (Vec3<int16_t>(_compass.m.x, _compass.m.y, _compass.m.z));
 }
 
 void SensorIMU::GetMagnetometerData(int16_t* x, int16_t* y, int16_t* z)
