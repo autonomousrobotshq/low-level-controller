@@ -15,6 +15,11 @@
 
 class SensorDataIMU : public SensorData {
 	public:
+		enum error {
+			ACCELERATION_CAP,
+			MAGNETO_CAP_LOWER,
+			MAGNETO_CAP_UPPER
+		};
     	int16_t GetNavigationAngle();
     	Vec3<int16_t> GetMagnetometerData();
     	void GetMagnetometerData(int16_t* x, int16_t* y, int16_t* z);
@@ -25,6 +30,9 @@ class SensorDataIMU : public SensorData {
     	int16_t _navigation_angle;
 		Vec3<int16_t> _magneto;
 		Vec3<int16_t> _accelero;
+		Vec3<uint16_t> _max_acceleration;
+		Vec3<int16_t> _max_magneto;
+		Vec3<int16_t> _min_magneto;
 #ifdef ROS
 	public:
 		void Publish();
@@ -50,6 +58,7 @@ public:
     ~SensorIMU();
 	bool Init(const IMU::cal_t &mag_cal);
     bool Update();
+	void SetMonitoringParameters(const Vec3<uint16_t> &max_acceleration, const Vec3<int16_t> &min_magneto, const Vec3<int16_t> &max_magneto);
     int16_t GetNavigationAngle();
     Vec3<int16_t> GetMagnetometerData();
     void GetMagnetometerData(int16_t* x, int16_t* y, int16_t* z);

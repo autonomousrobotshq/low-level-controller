@@ -5,7 +5,6 @@ SensorTemp::SensorTemp(const uint8_t pin, const unsigned long  sampling_interval
 #ifndef ARDUINO_CI
     , _wire(pin)
     , _dallas(&_wire)
-	, _celsius(0)
 #endif
 {
 }
@@ -22,20 +21,48 @@ bool SensorTemp::Init()
 	return (true);
 }
 
-int8_t SensorTemp::GetTemp()
+int16_t SensorTemp::GetTemp()
 {
-    return (_celsius);
+    return (_data._celsius);
 }
 
 bool SensorTemp::Update()
 {
+	bool error_occured = false;
+
     if (!_timer.Unlock())
         return (true);
+
 #ifndef ARDUINO_CI
     _dallas.requestTemperatures();
-    _celsius = (int)_dallas.getTempCByIndex(0);
+    _data._celsius = (int)_dallas.getTempCByIndex(0);
 #endif
 
-	// filter values ?
-    return (true);
+	if (_data._monitoring_enabled) {
+		if (_data._celsius < _data._lower_limit) {
+			_data._errno = SensorDataTemp::TEMP_CAP_LOWER;
+			error_occured = true;
+		} else if (_data._celsius < _data._lower_limit) {
+			_data._errno = SensorDataTemp::TEMP_CAP_UPPER;
+			error_occured = true;
+		}
+	}
+
+    return (error_occured == false);
 }
+
+void SensorTemp::SetMonitoringParameters(const uint16_t lower_limit, const uint16_t upper_limit)
+{
+	_data._lower_limit = lower_limit;
+	_data._upper_limit = upper_limit;
+}
+
+/*
+ * SensorDataTemp
+ */
+
+int16_t SensorDataTemp::GetTemp()
+{
+    return (_celsius);
+}
+

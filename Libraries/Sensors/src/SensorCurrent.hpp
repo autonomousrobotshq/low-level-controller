@@ -6,17 +6,25 @@
 
 class SensorCurrentData : public SensorData {
 	public:
+		enum error {
+			CURRENT_CAP_LOWER,
+			CURRENT_CAP_UPPER
+		};
 		uint8_t GetCurrentAmps();
 		uint16_t GetCurrentMilliAmps();
 	private:
-		uint16_t _current;
 		friend class SensorCurrent;
+		uint16_t _current = 0;
+		uint16_t _lower_limit = 0;
+		uint16_t _upper_limit = 0;
+
 #ifdef ROS
 	public:
 		void Publish();
 	private:
 		//spine_msg::msg_current _current_msg;
 #endif
+
 };
 
 class SensorCurrent : public Sensor {
@@ -25,6 +33,7 @@ public:
     ~SensorCurrent();
 	bool Init();
     bool Update();
+	void SetMonitoringParameters(const uint16_t lower_limit, const uint16_t upper_limit);
 	SensorCurrentData &RetreiveData();
 private:
     const uint8_t _analogPin;

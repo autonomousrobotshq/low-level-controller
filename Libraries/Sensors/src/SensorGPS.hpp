@@ -15,6 +15,12 @@
 
 class SensorDataGPS : public SensorData {
 	public:
+		enum errors {
+			GPS_INVALID_AGE,
+			GPS_INVALID_F_ALTITUDE,
+			GPS_INVALID_F_SPEED,
+			GPS_INVALID_F_ANGLE
+		};
     	void GetLocation(float* flat, float* flon);
     	void GetTime(unsigned long* age, unsigned long* date, unsigned long* time);
     	float GetSpeed();

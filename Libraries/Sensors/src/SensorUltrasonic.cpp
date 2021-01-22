@@ -3,12 +3,16 @@
 // https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/
 #define ADC_RESOLUTION (1023.0)
 
+/*
+ * SensorUltrasonic
+ */
+
 SensorUltrasonic::SensorUltrasonic(const uint8_t pin, const uint16_t max_depth, const uint16_t sample_count, const unsigned long sampling_interval)
     : Sensor(sampling_interval)
     , _analog_pin(pin)
-	, _max_depth(max_depth)
 	, _filter(sample_count)
 	, _sampling_count(sample_count)
+	, _data(max_depth)
 {
 }
 
@@ -22,6 +26,8 @@ bool SensorUltrasonic::Init()
 
 bool SensorUltrasonic::Update()
 {
+	bool error_occured = false;
+
     if (!_timer.Unlock())
 		return (true);
 
@@ -30,18 +36,42 @@ bool SensorUltrasonic::Update()
     	_filter.NewReading(analogRead(_analog_pin));
 
 	const uint16_t avg = _filter.GetFilteredSignal();
-    _distance = (avg * _max_depth) / ADC_RESOLUTION;
+    _data._distance = (avg * _data._max_depth) / ADC_RESOLUTION;
 
-    /*
-	**	No error handling implemented yet (if at all necessary).
-	*** RE: definitely necessary: take average and store last average value
-	*** to filter out wrong readings.
-	*/
+	if (_data._monitoring_enabled) {
+		if (_data._distance < _data._lower_limit) {
+			_data._errno = SensorDataUltrasonic::DISTANCE_CAP_LOWER;
+			error_occured = true;
+		} else if (_data._distance < _data._lower_limit) {
+			_data._errno = SensorDataUltrasonic::DISTANCE_CAP_UPPER;
+			error_occured = true;
+		}
+	}
 
-    return (true);
+    return (error_occured == false);
+}
+
+void SensorUltrasonic::SetMonitoringParameters(const uint16_t lower_limit, const uint16_t upper_limit)
+{
+	_data._lower_limit = lower_limit;
+	_data._upper_limit = upper_limit;
 }
 
 uint16_t SensorUltrasonic::GetDistance()
+{
+    return ((_data._distance > _data._max_depth) ? _data._max_depth : _data._distance);
+}
+
+/*
+ * SensorDataUltrasonic
+ */
+
+SensorDataUltrasonic::SensorDataUltrasonic(const uint16_t max_depth)
+	:_max_depth(max_depth)
+{
+}
+
+uint16_t SensorDataUltrasonic::GetDistance()
 {
     return ((_distance > _max_depth) ? _max_depth : _distance);
 }

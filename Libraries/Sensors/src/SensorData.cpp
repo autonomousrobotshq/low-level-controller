@@ -4,8 +4,6 @@
 #ifndef ROS 
 
 SensorData::SensorData()
-	: _timestamp(0)
-	, _time_since_last_execution(0)
 {
 }
 
@@ -16,9 +14,6 @@ SensorData::~SensorData()
 #else
 
 SensorData::SensorData()
-	: _timestamp(0)
-	, _time_since_last_execution(0)
-	, _pub(NULL)
 {
 }
 
@@ -43,6 +38,11 @@ void	SensorData::PublishMsg(const ros::Msg * msg)
 ros::Publisher *SensorData::GetPublisher()
 {
 	return (_pub);
+}
+
+void SetPublisher(const char *topic_name, ros::Msg *msg)
+{
+	_pub = new ros::Publisher(topic_name, msg);
 }
 
 void	SensorData::EnablePublishing()
@@ -76,4 +76,9 @@ unsigned long SensorData::GetTimestamp()
 unsigned long SensorData::GetTimeSinceLastExecution()
 {
 	return _time_since_last_execution;
+}
+
+uint8_t SensorData::GetError()
+{
+	return _errno;
 }

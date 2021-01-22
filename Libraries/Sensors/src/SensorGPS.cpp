@@ -91,6 +91,8 @@ bool SensorGPS::Init()
 
 bool SensorGPS::Update()
 {
+	bool error_occured = false;
+
     if (!_timer.Unlock())
 		return (true);
 
@@ -110,22 +112,26 @@ bool SensorGPS::Update()
         _data._kmph = _gps.f_speed_kmph();
         _data._course = _gps.f_course();
         if (_data._age == TinyGPS::GPS_INVALID_AGE) {
-            // handle invalid time info
+			_data._errno = SensorDataGPS::GPS_INVALID_AGE;
+			error_occured = true;
         }
         if (_data._flat == TinyGPS::GPS_INVALID_F_ALTITUDE) {
-            // handle invalid location info
+			_data._errno = SensorDataGPS::GPS_INVALID_AGE;
+			error_occured = true;
         }
         if (_data._kmph == TinyGPS::GPS_INVALID_F_SPEED) {
-            // handle invalid speed info
+			_data._errno = SensorDataGPS::GPS_INVALID_F_SPEED;
+			error_occured = true;
         }
         if (_data._course == TinyGPS::GPS_INVALID_F_ANGLE) {
-            // handle invalid course info
+			_data._errno = SensorDataGPS::GPS_INVALID_F_ANGLE;
+			error_occured = true;
         }
 #ifdef ROS
 		if (_data.IsPublishingEnabled())
 			_data.Publish();
 #endif
     }
-    return (true);
+    return (error_occured == false);
 }
 

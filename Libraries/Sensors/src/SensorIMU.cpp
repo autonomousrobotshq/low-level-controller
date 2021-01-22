@@ -72,6 +72,8 @@ bool SensorIMU::Init(const IMU::cal_t &mag_cal)
 
 bool SensorIMU::Update()
 {
+	bool error_occured = false;
+
     if (!_timer.Unlock())
         return (true);
     _filter.Reset();
@@ -82,19 +84,43 @@ bool SensorIMU::Update()
     _data._navigation_angle = _filter.GetFilteredSignal();
 	_data._magneto = this->GetMagnetometerData();
 	_data._accelero = this->GetAccelerometerData();
+
 	// should a filtered Vec3<int16_t> object also be presented?
 
-    /* No error handling as of yet.
-	** This might be implemented here,
-	** but can also be implemented when dissecting the MageticSensorLsm303 code.
-	*/
+	if (_data._monitoring_enabled) {
+		if (_data._accelero.x > _data._max_acceleration.x
+			|| _data._accelero.y > _data._max_acceleration.y
+			|| _data._accelero.z > _data._max_acceleration.z) {
+			_data._errno = SensorDataIMU::ACCELERATION_CAP;
+			error_occured = true;
+		}
+		else if (_data._magneto.x > _data._max_magneto.x
+			|| _data._magneto.y > _data._max_magneto.y
+			|| _data._magneto.z > _data._max_magneto.z) {
+			_data._errno = SensorDataIMU::MAGNETO_CAP_UPPER;
+			error_occured = true;
+		}
+		else if (_data._magneto.x < _data._min_magneto.x
+			|| _data._magneto.y < _data._min_magneto.y
+			|| _data._magneto.z < _data._min_magneto.z) {
+			_data._errno = SensorDataIMU::MAGNETO_CAP_LOWER;
+			error_occured = true;
+		}
+	}
 
 #ifdef ROS
 	if (_data.IsPublishingEnabled())
 		_data.Publish();
 #endif
 
-    return (true);
+    return (error_occured == false);
+}
+
+void SensorIMU::SetMonitoringParameters(const Vec3<uint16_t> &max_acceleration, const Vec3<int16_t> &min_magneto, const Vec3<int16_t> &max_magneto)
+{
+	_data._max_acceleration = max_acceleration;
+	_data._min_magneto = min_magneto;
+	_data._max_magneto = max_magneto;
 }
 
 int16_t SensorIMU::GetNavigationAngle()

@@ -4,6 +4,10 @@
 // should probably check which board this is                                    
 #define ADC_RESOLUTION (1023.0)
 
+/*
+ * SensorCurrent
+ */
+
 SensorCurrent::SensorCurrent(const uint8_t analogPin, const uint8_t sample_count, const unsigned long sampling_interval)
     : Sensor(sampling_interval)
     , _analogPin(analogPin)
@@ -24,15 +28,29 @@ bool SensorCurrent::Init()
 
 bool SensorCurrent::Update()
 {
+	bool error_occured = false;
+
     if (!_timer.Unlock())
         return (true);
+
     _data._current = ReadDCCurrent();
-    return (true);
+
+	if (_data._monitoring_enabled) {
+		if (_data._current < _data._lower_limit) {
+			_data._errno = SensorCurrentData::CURRENT_CAP_LOWER;
+			error_occured = true;
+		} else if (_data._current > _data._upper_limit) {
+			_data._errno = SensorCurrentData::CURRENT_CAP_UPPER;
+			error_occured = true;
+		}
+	}
+    return (error_occured == false);
 }
 
-SensorCurrentData &SensorCurrent::RetreiveData()
+void SensorCurrent::SetMonitoringParameters(const uint16_t lower_limit, const uint16_t upper_limit)
 {
-	return (_data);
+	_data._lower_limit = lower_limit;
+	_data._upper_limit = upper_limit;
 }
 
 /*read DC Current Value
@@ -88,6 +106,15 @@ long SensorCurrent::ReadReferenceVoltage()
 	return (4500); // assume 4.5V for testing
 }
 #endif
+
+/*
+ * SensorCurrentData
+ */
+
+SensorCurrentData &SensorCurrent::RetreiveData()
+{
+	return (_data);
+}
 
 uint16_t SensorCurrentData::GetCurrentMilliAmps()
 {
