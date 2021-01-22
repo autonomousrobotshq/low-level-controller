@@ -67,7 +67,7 @@ uint16_t SensorUltrasonic::GetDistance()
  */
 
 SensorDataUltrasonic::SensorDataUltrasonic(const uint16_t max_depth)
-	:_max_depth(max_depth)
+	: _max_depth(max_depth)
 {
 }
 

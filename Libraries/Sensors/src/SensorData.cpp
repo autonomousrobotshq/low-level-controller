@@ -40,7 +40,7 @@ ros::Publisher *SensorData::GetPublisher()
 	return (_pub);
 }
 
-void SetPublisher(const char *topic_name, ros::Msg *msg)
+void SensorData::SetPublisher(const char *topic_name, ros::Msg *msg)
 {
 	_pub = new ros::Publisher(topic_name, msg);
 }
