@@ -1,6 +1,6 @@
 #include "Vec3.hpp"
 
-Vec3 v3;
+Vec3<int> v3;
 
 void setup() {
 	
