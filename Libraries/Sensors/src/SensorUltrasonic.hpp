@@ -40,6 +40,7 @@ public:
     ~SensorUltrasonic();
 	bool Init();
     bool Update();
+	SensorDataUltrasonic &RetreiveData();
 	void SetMonitoringParameters(const uint16_t lower_limit, const uint16_t upper_limit);
 	
     /*!

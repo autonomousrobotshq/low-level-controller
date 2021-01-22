@@ -24,3 +24,8 @@ bool Sensor::Update()
 {
 	return (true);
 }
+
+SensorData	&Sensor::RetreiveData()
+{
+	return (_data);
+}

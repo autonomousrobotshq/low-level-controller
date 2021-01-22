@@ -37,6 +37,7 @@ public:
     ~SensorTemp();
 	bool Init();
     bool Update();
+	SensorDataTemp &RetreiveData();
 	void SetMonitoringParameters(const uint16_t lower_limit, const uint16_t upper_limit);
     int16_t GetTemp();
 

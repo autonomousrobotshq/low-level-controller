@@ -51,6 +51,11 @@ bool SensorTemp::Update()
     return (error_occured == false);
 }
 
+SensorDataTemp &SensorTemp::RetreiveData()
+{
+	return _data;
+}
+
 void SensorTemp::SetMonitoringParameters(const uint16_t lower_limit, const uint16_t upper_limit)
 {
 	_data._lower_limit = lower_limit;

@@ -12,7 +12,9 @@ public:
     virtual ~Sensor();
 	virtual bool Init();
 	virtual bool Update();
+	virtual SensorData &RetreiveData();
 	Timer _timer;
 private:
+	SensorData _data; // how to get rid of this?
 };
 #endif

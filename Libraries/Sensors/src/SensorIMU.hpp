@@ -58,6 +58,7 @@ public:
     ~SensorIMU();
 	bool Init(const IMU::cal_t &mag_cal);
     bool Update();
+	SensorDataIMU &RetreiveData();
 	void SetMonitoringParameters(const Vec3<uint16_t> &max_acceleration, const Vec3<int16_t> &min_magneto, const Vec3<int16_t> &max_magneto);
     int16_t GetNavigationAngle();
     Vec3<int16_t> GetMagnetometerData();

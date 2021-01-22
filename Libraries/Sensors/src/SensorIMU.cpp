@@ -116,6 +116,11 @@ bool SensorIMU::Update()
     return (error_occured == false);
 }
 
+SensorDataIMU &SensorIMU::RetreiveData()
+{
+	return (_data);
+}
+
 void SensorIMU::SetMonitoringParameters(const Vec3<uint16_t> &max_acceleration, const Vec3<int16_t> &min_magneto, const Vec3<int16_t> &max_magneto)
 {
 	_data._max_acceleration = max_acceleration;
