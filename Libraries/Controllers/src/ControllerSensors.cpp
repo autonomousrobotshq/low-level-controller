@@ -11,12 +11,14 @@ ControllerSensors::~ControllerSensors()
 
 bool ControllerSensors::Init()
 {
-	return (true);
+	uint8_t errors;
+	for (Sensor *s : _sensors)
+		errors += (s->Init() == false);
+	return (errors == 0);
 }
 
 bool ControllerSensors::Update()
 {
-	return (false);
 	uint8_t errors;
 	for (Sensor *s : _sensors)
 		errors += (s->Update() == false);
@@ -36,7 +38,7 @@ int8_t ControllerSensors::AddSensor(Sensor *sensor)
 
 uint8_t ControllerSensors::GetSensorCount()
 {
-	return (_sensors.size())
+	return (_sensors.size());
 }
 
 SensorData	&ControllerSensors::GetSensorData(const uint8_t index)
