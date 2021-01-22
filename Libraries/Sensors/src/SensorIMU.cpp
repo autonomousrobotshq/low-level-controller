@@ -72,7 +72,7 @@ bool SensorIMU::Init(const IMU::cal_t &mag_cal)
 
 bool SensorIMU::Update()
 {
-    if (!IsTimeToExecute())
+    if (!_timer.Unlock())
         return (true);
     _filter.Reset();
     for (uint8_t i = 0; i < _sample_count; i++) {

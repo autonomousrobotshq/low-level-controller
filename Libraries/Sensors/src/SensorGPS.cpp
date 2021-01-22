@@ -91,8 +91,9 @@ bool SensorGPS::Init()
 
 bool SensorGPS::Update()
 {
-    if (!this->IsTimeToExecute())
-        return (true);
+    if (!_timer.Unlock())
+		return (true);
+
     bool newData = false;
     for (unsigned long start = millis(); millis() - start < _timeout;) {
         while (_ss.available()) {

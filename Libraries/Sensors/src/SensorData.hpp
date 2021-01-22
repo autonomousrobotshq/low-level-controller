@@ -5,15 +5,18 @@
 # include "ros.h"
 #endif
 
-class Sensor;
+//class Sensor;
 
 class SensorData {
 	public:
 		SensorData();
 		virtual ~SensorData();
+		void UpdateTimestamps();
+		unsigned long GetTimestamp();
+		unsigned long GetTimeSinceLastExecution();
 	private:
 		unsigned long _timestamp;
-		unsigned long _interval_timestamp;
+		unsigned long _time_since_last_execution;
 #ifdef ROS
 	public:
 		SensorData(const char *topic_name, ros::Msg *msg);

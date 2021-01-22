@@ -24,7 +24,7 @@ bool SensorCurrent::Init()
 
 bool SensorCurrent::Update()
 {
-    if (!IsTimeToExecute())
+    if (!_timer.Unlock())
         return (true);
     _data._current = ReadDCCurrent();
     return (true);

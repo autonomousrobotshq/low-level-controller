@@ -1,8 +1,13 @@
 #include <Arduino.h>
 #include "Sensor.hpp"
 
+Sensor::Sensor()
+	: _timer(0)
+{
+}
+
 Sensor::Sensor(const unsigned long sampling_interval)
-    : Timer(sampling_interval)
+    : _timer(sampling_interval)
 {
 }
 

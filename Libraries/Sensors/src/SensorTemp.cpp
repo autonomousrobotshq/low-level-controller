@@ -29,7 +29,7 @@ int8_t SensorTemp::GetTemp()
 
 bool SensorTemp::Update()
 {
-    if (!IsTimeToExecute())
+    if (!_timer.Unlock())
         return (true);
 #ifndef ARDUINO_CI
     _dallas.requestTemperatures();

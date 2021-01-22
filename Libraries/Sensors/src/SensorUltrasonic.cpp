@@ -22,7 +22,7 @@ bool SensorUltrasonic::Init()
 
 bool SensorUltrasonic::Update()
 {
-    if (!IsTimeToExecute())
+    if (!_timer.Unlock())
 		return (true);
 
 	_filter.Reset();

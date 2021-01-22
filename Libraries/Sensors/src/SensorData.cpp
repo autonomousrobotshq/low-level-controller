@@ -1,8 +1,11 @@
+#include "Arduino.h"
 #include "SensorData.hpp"
 
 #ifndef ROS 
 
 SensorData::SensorData()
+	: _timestamp(0)
+	, _time_since_last_execution(0)
 {
 }
 
@@ -13,7 +16,9 @@ SensorData::~SensorData()
 #else
 
 SensorData::SensorData()
-	: _pub(NULL)
+	: _timestamp(0)
+	, _time_since_last_execution(0)
+	, _pub(NULL)
 {
 }
 
@@ -56,3 +61,19 @@ bool	SensorData::IsPublishingEnabled()
 }
 
 #endif
+
+void	SensorData::UpdateTimestamps()
+{
+	_time_since_last_execution = millis() - _timestamp;
+	_timestamp = millis();
+}
+
+unsigned long SensorData::GetTimestamp()
+{
+	return _timestamp;
+}
+
+unsigned long SensorData::GetTimeSinceLastExecution()
+{
+	return _time_since_last_execution;
+}
