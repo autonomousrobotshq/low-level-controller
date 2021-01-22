@@ -3,7 +3,7 @@
 const int samplecount = 5;
 const int samples[] = { 1, 1, 1, 5, 7 };
 
-MedianFilter filter(samplecount);
+MedianFilter<int> filter(samplecount);
 
 void setup() {
 }

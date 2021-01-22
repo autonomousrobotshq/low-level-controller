@@ -3,9 +3,10 @@
 
 #include "PeakFilter.hpp"
 
+template <typename T>
 bool	TestForArray(int nums[], int samplecount, int expected)
 {
-	PeakFilter filter(samplecount);
+	PeakFilter<T> filter(samplecount);
 	
 	filter.Reset();
 	
@@ -21,28 +22,28 @@ unittest(PeakFilter)
 {
 	// how to turn -std=c++0x on?
 	int nums[] = {1, 1, 1, 5};
-	assertTrue(TestForArray(nums, sizeof(nums)/sizeof(int), 1));
+	assertTrue(TestForArray<int>(nums, sizeof(nums)/sizeof(int), 1));
 
 	int nums0[] = {};
-	assertTrue(TestForArray(nums0, sizeof(nums0)/sizeof(int), 0));
+	assertTrue(TestForArray<int>(nums0, sizeof(nums0)/sizeof(int), 0));
 
 	int nums1[] = {1};
-	assertTrue(TestForArray(nums1, sizeof(nums1)/sizeof(int), 1));
+	assertTrue(TestForArray<int>(nums1, sizeof(nums1)/sizeof(int), 1));
 
 	int nums2[] = {-1, 0, 1, 5};
-	assertTrue(TestForArray(nums2, sizeof(nums2)/sizeof(int), 0));
+	assertTrue(TestForArray<int>(nums2, sizeof(nums2)/sizeof(int), 0));
 
 	int nums3[] = {-500, 100, 500, 100, 100};
-	assertTrue(TestForArray(nums3, sizeof(nums3)/sizeof(int), 100));
+	assertTrue(TestForArray<int>(nums3, sizeof(nums3)/sizeof(int), 100));
 
 	int nums4[] = {0, 500, 500};
-	assertTrue(TestForArray(nums4, sizeof(nums4)/sizeof(int), 500));
+	assertTrue(TestForArray<int>(nums4, sizeof(nums4)/sizeof(int), 500));
 
 	int nums5[] = {100, 2, 2, 0, 0, 0};
-	assertTrue(TestForArray(nums5, sizeof(nums5)/sizeof(int), 1));
+	assertTrue(TestForArray<int>(nums5, sizeof(nums5)/sizeof(int), 1));
 
 	int nums6[] = {500, 0};
-	assertTrue(TestForArray(nums6, sizeof(nums6)/sizeof(int), 250));
+	assertTrue(TestForArray<int>(nums6, sizeof(nums6)/sizeof(int), 250));
 }
 
 unittest_main()

@@ -3,7 +3,7 @@
 const int samplecount = 5;
 const int samples[] = { 1, 1, 1, 5, 7 };
 
-PeakFilter filter(samplecount);
+PeakFilter<int> filter(samplecount);
 
 void setup() {
 }
