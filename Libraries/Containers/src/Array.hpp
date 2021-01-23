@@ -20,12 +20,17 @@ template <typename T>
 class Array
 {
 	public:
+		typedef ArrayIterator<T> iterator;
+		typedef ArrayIterator<const T> const_iterator;
+		typedef ArrayIterator<T> reverse_iterator;
+		typedef ArrayIterator<const T> const_reverse_iterator;
+
 		Array();
 
 		template <size_t MAX_SIZE>
 		Array(T (&store)[MAX_SIZE], size_t size = 0);
 
-		Array(size_t max_size);
+		Array(size_t max_size, size_t size = 0);
 
 		~Array();
 
@@ -39,6 +44,21 @@ class Array
 		T & back();
 
 		T * data();
+
+		/* iterators */
+		
+		iterator begin();
+		iterator end();
+		const_iterator begin() const;
+		const_iterator end() const;
+
+		reverse_iterator rbegin();
+		reverse_iterator rend();
+
+		const_reverse_iterator rbegin() const;
+		const_reverse_iterator rend() const;
+
+		/* utility */ 
 
 		bool empty();
 		size_t size();

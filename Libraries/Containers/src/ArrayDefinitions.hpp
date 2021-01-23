@@ -25,6 +25,16 @@ Array<T>::Array(T (&store)[MAX_SIZE], size_t size)
 }
 
 template <typename T>
+Array<T>::Array(size_t max_size, size_t size)
+	: _store(new T[max_size])
+	, _size(0)
+	, _max_size(max_size)
+	, _store_is_internal(true)
+
+{
+}
+
+template <typename T>
 Array<T>::~Array()
 {
 	if (_store_is_internal) {
@@ -71,6 +81,63 @@ T * Array<T>::data()
 	return _store;
 }
 
+/* iterators */
+
+
+template <typename T>
+typename Array<T>::iterator Array<T>::begin()
+{
+	return iterator(_store);
+}
+
+template <typename T>
+typename Array<T>::iterator Array<T>::end()
+{
+	return iterator(_store, _size);
+}
+
+/* const iterators */
+
+template <typename T>
+typename Array<T>::const_iterator Array<T>::begin() const
+{
+	return const_iterator(_store);
+}
+
+template <typename T>
+typename Array<T>::const_iterator Array<T>::end() const
+{
+	return const_iterator(_store, _size);
+}
+
+/* reverse iterators */
+
+template <typename T>
+typename Array<T>::reverse_iterator Array<T>::rbegin()
+{
+	return reverse_iterator(_store, _size);
+}
+
+template <typename T>
+typename Array<T>::reverse_iterator Array<T>::rend()
+{
+	return reverse_iterator(_store);
+}
+
+/* const reverse iterators */
+
+template <typename T>
+typename Array<T>::const_reverse_iterator Array<T>::rbegin() const
+{
+	return const_reverse_iterator(_store, _size);
+}
+
+template <typename T>
+typename Array<T>::const_reverse_iterator Array<T>::rend() const
+{
+	return const_reverse_iterator(_store);
+}
+
 template <typename T>
 bool Array<T>::empty()
 {
@@ -93,8 +160,8 @@ template <typename T>
 void Array<T>::swap(Array & other)
 {
 	T * tmp = this->_store;
-	this->_store = other.store;
-	other.store = tmp;
+	this->_store = other._store;
+	other._store = tmp;
 }
 
 template <typename T>
@@ -102,7 +169,7 @@ void Array<T>::fill(const T & value)
 {
 	for (size_t i = 0; i < _max_size; i++)
 		_store[i] = value;
-	_size = max_size;
+	_size = _max_size;
 }
 
 /*
