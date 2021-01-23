@@ -54,6 +54,6 @@ class Array
 		bool _store_is_internal;
 };
 
-#include "Array/ArrayDefinitions.hpp"
+#include "ArrayDefinitions.hpp"
 
 #endif
