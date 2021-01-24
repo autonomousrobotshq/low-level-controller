@@ -63,12 +63,43 @@ unittest(Iteration)
 	size_t ctr = 0;
 	for (int &i : Arr) {
 		i = ctr++;
-	}
-
-	for (int &i : Arr) {
 		assertEqual(i, Arr[i]);
 		assertEqual(i, Arr.at(i));
 	}
+	assertEqual(max_size, ctr);
+
+	Array<int>::iterator i;
+	ctr = 0;
+	for (i = Arr.begin(); i != Arr.end(); i++) {
+		assertEqual(*i, Arr[ctr]);
+		assertEqual(*i, Arr.at(ctr));
+		assertEqual(*i, ctr);
+		ctr++;
+	}
+	assertEqual(max_size, ctr);
+}
+
+unittest(ReverseIteration)
+{
+	const int max_size = 128;
+	Array<int> Arr(max_size);
+
+	size_t ctr = 0;
+	for (int &i : Arr) {
+		i = ctr++;
+		assertEqual(i, Arr[i]);
+		assertEqual(i, Arr.at(i));
+	}
+	assertEqual(max_size, ctr);
+
+	Array<int>::reverse_iterator i;
+	ctr = max_size - 1;
+	for (i = Arr.rbegin(); i != Arr.rend(); i++) {
+		assertEqual(*i, Arr[ctr]);
+		assertEqual(*i, Arr.at(ctr));
+		ctr--;
+	}
+	assertEqual((size_t)-1, ctr);
 }
 
 unittest(Fill)
@@ -106,8 +137,26 @@ unittest(Getters)
 	const int max_size = 128;
 	Array<int> Arr(max_size);
 
-	assertEqual(0, Arr.size());
-	assertEqual(true, Arr.empty());
+	assertEqual(max_size, Arr.max_size());
+	assertEqual(max_size, Arr.size());
+	assertEqual(false, Arr.empty());
+
+	Array<int> empty_Arr;
+	assertEqual(0, empty_Arr.max_size());
+	assertEqual(0, empty_Arr.size());
+	assertEqual(true, empty_Arr.empty());
+}
+
+unittest(FrontBack)
+{
+	const int max_size = 128;
+	Array<int> Arr(max_size);
+
+	Arr.front() = 1;
+	Arr.back() = 2;
+	assertEqual(1, Arr[0]);
+	assertEqual(2, Arr[max_size - 1]);
+
 }
 
 unittest_main()

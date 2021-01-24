@@ -8,7 +8,6 @@
 template <typename T>
 Array<T>::Array()
 	: _store(NULL)
-	, _size(0)
 	, _max_size(0)
 	, _store_is_internal(false)
 {
@@ -18,16 +17,14 @@ template <typename T>
 template <size_t MAX_SIZE>
 Array<T>::Array(T (&store)[MAX_SIZE], size_t size)
 	: _store(store)
-	, _size(size)
 	, _max_size(MAX_SIZE)
 	, _store_is_internal(false)
 {
 }
 
 template <typename T>
-Array<T>::Array(size_t max_size, size_t size)
+Array<T>::Array(size_t max_size)
 	: _store(new T[max_size])
-	, _size(0)
 	, _max_size(max_size)
 	, _store_is_internal(true)
 
@@ -44,21 +41,27 @@ Array<T>::~Array()
 
 template <typename T>
 template <size_t MAX_SIZE>                                              
-void Array<T>::setBackingStore(T (&store)[MAX_SIZE], size_t size)
+void Array<T>::setBackingStore(T (&store)[MAX_SIZE])
 {
+	static_assert(MAX_SIZE > 0);
 	_store = store;
-	_size = size;
 	_max_size = MAX_SIZE;
 }
 
 template <typename T>
-T & Array<T>::at(size_t index)
+T & Array<T>::at(size_t index) const
 {
 	return _store[index];
 }
 
 template <typename T>
 T & Array<T>::operator[](size_t index)
+{
+	return _store[index];
+}
+
+template <typename T>
+const T & Array<T>::operator[](size_t index) const
 {
 	return _store[index];
 }
@@ -72,7 +75,7 @@ T & Array<T>::front()
 template <typename T>
 T & Array<T>::back()
 {
-	return (_size > 0) ? _store[_size - 1] : _store[0];
+	return (_max_size > 0) ? _store[_max_size - 1] : _store[0];
 }
 
 template <typename T>
@@ -81,8 +84,13 @@ T * Array<T>::data()
 	return _store;
 }
 
-/* iterators */
+template <typename T>
+const T * Array<T>::data() const
+{
+	return _store;
+}
 
+/* iterators */
 
 template <typename T>
 typename Array<T>::iterator Array<T>::begin()
@@ -93,7 +101,7 @@ typename Array<T>::iterator Array<T>::begin()
 template <typename T>
 typename Array<T>::iterator Array<T>::end()
 {
-	return iterator(_store, _size);
+	return iterator(_store, _max_size);
 }
 
 /* const iterators */
@@ -107,7 +115,7 @@ typename Array<T>::const_iterator Array<T>::begin() const
 template <typename T>
 typename Array<T>::const_iterator Array<T>::end() const
 {
-	return const_iterator(_store, _size);
+	return const_iterator(_store, _max_size);
 }
 
 /* reverse iterators */
@@ -115,13 +123,13 @@ typename Array<T>::const_iterator Array<T>::end() const
 template <typename T>
 typename Array<T>::reverse_iterator Array<T>::rbegin()
 {
-	return reverse_iterator(_store, _size);
+	return reverse_iterator(_store + (_max_size - 1));
 }
 
 template <typename T>
 typename Array<T>::reverse_iterator Array<T>::rend()
 {
-	return reverse_iterator(_store);
+	return reverse_iterator(_store, _max_size);
 }
 
 /* const reverse iterators */
@@ -129,29 +137,31 @@ typename Array<T>::reverse_iterator Array<T>::rend()
 template <typename T>
 typename Array<T>::const_reverse_iterator Array<T>::rbegin() const
 {
-	return const_reverse_iterator(_store, _size);
+	return const_reverse_iterator(_store + (_max_size - 1));
 }
 
 template <typename T>
 typename Array<T>::const_reverse_iterator Array<T>::rend() const
 {
-	return const_reverse_iterator(_store);
+	return const_reverse_iterator(_store, _max_size);
 }
 
+/* utility */
+
 template <typename T>
-bool Array<T>::empty()
+bool Array<T>::empty() const
 {
-	return _size == 0;
+	return _max_size == 0;
 }
 
 template <typename T>
-size_t Array<T>::size()
+size_t Array<T>::size() const
 {
-	return _size;
+	return _max_size;
 }
 
 template <typename T>
-size_t Array<T>::max_size()
+size_t Array<T>::max_size() const
 {
 	return _max_size;
 }
@@ -169,12 +179,18 @@ void Array<T>::fill(const T & value)
 {
 	for (size_t i = 0; i < _max_size; i++)
 		_store[i] = value;
-	_size = _max_size;
 }
 
 /*
  * ArrayIterator
  */
+
+template <typename T>
+ArrayIterator<T>::ArrayIterator()
+	: _ptr(NULL)
+	, _index(0)
+{
+}
 
 template <typename T>
 ArrayIterator<T>::ArrayIterator(T * store_ptr, size_t index)
@@ -203,9 +219,94 @@ ArrayIterator<T> & ArrayIterator<T>::operator ++()
 }
 
 template <typename T>
+ArrayIterator<T> ArrayIterator<T>::operator ++(int)
+{
+	_index++;
+	return *this;
+}
+
+template <typename T>
+ArrayIterator<T> & ArrayIterator<T>::operator --()
+{
+	_index--;
+	return *this;
+}
+
+template <typename T>
+ArrayIterator<T> ArrayIterator<T>::operator --(int)
+{
+	_index--;
+	return *this;
+}
+
+template <typename T>
 T & ArrayIterator<T>::operator *() const
 {
 	return *(_ptr + _index);
+}
+
+/*
+ * ArrayReverseIterator
+ */
+
+template <typename T>
+ArrayReverseIterator<T>::ArrayReverseIterator()
+	: _ptr(NULL)
+	, _index(0)
+{
+}
+
+template <typename T>
+ArrayReverseIterator<T>::ArrayReverseIterator(T * store_ptr, size_t index)
+	: _ptr(store_ptr)
+	, _index(index)
+{
+}
+
+template <typename T>
+bool ArrayReverseIterator<T>::operator !=(const ArrayReverseIterator<T> & other) const
+{
+	return (other._index != this->_index);
+}
+
+template <typename T>
+bool ArrayReverseIterator<T>::operator ==(const ArrayReverseIterator<T> & other) const
+{
+	return (other._index == this->_index);
+}
+
+template <typename T>
+ArrayReverseIterator<T> & ArrayReverseIterator<T>::operator ++()
+{
+	_index++;
+	return *this;
+}
+
+template <typename T>
+ArrayReverseIterator<T> ArrayReverseIterator<T>::operator ++(int)
+{
+	_index++;
+	return *this;
+}
+
+template <typename T>
+ArrayReverseIterator<T> & ArrayReverseIterator<T>::operator --()
+{
+	_index--;
+	return *this;
+}
+
+template <typename T>
+ArrayReverseIterator<T> ArrayReverseIterator<T>::operator --(int)
+{
+	_index--;
+	return *this;
+}
+
+template <typename T>
+T & ArrayReverseIterator<T>::operator *() const
+{
+	return *(_ptr - _index);
 }
 
 #endif
