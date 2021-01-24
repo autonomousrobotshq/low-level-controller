@@ -15,7 +15,7 @@ Array<T>::Array()
 
 template <typename T>
 template <size_t MAX_SIZE>
-Array<T>::Array(T (&store)[MAX_SIZE], size_t size)
+Array<T>::Array(T (&store)[MAX_SIZE])
 	: _store(store)
 	, _max_size(MAX_SIZE)
 	, _store_is_internal(false)

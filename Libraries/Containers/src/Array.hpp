@@ -50,7 +50,7 @@ class Array
 
 		Array();
 		template <size_t MAX_SIZE>
-		Array(T (&store)[MAX_SIZE], size_t size = 0);
+		Array(T (&store)[MAX_SIZE]);
 		Array(size_t max_size);
 		~Array();
 
@@ -83,9 +83,10 @@ class Array
 		void swap(Array & other);
 		void fill(const T & value);
 
-	private:
+	protected:
 		T * _store;
 		size_t _max_size;
+	private:
 		bool _store_is_internal;
 };
 
