@@ -2,9 +2,7 @@
 #define INTERFACE_ROS_HPP
 
 #include <stdint.h>
-
 #include <ros.h>
-
 #include "Interface.hpp"
 
 class InterfaceROS : public Interface {

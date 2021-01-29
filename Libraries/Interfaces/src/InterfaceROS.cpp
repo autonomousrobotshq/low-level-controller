@@ -1,18 +1,5 @@
 #include "InterfaceROS.hpp"
 
-// needed for Ros libraries which follow std11
-void operator delete(void* ptr, size_t size)
-{
-    free(ptr);
-    (void)size;
-}
-
-void operator delete[](void* ptr, size_t size)
-{
-    free(ptr);
-    (void)size;
-}
-
 InterfaceROS::InterfaceROS(const unsigned long update_interval)
     : Interface(update_interval)
 {
