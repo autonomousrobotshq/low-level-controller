@@ -7,7 +7,7 @@ ARDUINO_LIBS += Wire
 ARDUINO_LIBS += SoftwareSerial
 
 ARDUINO_LIBS += External/OneWire-2.3.5
-ARDUINO_LIBS += External/DallasTemperature-3.9.0
+ARDUINO_LIBS += External/DallasTemperature-3.8.0
 ARDUINO_LIBS += External/MagneticSensorLSM303-1.0
 ARDUINO_LIBS += External/Vector-1.2.0
 
@@ -97,13 +97,12 @@ CFLAGS_STD        = -std=gnu11
 
 ### CXXFLAGS_STD
 ### Set the C++ standard to be used during compilation. Documentation (https://github.com/WeAreLeka/Arduino-Makefile/blob/std-flags/arduino-mk-vars.md#cxxflags_std)
-CXXFLAGS_STD      = -std=gnu++14
+CXXFLAGS_STD      = -std=gnu++17
 
 ### CXXFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
 CXXFLAGS         += -Wall -Wextra -Werror -g
-CXXFLAGS         += -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-truncation -Wno-restrict -Wno-sized-deallocation -Wno-switch -Wno-implicit-fallthrough # just to get the bloody external libraries to work..
-CXXFLAGS         += -fconcepts # to use 'auto' in function arguments
+CXXFLAGS         += -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__ -Wno-stringop-truncation -Wno-sign-compare -Wno-unused-variable -Wno-unused-parameter -Wno-sized-deallocation -Wno-switch # just to get the bloody external libraries to work..
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.

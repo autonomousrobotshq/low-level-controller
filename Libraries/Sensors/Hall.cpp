@@ -3,6 +3,11 @@
 #include "Common/Platform.hpp"
 #include "Sensors/Hall.hpp"
 
+
+// ignore array bounds, since we are doing some hacky shit here with interrupts
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+
 // attach interrupt doesnt allow arguments(like a 'this' argument), so hardcoded globs are required
 static unsigned int pulses[NUM_MOTORS];
 
@@ -78,3 +83,5 @@ SensorHall::SensorHall(const t_pins_hall pins_hall, const uint16_t exec_interval
 SensorHall::~SensorHall()
 {
 }
+
+#pragma GCC diagnostic pop
